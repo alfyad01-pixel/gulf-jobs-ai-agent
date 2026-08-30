@@ -2,11 +2,15 @@ name: Gulf Jobs AI Agent
 
 on:
   workflow_dispatch:
+
+  schedule:
+    - cron: "0 6 * * *"
+      timezone: "Europe/Istanbul"
+
   push:
     paths:
       - "jobs.json"
       - "profile.json"
-
 jobs:
   analyze-jobs:
     runs-on: ubuntu-latest
