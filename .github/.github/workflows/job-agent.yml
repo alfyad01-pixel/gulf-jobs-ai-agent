@@ -15,21 +15,62 @@ jobs:
       - name: Download project
         uses: actions/checkout@v4
 
+      - name: Fetch real Gulf jobs from Apify
+        env:
+          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+          import urllib.error
+
+          url = "https://api.apify.com/v2/actors/blackfalcondata~naukrigulf-scraper/run-sync-get-dataset-items"
+
+          payload = {
+              "mode": "search",
+              "query": "Chemical Engineer",
+              "location": "Saudi Arabia",
+              "maxResults": 10,
+              "includeDetails": True,
+              "compact": False,
+              "excludeEmptyFields": True
+          }
+
+          data = json.dumps(payload).encode("utf-8")
+
+          request = urllib.request.Request(
+              url,
+              data=data,
+              method="POST",
+              headers={
+                  "Content-Type": "application/json",
+                  "Authorization": "Bearer " + os.environ["APIFY_API_TOKEN"]
+              }
+          )
+
+          try:
+              with urllib.request.urlopen(request, timeout=900) as response:
+                  result = json.loads(response.read().decode("utf-8"))
+          except urllib.error.HTTPError as e:
+              print("Apify API error:", e.code)
+              print(e.read().decode("utf-8", errors="replace"))
+              raise
+
+          with open("jobs.json", "w", encoding="utf-8") as f:
+              json.dump(result, f, ensure_ascii=False, indent=2)
+
+          print(f"Fetched {len(result)} real jobs.")
+          PY
+
       - name: Analyze jobs
         run: |
           echo "================================"
           echo "      GULF JOBS AI AGENT"
           echo "================================"
           echo ""
-
-          echo "PROFILE:"
-          cat profile.json
-
-          echo ""
-          echo "================================"
-          echo "JOBS:"
+          echo "REAL JOBS FROM NAUKRIGULF:"
           cat jobs.json
-
           echo ""
           echo "================================"
           echo "MATCH ANALYSIS"
@@ -37,6 +78,7 @@ jobs:
 
           python - <<'PY'
           import json
+          import re
 
           with open("jobs.json", "r", encoding="utf-8") as f:
               jobs = json.load(f)
@@ -44,24 +86,39 @@ jobs:
           with open("profile.json", "r", encoding="utf-8") as f:
               profile = json.load(f)
 
-          skills = set(x.lower() for x in profile["skills"])
+          skills = [x.lower() for x in profile.get("skills", [])]
+          roles = [x.lower() for x in profile.get("target_roles", [])]
 
           for job in jobs:
-              requirements = set(
-                  x.lower() for x in job.get("requirements", [])
+              title = str(job.get("title", "Unknown"))
+              description = str(
+                  job.get("description")
+                  or job.get("descriptionText")
+                  or ""
               )
+              text = (title + " " + description).lower()
 
-              matches = skills.intersection(requirements)
+              matched_skills = [
+                  skill for skill in skills
+                  if skill in text
+              ]
 
-              score = round(
-                  (len(matches) / max(len(requirements), 1)) * 100
+              role_match = any(role in title.lower() for role in roles)
+
+              score = min(
+                  100,
+                  len(matched_skills) * 10 + (30 if role_match else 0)
               )
 
               print("")
-              print("JOB:", job["title"])
-              print("COMPANY:", job["company"])
-              print("COUNTRY:", job["country"])
+              print("JOB:", title)
+              print("COMPANY:", job.get("company", "Unknown"))
+              print("LOCATION:", job.get("location", "Unknown"))
               print("MATCH SCORE:", str(score) + "/100")
-              print("MATCHED SKILLS:", ", ".join(matches) if matches else "None")
+              print(
+                  "MATCHED SKILLS:",
+                  ", ".join(matched_skills) if matched_skills else "None"
+              )
+              print("URL:", job.get("url", ""))
               print("--------------------------------")
           PY
