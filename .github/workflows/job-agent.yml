@@ -69,16 +69,17 @@ jobs:
                   method="POST",
                   headers={
                       "Content-Type": "application/json",
-                      "Authorization": (
+                      "Authorization":
                           "Bearer " + os.environ["APIFY_API_TOKEN"]
-                      )
                   }
               )
 
               try:
                   with urllib.request.urlopen(
-                      request, timeout=900
+                      request,
+                      timeout=300
                   ) as response:
+
                       result = json.loads(
                           response.read().decode("utf-8")
                       )
@@ -87,7 +88,10 @@ jobs:
                       all_jobs.extend(result)
 
               except urllib.error.HTTPError as e:
-                  print(f"Search failed: {query} - {location}")
+                  print(
+                      f"Search failed: "
+                      f"{query} - {location}"
+                  )
                   print(
                       e.read().decode(
                           "utf-8",
@@ -106,12 +110,15 @@ jobs:
           unique = {}
 
           for job in all_jobs:
+
               key = (
                   job.get("url")
                   or job.get("jobUrl")
                   or (
-                      str(job.get("title", "")) + "|" +
-                      str(job.get("company", "")) + "|" +
+                      str(job.get("title", "")) +
+                      "|" +
+                      str(job.get("company", "")) +
+                      "|" +
                       str(job.get("location", ""))
                   )
               )
@@ -123,6 +130,7 @@ jobs:
               "w",
               encoding="utf-8"
           ) as f:
+
               json.dump(
                   list(unique.values()),
                   f,
@@ -133,13 +141,15 @@ jobs:
           print(
               f"Total unique jobs: {len(unique)}"
           )
+
           PY
 
       - name: Analyze jobs
         run: |
-          echo "================================"
-          echo "      GULF JOBS AI AGENT"
-          echo "================================"
+          echo "========================================"
+          echo "       GULF JOBS AI AGENT"
+          echo "       FRESH GRADUATE MODE"
+          echo "========================================"
 
           python - <<'PY'
           import json
@@ -196,8 +206,11 @@ jobs:
               0
           )
 
-          def get_job_text(job):
-              parts = []
+          # --------------------------------
+          # Helper functions
+          # --------------------------------
+
+          def job_text(job):
 
               fields = [
                   "title",
@@ -210,87 +223,219 @@ jobs:
                   "country"
               ]
 
+              parts = []
+
               for field in fields:
+
                   value = job.get(
                       field,
                       ""
                   )
 
-                  if isinstance(value, list):
+                  if isinstance(
+                      value,
+                      list
+                  ):
+
                       parts.extend(
                           str(x)
                           for x in value
                       )
+
                   else:
                       parts.append(
                           str(value)
                       )
 
-              return " ".join(parts).lower()
+              return " ".join(
+                  parts
+              ).lower()
 
-          def calculate_experience_score(text):
+          def detect_experience(text):
 
-              # Ideal for the user's 1 year experience
-              ideal_patterns = [
-                  "0-1 year",
-                  "0-2 years",
-                  "0 to 2 years",
-                  "0 - 2 years",
-                  "1 year",
-                  "1+ year",
-                  "1-2 years",
-                  "1 to 2 years",
-                  "fresher",
+              # Strong fresh graduate indicators
+              fresh_terms = [
                   "fresh graduate",
+                  "fresh graduates",
+                  "fresh graduate engineer",
+                  "fresher",
+                  "freshers",
                   "entry level",
-                  "entry-level"
+                  "entry-level",
+                  "graduate trainee",
+                  "graduate engineer",
+                  "trainee engineer",
+                  "new graduate",
+                  "recent graduate",
+                  "no experience",
+                  "without experience",
+                  "0 years",
+                  "0 year",
+                  "0-1 year",
+                  "0-1 years",
+                  "0 - 1 year",
+                  "0 - 1 years",
+                  "0-2 years",
+                  "0 - 2 years",
+                  "0 to 2 years"
               ]
 
-              for pattern in ideal_patterns:
-                  if pattern in text:
-                      return 20
+              for term in fresh_terms:
 
-              # Detect ranges such as 2-4 years
-              ranges = re.findall(
-                  r'(\d+)\s*(?:-|to)\s*(\d+)\s*years?',
-                  text
-              )
+                  if term in text:
 
-              for low, high in ranges:
-                  low = int(low)
-                  high = int(high)
+                      return {
+                          "score": 30,
+                          "level": "FRESH GRADUATE",
+                          "reason":
+                              "Suitable for fresh graduates / 0-2 years"
+                      }
 
-                  if low <= experience_years <= high:
-                      return 20
+              # 1 year experience
+              one_year_terms = [
+                  "1 year",
+                  "1+ year",
+                  "1+ years",
+                  "1-2 years",
+                  "1 - 2 years",
+                  "1 to 2 years"
+              ]
 
-                  if low <= experience_years + 1 <= high:
-                      return 15
+              for term in one_year_terms:
 
-                  if high < experience_years:
-                      return 10
+                  if term in text:
 
-                  if low > experience_years + 2:
-                      return 0
+                      return {
+                          "score": 28,
+                          "level": "EXCELLENT FIT",
+                          "reason":
+                              "Experience requirement fits your 1 year"
+                      }
+
+              # 2-3 years
+              if (
+                  "2-3 years" in text
+                  or "2 - 3 years" in text
+                  or "2 to 3 years" in text
+              ):
+
+                  return {
+                      "score": 20,
+                      "level": "POSSIBLE",
+                      "reason":
+                          "Slightly above your experience"
+                  }
+
+              # 2-4 years
+              if (
+                  "2-4 years" in text
+                  or "2 - 4 years" in text
+                  or "2 to 4 years" in text
+              ):
+
+                  return {
+                      "score": 14,
+                      "level": "POSSIBLE",
+                      "reason":
+                          "Requires more experience than your profile"
+                  }
+
+              # 3+ years
+              patterns = [
+                  r"3\+ years",
+                  r"4\+ years",
+                  r"5\+ years",
+                  r"6\+ years",
+                  r"7\+ years",
+                  r"8\+ years",
+                  r"10\+ years"
+              ]
+
+              for pattern in patterns:
+
+                  if re.search(
+                      pattern,
+                      text
+                  ):
+
+                      return {
+                          "score": 3,
+                          "level": "LOW FIT",
+                          "reason":
+                              "Requires significant experience"
+                      }
 
               # Senior positions
-              senior_words = [
+              senior_terms = [
                   "senior",
                   "lead engineer",
-                  "principal",
-                  "manager",
+                  "principal engineer",
+                  "engineering manager",
+                  "project manager",
+                  "department manager",
                   "supervisor",
                   "head of"
               ]
 
+              for term in senior_terms:
+
+                  if term in text:
+
+                      return {
+                          "score": 0,
+                          "level": "NOT SUITABLE",
+                          "reason":
+                              "Senior/management position"
+                      }
+
+              # No experience information
+              return {
+                  "score": 18,
+                  "level": "UNKNOWN",
+                  "reason":
+                      "Experience requirement not clearly stated"
+              }
+
+          def role_score(title):
+
+              title = title.lower()
+
+              exact = []
+
+              for role in roles:
+
+                  if role in title:
+
+                      exact.append(
+                          role
+                      )
+
+              if exact:
+
+                  return 25, exact
+
+              engineering_words = [
+                  "chemical",
+                  "process",
+                  "production",
+                  "petrochemical",
+                  "operator"
+              ]
+
               if any(
-                  word in text
-                  for word in senior_words
+                  word in title
+                  for word in engineering_words
               ):
-                  return 0
 
-              return 10
+                  return 12, []
 
-          scored = []
+              return 0, []
+
+          # --------------------------------
+          # Score jobs
+          # --------------------------------
+
+          results = []
 
           for job in jobs:
 
@@ -301,157 +446,254 @@ jobs:
                   )
               )
 
+              company = str(
+                  job.get(
+                      "company",
+                      ""
+                  )
+              )
+
               location = str(
-                  job.get("location")
-                  or job.get("country")
+                  job.get(
+                      "location"
+                  )
+                  or job.get(
+                      "country"
+                  )
                   or ""
               )
 
-              text = get_job_text(job)
+              text = job_text(
+                  job
+              )
 
-              # -------------------------
-              # 1. ROLE MATCH - 30 points
-              # -------------------------
+              # 1. ROLE = 25
+              role_points, role_matches = (
+                  role_score(title)
+              )
 
-              role_matches = []
-
-              for role in roles:
-                  if role in title.lower():
-                      role_matches.append(role)
-
-              role_score = 30 if role_matches else 0
-
-              # Partial engineering match
-              if not role_matches:
-                  engineering_roles = [
-                      "engineer",
-                      "engineering",
-                      "operator",
-                      "production"
-                  ]
-
-                  if any(
-                      word in title.lower()
-                      for word in engineering_roles
-                  ):
-                      role_score = 15
-
-              # -------------------------
-              # 2. EDUCATION - 25 points
-              # -------------------------
-
+              # 2. EDUCATION = 20
               education_matches = []
 
               for item in education:
+
                   if item in text:
+
                       education_matches.append(
                           item
                       )
 
-              education_score = 25 if (
-                  education_matches
-              ) else 0
+              education_points = (
+                  20
+                  if education_matches
+                  else 0
+              )
 
-              # -------------------------
-              # 3. EXPERIENCE - 20 points
-              # -------------------------
-
-              exp_score = calculate_experience_score(
+              # 3. EXPERIENCE = 30
+              experience = detect_experience(
                   text
               )
 
-              # -------------------------
-              # 4. SKILLS - 15 points
-              # -------------------------
+              experience_points = (
+                  experience["score"]
+              )
 
+              # 4. SKILLS = 15
               skill_matches = []
 
               for skill in skills:
+
                   if skill in text:
+
                       skill_matches.append(
                           skill
                       )
 
-              skill_score = min(
+              skill_points = min(
                   15,
                   len(skill_matches) * 3
               )
 
-              # -------------------------
-              # 5. GULF COUNTRY - 10 points
-              # -------------------------
-
+              # 5. COUNTRY = 10
               country_matches = []
 
               for country in countries:
+
                   if country in text:
+
                       country_matches.append(
                           country
                       )
 
-              country_score = 10 if (
-                  country_matches
-              ) else 0
+              country_points = (
+                  10
+                  if country_matches
+                  else 0
+              )
 
-              # -------------------------
-              # FINAL SCORE
-              # -------------------------
+              # --------------------------------
+              # Final score
+              # --------------------------------
 
               total = min(
                   100,
-                  role_score
-                  + education_score
-                  + exp_score
-                  + skill_score
-                  + country_score
+                  role_points
+                  + education_points
+                  + experience_points
+                  + skill_points
+                  + country_points
               )
 
-              if total >= 85:
-                  level = "EXCELLENT"
+              # --------------------------------
+              # Practical decision
+              # --------------------------------
+
+              if (
+                  experience["level"]
+                  == "NOT SUITABLE"
+              ):
+
+                  decision = "SKIP"
+                  icon = "🔴"
+
+              elif total >= 80:
+
+                  decision = "APPLY NOW"
                   icon = "🔥"
 
-              elif total >= 75:
-                  level = "VERY GOOD"
+              elif total >= 70:
+
+                  decision = "APPLY"
                   icon = "🟢"
 
               elif total >= 60:
-                  level = "GOOD"
+
+                  decision = "REVIEW"
                   icon = "🟡"
 
-              elif total >= 40:
-                  level = "WEAK"
+              elif total >= 45:
+
+                  decision = "LOW PRIORITY"
                   icon = "🟠"
 
               else:
-                  level = "NOT SUITABLE"
+
+                  decision = "SKIP"
                   icon = "🔴"
 
-              scored.append({
+              # --------------------------------
+              # Why
+              # --------------------------------
+
+              reasons = []
+
+              if role_points >= 25:
+                  reasons.append(
+                      "Target role matches"
+                  )
+
+              if education_points:
+                  reasons.append(
+                      "Education matches"
+                  )
+
+              if experience_points >= 28:
+                  reasons.append(
+                      "Excellent for 0-2 years"
+                  )
+
+              elif experience_points >= 20:
+                  reasons.append(
+                      "Experience is close to your profile"
+                  )
+
+              if skill_matches:
+                  reasons.append(
+                      f"{len(skill_matches)} matching skills"
+                  )
+
+              if country_points:
+                  reasons.append(
+                      "Gulf country"
+                  )
+
+              # --------------------------------
+              # Concerns
+              # --------------------------------
+
+              concerns = []
+
+              if experience_points <= 14:
+
+                  concerns.append(
+                      "Experience requirement may be high"
+                  )
+
+              if not education_matches:
+
+                  concerns.append(
+                      "Education requirement not clearly matched"
+                  )
+
+              if not skill_matches:
+
+                  concerns.append(
+                      "Few matching skills found"
+                  )
+
+              if (
+                  "english" in text
+                  and "english" not in skills
+              ):
+
+                  concerns.append(
+                      "English requirement mentioned"
+                  )
+
+              results.append({
                   "score": total,
-                  "level": level,
+                  "decision": decision,
                   "icon": icon,
                   "job": job,
                   "role_matches": role_matches,
-                  "education_matches": education_matches,
-                  "skill_matches": skill_matches,
-                  "country_matches": country_matches
+                  "education_matches":
+                      education_matches,
+                  "skill_matches":
+                      skill_matches,
+                  "country_matches":
+                      country_matches,
+                  "experience":
+                      experience,
+                  "reasons":
+                      reasons,
+                  "concerns":
+                      concerns
               })
 
-          # Sort from highest score
-          # to lowest score
+          # --------------------------------
+          # Sort best jobs first
+          # --------------------------------
 
-          scored.sort(
-              key=lambda x: x["score"],
+          results.sort(
+              key=lambda x: (
+                  x["decision"] == "APPLY NOW",
+                  x["decision"] == "APPLY",
+                  x["score"]
+              ),
               reverse=True
           )
 
-          print("")
-          print("================================")
-          print("          TOP MATCHES")
-          print("================================")
+          # --------------------------------
+          # Print ALL jobs
+          # --------------------------------
 
-          for i, item in enumerate(
-              scored[:10],
+          print("")
+          print("========================================")
+          print("             RANKED JOBS")
+          print("========================================")
+
+          for rank, item in enumerate(
+              results,
               1
           ):
 
@@ -459,10 +701,10 @@ jobs:
 
               print("")
               print(
-                  f"{i}. "
+                  f"#{rank} "
                   f"{item['icon']} "
                   f"{item['score']}/100 "
-                  f"- {item['level']}"
+                  f"- {item['decision']}"
               )
 
               print(
@@ -498,6 +740,29 @@ jobs:
                       "experience",
                       "Not specified"
                   )
+              )
+
+              print(
+                  "EXPERIENCE FIT:",
+                  item["experience"]["level"]
+              )
+
+              print(
+                  "WHY:",
+                  "; ".join(
+                      item["reasons"]
+                  )
+                  if item["reasons"]
+                  else "Limited match"
+              )
+
+              print(
+                  "CONCERNS:",
+                  "; ".join(
+                      item["concerns"]
+                  )
+                  if item["concerns"]
+                  else "None"
               )
 
               print(
@@ -543,15 +808,81 @@ jobs:
                   or "No URL"
               )
 
-              print("--------------------------------")
+              print("----------------------------------------")
+
+          # --------------------------------
+          # Summary
+          # --------------------------------
+
+          apply_now = sum(
+              1
+              for x in results
+              if x["decision"]
+              == "APPLY NOW"
+          )
+
+          apply = sum(
+              1
+              for x in results
+              if x["decision"]
+              == "APPLY"
+          )
+
+          review = sum(
+              1
+              for x in results
+              if x["decision"]
+              == "REVIEW"
+          )
+
+          skip = sum(
+              1
+              for x in results
+              if x["decision"]
+              == "SKIP"
+          )
+
+          print("")
+          print("========================================")
+          print("              FINAL SUMMARY")
+          print("========================================")
+
+          print(
+              "TOTAL JOBS:",
+              len(results)
+          )
+
+          print(
+              "🔥 APPLY NOW:",
+              apply_now
+          )
+
+          print(
+              "🟢 APPLY:",
+              apply
+          )
+
+          print(
+              "🟡 REVIEW:",
+              review
+          )
+
+          print(
+              "🔴 SKIP:",
+              skip
+          )
 
           print("")
           print(
-              "TOTAL JOBS ANALYZED:",
-              len(jobs)
+              "Priority: Fresh Graduate / "
+              "0-1 / 0-2 years"
           )
 
           print(
-              "================================"
+              "Target: Chemical / Process / "
+              "Production / Petrochemical"
           )
+
+          print("========================================")
+
           PY
