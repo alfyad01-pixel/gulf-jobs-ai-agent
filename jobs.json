@@ -1,0 +1,28 @@
+[
+  {
+    "title": "Chemical Engineer",
+    "company": "Example Company",
+    "country": "Saudi Arabia",
+    "experience": "0-2 years",
+    "requirements": [
+      "Bachelor's degree in Chemical Engineering",
+      "Production processes",
+      "HSE",
+      "English"
+    ],
+    "url": "https://example.com"
+  },
+  {
+    "title": "Production Operator",
+    "company": "Example Petrochemical Company",
+    "country": "Qatar",
+    "experience": "0-2 years",
+    "requirements": [
+      "Chemical Engineering",
+      "Process Operations",
+      "HSE",
+      "Shift work"
+    ],
+    "url": "https://example.com"
+  }
+]
