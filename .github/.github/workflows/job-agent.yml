@@ -14,7 +14,7 @@ jobs:
       - name: Analyze jobs
         run: |
           echo "================================"
-          echo "GULF JOBS AI AGENT"
+          echo "      GULF JOBS AI AGENT"
           echo "================================"
           echo ""
           echo "Available jobs:"
