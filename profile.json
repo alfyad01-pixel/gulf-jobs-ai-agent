@@ -1,0 +1,34 @@
+{
+  "target_roles": [
+    "Chemical Engineer",
+    "Process Engineer",
+    "Production Engineer",
+    "Production Operator",
+    "Petrochemical Engineer"
+  ],
+  "target_countries": [
+    "Saudi Arabia",
+    "Qatar",
+    "United Arab Emirates",
+    "Oman",
+    "Kuwait",
+    "Bahrain"
+  ],
+  "education": [
+    "Chemical Engineering",
+    "Petrochemical Engineering",
+    "Technical Diploma in Medical Laboratory"
+  ],
+  "experience_years": 1,
+  "skills": [
+    "Chemical Engineering",
+    "Petrochemical Processes",
+    "Production",
+    "Laboratory Analysis",
+    "Analytical Chemistry",
+    "Quality Control",
+    "Process Operations",
+    "HSE"
+  ],
+  "preferred_experience": "0-2 years"
+}
