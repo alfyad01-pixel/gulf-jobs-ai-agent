@@ -2,9 +2,6 @@ name: Gulf Jobs AI Agent
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "jobs.json"
 
 jobs:
   analyze-jobs:
@@ -17,13 +14,11 @@ jobs:
       - name: Analyze jobs
         run: |
           echo "================================"
-          echo "   GULF JOBS AI AGENT"
+          echo "GULF JOBS AI AGENT"
           echo "================================"
           echo ""
-
           echo "Available jobs:"
           cat jobs.json
-
           echo ""
           echo "================================"
           echo "Agent is working successfully!"
