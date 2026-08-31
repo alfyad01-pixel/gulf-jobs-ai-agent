@@ -21,119 +21,184 @@ jobs:
       # ==========================================
       # 1. DOWNLOAD PROJECT
       # ==========================================
-
       - name: Download project
         uses: actions/checkout@v4
 
 
       # ==========================================
-      # 2. FETCH JOBS - FAST MODE
+      # 2. FETCH GULF JOBS FROM APIFY
       # ==========================================
-
       - name: Fetch Gulf jobs from Apify
         env:
           APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
-
         run: |
 
           python - <<'PY'
 
           import json
           import os
+          import time
           import urllib.request
           import urllib.error
 
 
-          ACTOR_URL = (
-              "https://api.apify.com/v2/actors/"
-              "blackfalcondata~naukrigulf-scraper/"
-              "run-sync-get-dataset-items"
-          )
+          API_TOKEN = os.environ["APIFY_API_TOKEN"]
+
+          ACTOR_ID = "blackfalcondata~naukrigulf-scraper"
+
+          BASE_URL = "https://api.apify.com/v2"
 
 
-          # ======================================
-          # IMPORTANT
-          # ======================================
-          # Only high-value searches.
-          # The analyzer will filter the results
-          # for fresh graduates / junior jobs.
-          # ======================================
+          # =====================================================
+          # TARGET SEARCHES
+          # =====================================================
 
           searches = [
 
-              # ----------------------------------
-              # Saudi Arabia
-              # ----------------------------------
+              (
+                  "Saudi Arabia",
+                  "Junior Chemical Engineer,Graduate Chemical Engineer,Chemical Engineer Fresher,Chemical Engineer Entry Level,Chemical Engineer 0-1 years,Chemical Engineer 0-2 years"
+              ),
 
-              ("Chemical Engineer Junior Graduate", "Saudi Arabia"),
-              ("Process Engineer Junior Graduate", "Saudi Arabia"),
-              ("Production Engineer Junior Graduate", "Saudi Arabia"),
-              ("Production Operator Fresher", "Saudi Arabia"),
+              (
+                  "Saudi Arabia",
+                  "Junior Process Engineer,Graduate Process Engineer,Process Engineer Fresher,Process Engineer Entry Level,Process Engineer 0-1 years,Process Engineer 0-2 years"
+              ),
 
-              # ----------------------------------
-              # UAE
-              # ----------------------------------
+              (
+                  "Saudi Arabia",
+                  "Junior Production Engineer,Graduate Production Engineer,Production Engineer Fresher,Production Engineer Entry Level,Production Engineer 0-1 years,Production Engineer 0-2 years"
+              ),
 
-              ("Chemical Engineer Junior Graduate", "United Arab Emirates"),
-              ("Process Engineer Junior Graduate", "United Arab Emirates"),
-              ("Production Engineer Junior Graduate", "United Arab Emirates"),
-              ("Production Operator Fresher", "United Arab Emirates"),
+              (
+                  "United Arab Emirates",
+                  "Junior Chemical Engineer,Graduate Chemical Engineer,Chemical Engineer Fresher,Chemical Engineer Entry Level,Chemical Engineer 0-1 years,Chemical Engineer 0-2 years"
+              ),
 
-              # ----------------------------------
-              # Qatar
-              # ----------------------------------
+              (
+                  "United Arab Emirates",
+                  "Junior Process Engineer,Graduate Process Engineer,Process Engineer Fresher,Process Engineer Entry Level,Process Engineer 0-1 years,Process Engineer 0-2 years"
+              ),
 
-              ("Chemical Engineer Junior Graduate", "Qatar"),
-              ("Process Engineer Junior Graduate", "Qatar"),
-              ("Production Engineer Junior Graduate", "Qatar"),
-              ("Production Operator Fresher", "Qatar"),
+              (
+                  "United Arab Emirates",
+                  "Junior Production Engineer,Graduate Production Engineer,Production Engineer Fresher,Production Engineer Entry Level,Production Engineer 0-1 years,Production Engineer 0-2 years"
+              ),
 
-              # ----------------------------------
-              # Oman
-              # ----------------------------------
+              (
+                  "Qatar",
+                  "Junior Chemical Engineer,Graduate Chemical Engineer,Chemical Engineer Fresher,Chemical Engineer Entry Level,Chemical Engineer 0-1 years,Chemical Engineer 0-2 years"
+              ),
 
-              ("Chemical Engineer Junior Graduate", "Oman"),
-              ("Process Engineer Junior Graduate", "Oman"),
-              ("Production Engineer Junior Graduate", "Oman"),
+              (
+                  "Qatar",
+                  "Junior Process Engineer,Graduate Process Engineer,Process Engineer Fresher,Process Engineer Entry Level,Process Engineer 0-1 years,Process Engineer 0-2 years"
+              ),
 
-              # ----------------------------------
-              # Kuwait
-              # ----------------------------------
+              (
+                  "Qatar",
+                  "Junior Production Engineer,Graduate Production Engineer,Production Engineer Fresher,Production Engineer Entry Level,Production Engineer 0-1 years,Production Engineer 0-2 years"
+              ),
 
-              ("Chemical Engineer Junior Graduate", "Kuwait"),
-              ("Process Engineer Junior Graduate", "Kuwait"),
-              ("Production Engineer Junior Graduate", "Kuwait"),
+              (
+                  "Oman",
+                  "Junior Chemical Engineer,Graduate Chemical Engineer,Chemical Engineer Fresher,Chemical Engineer Entry Level,Chemical Engineer 0-1 years,Chemical Engineer 0-2 years"
+              ),
 
-              # ----------------------------------
-              # Bahrain
-              # ----------------------------------
+              (
+                  "Oman",
+                  "Junior Process Engineer,Graduate Process Engineer,Process Engineer Fresher,Process Engineer Entry Level,Process Engineer 0-1 years,Process Engineer 0-2 years"
+              ),
 
-              ("Chemical Engineer Junior Graduate", "Bahrain"),
-              ("Process Engineer Junior Graduate", "Bahrain"),
-              ("Production Engineer Junior Graduate", "Bahrain")
+              (
+                  "Oman",
+                  "Junior Production Engineer,Graduate Production Engineer,Production Engineer Fresher,Production Engineer Entry Level,Production Engineer 0-1 years,Production Engineer 0-2 years"
+              ),
+
+              (
+                  "Kuwait",
+                  "Junior Chemical Engineer,Graduate Chemical Engineer,Chemical Engineer Fresher,Chemical Engineer Entry Level,Chemical Engineer 0-1 years,Chemical Engineer 0-2 years"
+              ),
+
+              (
+                  "Kuwait",
+                  "Junior Process Engineer,Graduate Process Engineer,Process Engineer Fresher,Process Engineer Entry Level,Process Engineer 0-1 years,Process Engineer 0-2 years"
+              ),
+
+              (
+                  "Kuwait",
+                  "Junior Production Engineer,Graduate Production Engineer,Production Engineer Fresher,Production Engineer Entry Level,Production Engineer 0-1 years,Production Engineer 0-2 years"
+              ),
+
+              (
+                  "Bahrain",
+                  "Junior Chemical Engineer,Graduate Chemical Engineer,Chemical Engineer Fresher,Chemical Engineer Entry Level,Chemical Engineer 0-1 years,Chemical Engineer 0-2 years"
+              ),
+
+              (
+                  "Bahrain",
+                  "Junior Process Engineer,Graduate Process Engineer,Process Engineer Fresher,Process Engineer Entry Level,Process Engineer 0-1 years,Process Engineer 0-2 years"
+              ),
+
+              (
+                  "Bahrain",
+                  "Junior Production Engineer,Graduate Production Engineer,Production Engineer Fresher,Production Engineer Entry Level,Production Engineer 0-1 years,Production Engineer 0-2 years"
+              )
           ]
 
 
-          all_jobs = []
+          def api_request(url, method="GET", payload=None):
+
+              headers = {
+                  "Authorization": "Bearer " + API_TOKEN
+              }
+
+              data = None
+
+              if payload is not None:
+
+                  data = json.dumps(payload).encode("utf-8")
+
+                  headers["Content-Type"] = "application/json"
 
 
-          # ======================================
-          # FETCH
-          # ======================================
+              request = urllib.request.Request(
+                  url,
+                  data=data,
+                  method=method,
+                  headers=headers
+              )
 
-          total = len(searches)
+
+              with urllib.request.urlopen(
+                  request,
+                  timeout=120
+              ) as response:
+
+                  return json.loads(
+                      response.read().decode("utf-8")
+                  )
 
 
-          for number, (query, location) in enumerate(
-              searches,
-              1
-          ):
+          # =====================================================
+          # START ACTOR RUNS
+          # =====================================================
+
+          runs = []
+
+
+          print("")
+          print("==========================================")
+          print("STARTING APIFY SEARCHES")
+          print("==========================================")
+
+
+          for location, query in searches:
 
               print("")
-              print(
-                  f"[{number}/{total}] "
-                  f"{query} - {location}"
-              )
+              print("Starting:")
+              print("Location:", location)
+              print("Query:", query[:100])
 
 
               payload = {
@@ -144,147 +209,311 @@ jobs:
 
                   "location": location,
 
-                  # Do not request huge result sets
-                  "maxResults": 3,
+                  "maxResults": 30,
 
-                  "includeDetails": False,
+                  "includeDetails": True,
 
-                  "compact": True,
+                  "compact": False,
 
                   "excludeEmptyFields": True
+
               }
 
 
-              request = urllib.request.Request(
-
-                  ACTOR_URL,
-
-                  data=json.dumps(
-                      payload
-                  ).encode("utf-8"),
-
-                  method="POST",
-
-                  headers={
-
-                      "Content-Type":
-                          "application/json",
-
-                      "Authorization":
-                          "Bearer "
-                          + os.environ[
-                              "APIFY_API_TOKEN"
-                          ]
-                  }
+              url = (
+                  BASE_URL
+                  + "/acts/"
+                  + ACTOR_ID
+                  + "/runs"
               )
 
 
               try:
 
-                  with urllib.request.urlopen(
-                      request,
-                      timeout=310
-                  ) as response:
+                  result = api_request(
+                      url,
+                      method="POST",
+                      payload=payload
+                  )
 
-                      result = json.loads(
-                          response.read().decode(
-                              "utf-8"
-                          )
+
+                  run_data = result.get("data", {})
+
+                  run_id = run_data.get("id")
+
+                  dataset_id = run_data.get(
+                      "defaultDatasetId"
+                  )
+
+
+                  if run_id:
+
+                      runs.append(
+                          {
+                              "run_id": run_id,
+                              "dataset_id": dataset_id,
+                              "location": location,
+                              "query": query
+                          }
                       )
+
+                      print(
+                          "RUN STARTED:",
+                          run_id
+                      )
+
+              except Exception as e:
+
+                  print(
+                      "FAILED TO START:",
+                      location,
+                      str(e)
+                  )
+
+
+          print("")
+          print(
+              "TOTAL RUNS STARTED:",
+              len(runs)
+          )
+
+
+          # =====================================================
+          # WAIT FOR ALL RUNS
+          # =====================================================
+
+          pending = {
+              x["run_id"]: x
+              for x in runs
+          }
+
+
+          finished = []
+
+
+          max_wait = 900
+
+          started_wait = time.time()
+
+
+          while pending:
+
+              if time.time() - started_wait > max_wait:
+
+                  print("")
+                  print(
+                      "MAXIMUM WAIT TIME REACHED."
+                  )
+
+                  break
+
+
+              for run_id in list(pending.keys()):
+
+                  run_info = pending[run_id]
+
+
+                  try:
+
+                      status_url = (
+                          BASE_URL
+                          + "/actor-runs/"
+                          + run_id
+                      )
+
+
+                      result = api_request(
+                          status_url
+                      )
+
+
+                      data = result.get(
+                          "data",
+                          {}
+                      )
+
+
+                      status = data.get(
+                          "status"
+                      )
+
+
+                      print(
+                          "RUN",
+                          run_id,
+                          "STATUS:",
+                          status
+                      )
+
+
+                      if status == "SUCCEEDED":
+
+                          run_info["dataset_id"] = (
+                              data.get(
+                                  "defaultDatasetId"
+                              )
+                              or run_info["dataset_id"]
+                          )
+
+                          finished.append(
+                              run_info
+                          )
+
+                          del pending[run_id]
+
+
+                      elif status in [
+                          "FAILED",
+                          "ABORTED",
+                          "TIMED-OUT",
+                          "TIMING-OUT"
+                      ]:
+
+                          print(
+                              "RUN FAILED:",
+                              run_id
+                          )
+
+                          del pending[run_id]
+
+
+                  except Exception as e:
+
+                      print(
+                          "STATUS CHECK ERROR:",
+                          run_id,
+                          str(e)
+                      )
+
+
+              if pending:
+
+                  time.sleep(15)
+
+
+          # =====================================================
+          # DOWNLOAD DATASETS
+          # =====================================================
+
+          all_jobs = []
+
+
+          print("")
+          print("==========================================")
+          print("DOWNLOADING DATASETS")
+          print("==========================================")
+
+
+          for run_info in finished:
+
+              dataset_id = run_info.get(
+                  "dataset_id"
+              )
+
+
+              if not dataset_id:
+
+                  continue
+
+
+              dataset_url = (
+                  BASE_URL
+                  + "/datasets/"
+                  + dataset_id
+                  + "/items"
+                  + "?format=json"
+              )
+
+
+              try:
+
+                  result = api_request(
+                      dataset_url
+                  )
 
 
                   if isinstance(result, list):
 
+                      print(
+                          run_info["location"],
+                          "=>",
+                          len(result),
+                          "jobs"
+                      )
+
                       all_jobs.extend(result)
-
-                      print(
-                          "Jobs received:",
-                          len(result)
-                      )
-
-                  else:
-
-                      print(
-                          "No jobs returned"
-                      )
-
-
-              except urllib.error.HTTPError as e:
-
-                  print(
-                      "Search failed:",
-                      query,
-                      "-",
-                      location
-                  )
-
-                  print(
-                      e.read().decode(
-                          "utf-8",
-                          errors="replace"
-                      )
-                  )
 
 
               except Exception as e:
 
                   print(
-                      "Search error:",
+                      "DATASET ERROR:",
+                      dataset_id,
                       str(e)
                   )
 
 
-          # ======================================
+          # =====================================================
           # REMOVE DUPLICATES
-          # ======================================
+          # =====================================================
 
           unique = {}
 
 
           for job in all_jobs:
 
-              key = (
+              if not isinstance(job, dict):
 
+                  continue
+
+
+              url = (
                   job.get("url")
-
                   or job.get("jobUrl")
-
-                  or (
-
-                      str(
-                          job.get(
-                              "title",
-                              ""
-                          )
-                      )
-
-                      + "|"
-
-                      + str(
-                          job.get(
-                              "company",
-                              ""
-                          )
-                      )
-
-                      + "|"
-
-                      + str(
-                          job.get(
-                              "location",
-                              ""
-                          )
-                      )
-                  )
+                  or ""
               )
 
 
-              unique[key] = job
+              title = str(
+                  job.get("title", "")
+              ).strip().lower()
 
 
-          # ======================================
-          # SAVE
-          # ======================================
+              company = str(
+                  job.get("company", "")
+              ).strip().lower()
+
+
+              location = str(
+                  job.get("location", "")
+              ).strip().lower()
+
+
+              key = (
+                  url.strip().lower()
+                  if url
+                  else
+                  title
+                  + "|"
+                  + company
+                  + "|"
+                  + location
+              )
+
+
+              if key:
+
+                  unique[key] = job
+
+
+          jobs = list(
+              unique.values()
+          )
+
+
+          # =====================================================
+          # SAVE JOBS
+          # =====================================================
 
           with open(
               "jobs.json",
@@ -293,7 +522,7 @@ jobs:
           ) as f:
 
               json.dump(
-                  list(unique.values()),
+                  jobs,
                   f,
                   ensure_ascii=False,
                   indent=2
@@ -301,18 +530,13 @@ jobs:
 
 
           print("")
-          print(
-              "================================"
-          )
-
+          print("==========================================")
           print(
               "TOTAL UNIQUE JOBS:",
-              len(unique)
+              len(jobs)
           )
+          print("==========================================")
 
-          print(
-              "================================"
-          )
 
           PY
 
@@ -320,26 +544,18 @@ jobs:
       # ==========================================
       # 3. ANALYZE JOBS
       # ==========================================
-
       - name: Analyze jobs
         run: |
-
-          echo "========================================"
-          echo "       GULF JOBS AI AGENT"
-          echo "       FRESH GRADUATE MODE"
-          echo "================================"
-
 
           python - <<'PY'
 
           import json
           import re
-          from urllib.parse import unquote
 
 
-          # ======================================
-          # LOAD PROFILE
-          # ======================================
+          # =====================================================
+          # LOAD DATA
+          # =====================================================
 
           with open(
               "jobs.json",
@@ -360,7 +576,7 @@ jobs:
 
 
           roles = [
-              str(x).lower()
+              x.lower()
               for x in profile.get(
                   "target_roles",
                   []
@@ -368,26 +584,8 @@ jobs:
           ]
 
 
-          countries = [
-              str(x).lower()
-              for x in profile.get(
-                  "target_countries",
-                  []
-              )
-          ]
-
-
-          education = [
-              str(x).lower()
-              for x in profile.get(
-                  "education",
-                  []
-              )
-          ]
-
-
           skills = [
-              str(x).lower()
+              x.lower()
               for x in profile.get(
                   "skills",
                   []
@@ -395,45 +593,304 @@ jobs:
           ]
 
 
-          # ======================================
-          # TEXT
-          # ======================================
-
-          def text_value(value):
-
-              if isinstance(value, list):
-
-                  return " ".join(
-                      str(x)
-                      for x in value
-                  )
-
-              if isinstance(value, dict):
-
-                  return " ".join(
-                      str(x)
-                      for x in value.values()
-                  )
-
-              return str(value)
+          education = [
+              x.lower()
+              for x in profile.get(
+                  "education",
+                  []
+              )
+          ]
 
 
-          def job_text(job):
+          countries = [
+              x.lower()
+              for x in profile.get(
+                  "target_countries",
+                  []
+              )
+          ]
 
-              return " ".join(
 
-                  text_value(v)
+          # =====================================================
+          # EXPERIENCE DETECTION
+          # =====================================================
 
-                  for v in job.values()
+          def detect_experience(job):
 
+              fields = [
+
+                  job.get("experience"),
+
+                  job.get("experienceRequired"),
+
+                  job.get("experienceLevel"),
+
+                  job.get("experienceText"),
+
+                  job.get("jobExperience"),
+
+                  job.get("description"),
+
+                  job.get("descriptionText"),
+
+                  job.get("url"),
+
+                  job.get("jobUrl")
+
+              ]
+
+
+              text = " ".join(
+                  str(x)
+                  for x in fields
+                  if x
               ).lower()
 
 
-          # ======================================
-          # EXPERIENCE FROM URL
-          # ======================================
+              # Fresh graduate / fresher
 
-          def experience_from_url(job):
+              if any(
+                  x in text
+                  for x in [
+                      "fresh graduate",
+                      "fresh graduates",
+                      "fresher",
+                      "freshers",
+                      "entry level",
+                      "entry-level",
+                      "graduate trainee",
+                      "graduate engineer",
+                      "new graduate"
+                  ]
+              ):
+
+                  return (
+                      "0 years",
+                      "EXCELLENT FIT",
+                      35
+                  )
+
+
+              # Explicit 0-1
+
+              if re.search(
+                  r"\b0\s*[-–]\s*1\s*(?:years?|yrs?)\b",
+                  text
+              ):
+
+                  return (
+                      "0-1 years",
+                      "EXCELLENT FIT",
+                      35
+                  )
+
+
+              # Explicit 0-2
+
+              if re.search(
+                  r"\b0\s*[-–]\s*2\s*(?:years?|yrs?)\b",
+                  text
+              ):
+
+                  return (
+                      "0-2 years",
+                      "EXCELLENT FIT",
+                      35
+                  )
+
+
+              # 1 year
+
+              if re.search(
+                  r"\b1\s*(?:year|years|yr|yrs)\b",
+                  text
+              ):
+
+                  return (
+                      "1 year",
+                      "EXCELLENT FIT",
+                      32
+                  )
+
+
+              # 1-3
+
+              if re.search(
+                  r"\b1\s*[-–]\s*3\s*(?:years?|yrs?)\b",
+                  text
+              ):
+
+                  return (
+                      "1-3 years",
+                      "GOOD FIT",
+                      24
+                  )
+
+
+              # 2-3
+
+              if re.search(
+                  r"\b2\s*[-–]\s*3\s*(?:years?|yrs?)\b",
+                  text
+              ):
+
+                  return (
+                      "2-3 years",
+                      "PARTIAL FIT",
+                      12
+                  )
+
+
+              # 2-4
+
+              if re.search(
+                  r"\b2\s*[-–]\s*4\s*(?:years?|yrs?)\b",
+                  text
+              ):
+
+                  return (
+                      "2-4 years",
+                      "POOR FIT",
+                      5
+                  )
+
+
+              # 3+
+
+              if re.search(
+                  r"\b3\s*\+\s*(?:years?|yrs?)\b",
+                  text
+              ):
+
+                  return (
+                      "3+ years",
+                      "POOR FIT",
+                      0
+                  )
+
+
+              # 4+
+
+              if re.search(
+                  r"\b4\s*\+\s*(?:years?|yrs?)\b",
+                  text
+              ):
+
+                  return (
+                      "4+ years",
+                      "POOR FIT",
+                      0
+                  )
+
+
+              return (
+                  "Not specified",
+                  "UNKNOWN",
+                  15
+              )
+
+
+          # =====================================================
+          # COUNTRY DETECTION
+          # =====================================================
+
+          def country_match(location):
+
+              text = str(
+                  location
+              ).lower()
+
+
+              for country in countries:
+
+                  if country in text:
+
+                      return True
+
+
+              aliases = {
+
+                  "united arab emirates": [
+                      "uae",
+                      "dubai",
+                      "abu dhabi",
+                      "sharjah"
+                  ],
+
+                  "saudi arabia": [
+                      "ksa",
+                      "saudi",
+                      "riyadh",
+                      "jeddah",
+                      "jubail",
+                      "dammam"
+                  ],
+
+                  "qatar": [
+                      "doha"
+                  ],
+
+                  "oman": [
+                      "muscat",
+                      "salalah"
+                  ],
+
+                  "kuwait": [
+                      "kuwait city"
+                  ],
+
+                  "bahrain": [
+                      "manama"
+                  ]
+
+              }
+
+
+              for country, names in aliases.items():
+
+                  if country in countries:
+
+                      if any(
+                          x in text
+                          for x in names
+                      ):
+
+                          return True
+
+
+              return False
+
+
+          # =====================================================
+          # SCORE JOB
+          # =====================================================
+
+          scored = []
+
+
+          for job in jobs:
+
+              title = str(
+                  job.get("title", "")
+              )
+
+
+              company = str(
+                  job.get("company", "")
+              )
+
+
+              location = str(
+                  job.get("location", "")
+              )
+
+
+              description = str(
+                  job.get("description")
+                  or job.get("descriptionText")
+                  or ""
+              )
+
 
               url = str(
                   job.get("url")
@@ -442,769 +899,290 @@ jobs:
               )
 
 
-              url = unquote(
-                  url
+              text = (
+                  title
+                  + " "
+                  + description
+                  + " "
+                  + url
               ).lower()
 
 
-              patterns = [
+              # -------------------------------------------------
+              # ROLE MATCH
+              # -------------------------------------------------
 
-                  r"(\d+)[-_ ]*to[-_ ]*(\d+)[-_ ]*years?",
+              matched_roles = [
 
-                  r"(\d+)[-_ ]*[-–][-_ ]*(\d+)[-_ ]*years?",
+                  role
 
-                  r"(\d+)[-_ ]*years?"
+                  for role in roles
+
+                  if role in title.lower()
+
               ]
 
 
-              for pattern in patterns:
-
-                  match = re.search(
-                      pattern,
-                      url
-                  )
-
-
-                  if match:
-
-                      values = match.groups()
+              role_score = (
+                  25
+                  if matched_roles
+                  else 0
+              )
 
 
-                      if len(values) == 2:
+              # -------------------------------------------------
+              # EDUCATION MATCH
+              # -------------------------------------------------
 
-                          return (
-                              int(values[0]),
-                              int(values[1]),
-                              "URL"
-                          )
+              matched_education = []
 
 
-                      return (
-                          int(values[0]),
-                          int(values[0]),
-                          "URL"
+              for item in education:
+
+                  words = item.split()
+
+
+                  if any(
+                      word in text
+                      for word in words
+                      if len(word) > 3
+                  ):
+
+                      matched_education.append(
+                          item
                       )
 
 
-              return None
+              education_score = (
 
-
-          # ======================================
-          # EXPERIENCE FROM TEXT
-          # ======================================
-
-          def experience_from_text(text):
-
-              patterns = [
-
-                  r"\b(\d+)\s*[-–]\s*(\d+)\s*years?",
-
-                  r"\b(\d+)\s*to\s*(\d+)\s*years?",
-
-                  r"\b(\d+)\s*\+\s*years?",
-
-                  r"(?:minimum|min\.?|at least)\s*(\d+)\s*years?"
-              ]
-
-
-              for pattern in patterns:
-
-                  match = re.search(
-                      pattern,
-                      text
-                  )
-
-
-                  if match:
-
-                      values = match.groups()
-
-
-                      if len(values) == 2:
-
-                          return (
-                              int(values[0]),
-                              int(values[1]),
-                              "TEXT"
-                          )
-
-
-                      value = int(
-                          values[0]
-                      )
-
-
-                      return (
-                          value,
-                          value,
-                          "TEXT"
-                      )
-
-
-              return None
-
-
-          # ======================================
-          # EXPERIENCE ANALYSIS
-          # ======================================
-
-          def analyze_experience(
-              job,
-              text
-          ):
-
-              fresh_words = [
-
-                  "fresh graduate",
-                  "fresh graduates",
-                  "fresher",
-                  "freshers",
-                  "entry level",
-                  "entry-level",
-                  "graduate trainee",
-                  "graduate engineer",
-                  "graduate program",
-                  "graduate programme",
-                  "trainee engineer",
-                  "new graduate",
-                  "recent graduate",
-                  "no experience",
-                  "without experience",
-                  "zero experience"
-              ]
-
-
-              for word in fresh_words:
-
-                  if word in text:
-
-                      return {
-
-                          "low": 0,
-                          "high": 0,
-
-                          "points": 40,
-
-                          "level":
-                              "FRESH GRADUATE",
-
-                          "reason":
-                              "Fresh graduate / entry level",
-
-                          "source":
-                              "TEXT"
-                      }
-
-
-              exp = experience_from_url(
-                  job
-              )
-
-
-              if not exp:
-
-                  exp = experience_from_text(
-                      text
-                  )
-
-
-              if not exp:
-
-                  return {
-
-                      "low": None,
-                      "high": None,
-
-                      "points": 25,
-
-                      "level":
-                          "NOT SPECIFIED",
-
-                      "reason":
-                          "Experience not specified",
-
-                      "source":
-                          "NONE"
-                  }
-
-
-              low, high, source = exp
-
-
-              if high == 0:
-
-                  return {
-
-                      "low": low,
-                      "high": high,
-
-                      "points": 40,
-
-                      "level":
-                          "NO EXPERIENCE",
-
-                      "reason":
-                          "No experience required",
-
-                      "source":
-                          source
-                  }
-
-
-              if low == 0 and high <= 1:
-
-                  return {
-
-                      "low": low,
-                      "high": high,
-
-                      "points": 40,
-
-                      "level":
-                          "EXCELLENT FIT",
-
-                      "reason":
-                          "0-1 years",
-
-                      "source":
-                          source
-                  }
-
-
-              if low == 0 and high <= 2:
-
-                  return {
-
-                      "low": low,
-                      "high": high,
-
-                      "points": 38,
-
-                      "level":
-                          "EXCELLENT FIT",
-
-                      "reason":
-                          "0-2 years",
-
-                      "source":
-                          source
-                  }
-
-
-              if low <= 1 and high <= 2:
-
-                  return {
-
-                      "low": low,
-                      "high": high,
-
-                      "points": 35,
-
-                      "level":
-                          "VERY GOOD FIT",
-
-                      "reason":
-                          "1-2 years",
-
-                      "source":
-                          source
-                  }
-
-
-              if low <= 1 and high <= 3:
-
-                  return {
-
-                      "low": low,
-                      "high": high,
-
-                      "points": 30,
-
-                      "level":
-                          "GOOD FIT",
-
-                      "reason":
-                          "Up to 3 years",
-
-                      "source":
-                          source
-                  }
-
-
-              if low <= 2 and high <= 3:
-
-                  return {
-
-                      "low": low,
-                      "high": high,
-
-                      "points": 22,
-
-                      "level":
-                          "POSSIBLE",
-
-                      "reason":
-                          "2-3 years",
-
-                      "source":
-                          source
-                  }
-
-
-              if low <= 2 and high <= 4:
-
-                  return {
-
-                      "low": low,
-                      "high": high,
-
-                      "points": 15,
-
-                      "level":
-                          "LOW FIT",
-
-                      "reason":
-                          "2-4 years",
-
-                      "source":
-                          source
-                  }
-
-
-              return {
-
-                  "low": low,
-                  "high": high,
-
-                  "points": 0,
-
-                  "level":
-                      "NOT SUITABLE",
-
-                  "reason":
-                      "Requires more experience",
-
-                  "source":
-                      source
-              }
-
-
-          # ======================================
-          # ROLE
-          # ======================================
-
-          def role_match(title):
-
-              title = title.lower()
-
-
-              exact = []
-
-
-              for role in roles:
-
-                  if role in title:
-
-                      exact.append(
-                          role
-                      )
-
-
-              if exact:
-
-                  return 25, exact
-
-
-              related_words = [
-
-                  "chemical",
-                  "process",
-                  "production",
-                  "petrochemical",
-                  "operator",
-                  "operations"
-              ]
-
-
-              related = [
-
-                  x
-
-                  for x in related_words
-
-                  if x in title
-              ]
-
-
-              if related:
-
-                  return 15, related
-
-
-              return 0, []
-
-
-          # ======================================
-          # SENIOR
-          # ======================================
-
-          def is_senior(
-              title,
-              text
-          ):
-
-              senior_words = [
-
-                  "senior",
-
-                  "principal engineer",
-
-                  "lead engineer",
-
-                  "chief engineer",
-
-                  "engineering manager",
-
-                  "project manager",
-
-                  "department manager",
-
-                  "supervisor"
-              ]
-
-
-              if any(
-                  x in title
-                  for x in senior_words
-              ):
-
-                  return True
-
-
-              strong = [
-
-                  "5+ years",
-                  "7+ years",
-                  "10+ years",
-                  "minimum 5 years",
-                  "minimum 7 years",
-                  "minimum 10 years"
-              ]
-
-
-              return any(
-                  x in text
-                  for x in strong
-              )
-
-
-          # ======================================
-          # ANALYZE
-          # ======================================
-
-          results = []
-
-
-          for job in jobs:
-
-              title = str(
-                  job.get(
-                      "title",
-                      ""
-                  )
-              )
-
-
-              text = job_text(
-                  job
-              )
-
-
-              exp = analyze_experience(
-                  job,
-                  text
-              )
-
-
-              role_points, role_matches = (
-                  role_match(
-                      title
-                  )
-              )
-
-
-              education_matches = [
-
-                  x
-
-                  for x in education
-
-                  if x in text
-              ]
-
-
-              education_points = (
                   15
-                  if education_matches
+                  if matched_education
                   else 0
+
               )
 
 
-              skill_matches = [
+              # -------------------------------------------------
+              # SKILLS
+              # -------------------------------------------------
 
-                  x
+              matched_skills = [
 
-                  for x in skills
+                  skill
 
-                  if x in text
+                  for skill in skills
+
+                  if skill in text
+
               ]
 
 
-              skill_points = min(
-
+              skill_score = min(
                   15,
-
-                  len(
-                      skill_matches
-                  ) * 3
+                  len(matched_skills) * 5
               )
 
 
-              country_matches = [
+              # -------------------------------------------------
+              # EXPERIENCE
+              # -------------------------------------------------
 
-                  x
-
-                  for x in countries
-
-                  if x in text
-              ]
+              experience_text, experience_fit, experience_score = (
+                  detect_experience(job)
+              )
 
 
-              country_points = (
+              # -------------------------------------------------
+              # COUNTRY
+              # -------------------------------------------------
+
+              in_target_country = country_match(
+                  location
+              )
+
+
+              country_score = (
                   5
-                  if country_matches
+                  if in_target_country
                   else 0
               )
 
 
-              title_bonus = 0
-
-
-              junior_words = [
-
-                  "junior",
-                  "graduate",
-                  "trainee",
-                  "entry level",
-                  "entry-level",
-                  "assistant",
-                  "operator"
-              ]
-
-
-              if any(
-                  x in title.lower()
-                  for x in junior_words
-              ):
-
-                  title_bonus = 5
-
-
-              fresh_bonus = (
-
-                  5
-
-                  if exp["level"]
-                  in [
-                      "FRESH GRADUATE",
-                      "NO EXPERIENCE",
-                      "EXCELLENT FIT"
-                  ]
-
-                  else 0
-              )
-
-
-              score = (
-
-                  exp["points"]
-
-                  + role_points
-
-                  + education_points
-
-                  + skill_points
-
-                  + country_points
-
-                  + title_bonus
-
-                  + fresh_bonus
-              )
-
+              # -------------------------------------------------
+              # TOTAL
+              # -------------------------------------------------
 
               score = min(
                   100,
-                  score
+                  role_score
+                  + education_score
+                  + skill_score
+                  + experience_score
+                  + country_score
               )
 
 
-              senior = is_senior(
-                  title,
-                  text
-              )
-
-
-              if senior:
-
-                  score = min(
-                      score,
-                      35
-                  )
-
-                  decision = "SKIP"
-
-              elif exp["points"] == 0:
-
-                  decision = "SKIP"
-
-              elif score >= 80:
-
-                  decision = "APPLY NOW"
-
-              elif score >= 70:
-
-                  decision = "APPLY"
-
-              elif score >= 55:
-
-                  decision = "REVIEW"
-
-              elif score >= 40:
-
-                  decision = "LOW PRIORITY"
-
-              else:
-
-                  decision = "SKIP"
-
-
-              reasons = []
-
-
-              if exp["reason"]:
-
-                  reasons.append(
-                      exp["reason"]
-                  )
-
-
-              if role_points >= 25:
-
-                  reasons.append(
-                      "Target role matches"
-                  )
-
-
-              elif role_points >= 15:
-
-                  reasons.append(
-                      "Related role"
-                  )
-
-
-              if education_matches:
-
-                  reasons.append(
-                      "Education matches"
-                  )
-
-
-              if skill_matches:
-
-                  reasons.append(
-
-                      f"{len(skill_matches)} "
-                      "matching skills"
-                  )
-
+              # -------------------------------------------------
+              # DECISION
+              # -------------------------------------------------
 
               concerns = []
 
 
-              if (
-                  exp["level"]
-                  == "NOT SPECIFIED"
-              ):
+              if experience_fit == "POOR FIT":
 
                   concerns.append(
-                      "Experience must be verified"
+                      "Experience requirement is above target"
                   )
 
 
-              if (
-                  exp["level"]
-                  in [
-                      "LOW FIT",
-                      "NOT SUITABLE"
-                  ]
-              ):
+              if not matched_roles:
 
                   concerns.append(
-                      exp["reason"]
+                      "Target role not confirmed"
                   )
 
 
-              if not education_matches:
+              if not matched_education:
 
                   concerns.append(
                       "Education match not confirmed"
                   )
 
 
-              if senior:
+              if not matched_skills:
 
                   concerns.append(
-                      "Senior position"
+                      "Relevant skills not found"
                   )
 
 
-              results.append({
+              if not in_target_country:
 
-                  "score":
-                      score,
+                  concerns.append(
+                      "Country not in target list"
+                  )
 
-                  "decision":
-                      decision,
 
-                  "job":
-                      job,
+              # Strong fresh graduate job
 
-                  "experience":
-                      exp,
+              if (
+                  experience_fit == "EXCELLENT FIT"
+                  and matched_roles
+                  and score >= 75
+              ):
 
-                  "role_matches":
-                      role_matches,
+                  decision = "APPLY NOW"
 
-                  "education_matches":
-                      education_matches,
 
-                  "skill_matches":
-                      skill_matches,
+              elif (
+                  experience_fit in [
+                      "EXCELLENT FIT",
+                      "GOOD FIT"
+                  ]
+                  and matched_roles
+                  and score >= 65
+              ):
 
-                  "reasons":
-                      reasons,
+                  decision = "APPLY"
 
-                  "concerns":
-                      concerns
+
+              elif score >= 50:
+
+                  decision = "REVIEW"
+
+
+              elif score >= 35:
+
+                  decision = "LOW PRIORITY"
+
+
+              else:
+
+                  decision = "SKIP"
+
+
+              # -------------------------------------------------
+              # PRACTICAL RECOMMENDATION
+              # -------------------------------------------------
+
+              if decision == "APPLY NOW":
+
+                  action = (
+                      "Apply immediately. "
+                      "This job is strongly aligned with "
+                      "your graduate-level target."
+                  )
+
+              elif decision == "APPLY":
+
+                  action = (
+                      "Apply. "
+                      "The experience requirement and role "
+                      "are reasonably aligned."
+                  )
+
+              elif decision == "REVIEW":
+
+                  action = (
+                      "Review the full description before applying. "
+                      "There is potential but one or more conditions "
+                      "need verification."
+                  )
+
+              elif decision == "LOW PRIORITY":
+
+                  action = (
+                      "Keep as backup. "
+                      "Apply only after stronger graduate opportunities."
+                  )
+
+              else:
+
+                  action = (
+                      "Skip for now. "
+                      "Focus effort on stronger entry-level matches."
+                  )
+
+
+              scored.append({
+
+                  "score": score,
+
+                  "decision": decision,
+
+                  "job": job,
+
+                  "title": title,
+
+                  "company": company,
+
+                  "location": location,
+
+                  "experience": experience_text,
+
+                  "experience_fit": experience_fit,
+
+                  "matched_roles": matched_roles,
+
+                  "matched_education": matched_education,
+
+                  "matched_skills": matched_skills,
+
+                  "concerns": concerns,
+
+                  "action": action,
+
+                  "url": url
+
               })
 
 
-          # ======================================
+          # =====================================================
           # SORT
-          # ======================================
+          # =====================================================
 
-          order = {
+          priority = {
 
               "APPLY NOW": 5,
 
@@ -1215,141 +1193,120 @@ jobs:
               "LOW PRIORITY": 2,
 
               "SKIP": 1
+
           }
 
 
-          results.sort(
-
+          scored.sort(
               key=lambda x: (
-
-                  order[
-                      x["decision"]
-                  ],
-
+                  priority.get(
+                      x["decision"],
+                      0
+                  ),
                   x["score"]
               ),
-
               reverse=True
           )
 
 
-          # ======================================
-          # OUTPUT
-          # ======================================
+          # =====================================================
+          # SAVE RANKED RESULTS
+          # =====================================================
+
+          with open(
+              "ranked_jobs.json",
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  scored,
+                  f,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+
+          # =====================================================
+          # PRINT RANKED JOBS
+          # =====================================================
 
           print("")
-          print(
-              "========================================"
-          )
-
-          print(
-              "              RANKED JOBS"
-          )
-
-          print(
-              "========================================"
-          )
+          print("==========================================")
+          print("          RANKED JOBS")
+          print("==========================================")
 
 
-          for rank, item in enumerate(
-              results,
-              1
+          for index, item in enumerate(
+              scored[:20],
+              start=1
           ):
 
-              job = item["job"]
-
-              exp = item[
-                  "experience"
-              ]
-
+              print("")
+              print(
+                  "#" + str(index),
+                  str(item["score"]) + "/100",
+                  "-",
+                  item["decision"]
+              )
 
               print("")
-
-              print(
-                  f"#{rank} "
-                  f"{item['score']}/100 "
-                  f"- {item['decision']}"
-              )
-
-
               print(
                   "JOB:",
-                  job.get(
-                      "title",
-                      "Unknown"
-                  )
+                  item["title"]
               )
-
 
               print(
                   "COMPANY:",
-                  job.get(
-                      "company",
-                      "Unknown"
-                  )
+                  item["company"]
               )
-
 
               print(
                   "LOCATION:",
-                  job.get(
-                      "location"
-                  )
-                  or job.get(
-                      "country"
-                  )
-                  or "Unknown"
+                  item["location"]
               )
-
-
-              if exp["low"] is None:
-
-                  exp_display = (
-                      "Not specified"
-                  )
-
-              elif exp["low"] == exp["high"]:
-
-                  exp_display = (
-                      f"{exp['low']} years"
-                  )
-
-              else:
-
-                  exp_display = (
-
-                      f"{exp['low']}-"
-                      f"{exp['high']} years"
-                  )
-
 
               print(
                   "EXPERIENCE:",
-                  exp_display
+                  item["experience"]
               )
-
 
               print(
                   "EXPERIENCE FIT:",
-                  exp["level"]
+                  item["experience_fit"]
               )
 
-
               print(
-                  "EXPERIENCE SOURCE:",
-                  exp["source"]
-              )
-
-
-              print(
-                  "WHY:",
-                  "; ".join(
-                      item["reasons"]
+                  "ROLE MATCH:",
+                  ", ".join(
+                      item["matched_roles"]
                   )
-                  if item["reasons"]
+                  if item["matched_roles"]
                   else "None"
               )
 
+              print(
+                  "EDUCATION MATCH:",
+                  ", ".join(
+                      item["matched_education"]
+                  )
+                  if item["matched_education"]
+                  else "None"
+              )
+
+              print(
+                  "SKILLS MATCH:",
+                  ", ".join(
+                      item["matched_skills"]
+                  )
+                  if item["matched_skills"]
+                  else "None"
+              )
+
+              print(
+                  "ACTION:",
+                  item["action"]
+              )
 
               print(
                   "CONCERNS:",
@@ -1360,53 +1317,19 @@ jobs:
                   else "None"
               )
 
-
-              print(
-                  "ROLE MATCH:",
-                  ", ".join(
-                      item["role_matches"]
-                  )
-                  if item["role_matches"]
-                  else "None"
-              )
-
-
-              print(
-                  "EDUCATION MATCH:",
-                  ", ".join(
-                      item["education_matches"]
-                  )
-                  if item["education_matches"]
-                  else "None"
-              )
-
-
-              print(
-                  "SKILLS MATCH:",
-                  ", ".join(
-                      item["skill_matches"]
-                  )
-                  if item["skill_matches"]
-                  else "None"
-              )
-
-
               print(
                   "URL:",
-                  job.get("url")
-                  or job.get("jobUrl")
-                  or "No URL"
+                  item["url"]
               )
-
 
               print(
-                  "----------------------------------------"
+                  "------------------------------------------"
               )
 
 
-          # ======================================
-          # SUMMARY
-          # ======================================
+          # =====================================================
+          # FINAL SUMMARY
+          # =====================================================
 
           counts = {
 
@@ -1419,93 +1342,107 @@ jobs:
               "LOW PRIORITY": 0,
 
               "SKIP": 0
+
           }
 
 
-          for item in results:
+          for item in scored:
 
-              counts[
-                  item["decision"]
-              ] += 1
+              decision = item["decision"]
+
+              if decision in counts:
+
+                  counts[decision] += 1
 
 
           print("")
-          print(
-              "========================================"
-          )
-
-          print(
-              "              FINAL SUMMARY"
-          )
-
-          print(
-              "========================================"
-          )
-
+          print("==========================================")
+          print("             FINAL SUMMARY")
+          print("==========================================")
 
           print(
               "TOTAL JOBS:",
-              len(results)
+              len(scored)
           )
-
 
           print(
               "APPLY NOW:",
               counts["APPLY NOW"]
           )
 
-
           print(
               "APPLY:",
               counts["APPLY"]
           )
-
 
           print(
               "REVIEW:",
               counts["REVIEW"]
           )
 
-
           print(
               "LOW PRIORITY:",
               counts["LOW PRIORITY"]
           )
-
 
           print(
               "SKIP:",
               counts["SKIP"]
           )
 
-
           print("")
           print(
               "MAIN PRIORITY:"
           )
 
-
           print(
               "Fresh Graduate / Fresher / "
-              "Entry Level / Junior / "
-              "0-1 / 0-2 years"
+              "Entry Level / 0-1 / 0-2 years"
           )
-
 
           print("")
           print(
               "TARGET COUNTRIES:"
           )
 
-
           print(
               "Saudi Arabia | UAE | Qatar | "
               "Oman | Kuwait | Bahrain"
           )
 
+          PY
+
+
+      # ==========================================
+      # 4. SHOW OUTPUT FILES
+      # ==========================================
+      - name: Show generated files
+        run: |
+
+          echo "================================"
+          echo "GENERATED FILES"
+          echo "================================"
+
+          ls -lh jobs.json ranked_jobs.json
+
+          echo ""
+          echo "JOB COUNT:"
+
+          python - <<'PY'
+
+          import json
+
+          with open(
+              "jobs.json",
+              "r",
+              encoding="utf-8"
+          ) as f:
+
+              jobs = json.load(f)
+
 
           print(
-              "========================================"
+              len(jobs)
           )
 
           PY
