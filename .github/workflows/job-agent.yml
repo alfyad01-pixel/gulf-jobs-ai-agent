@@ -26,7 +26,7 @@ jobs:
 
 
       # ==========================================
-      # 2. FETCH GULF JOBS FROM APIFY
+      # 2. FETCH JOBS FROM APIFY
       # ==========================================
       - name: Fetch Gulf jobs from Apify
         env:
@@ -44,13 +44,13 @@ jobs:
 
           API_TOKEN = os.environ["APIFY_API_TOKEN"]
 
-          ACTOR_ID = "blackfalcondata~naukrigulf-scraper"
-
           BASE_URL = "https://api.apify.com/v2"
+
+          ACTOR_ID = "blackfalcondata~naukrigulf-scraper"
 
 
           # =====================================================
-          # TARGET SEARCHES
+          # SEARCHES
           # =====================================================
 
           searches = [
@@ -144,10 +144,11 @@ jobs:
                   "Bahrain",
                   "Junior Production Engineer,Graduate Production Engineer,Production Engineer Fresher,Production Engineer Entry Level,Production Engineer 0-1 years,Production Engineer 0-2 years"
               )
+
           ]
 
 
-          def api_request(url, method="GET", payload=None):
+          def request_api(url, method="GET", payload=None):
 
               headers = {
                   "Authorization": "Bearer " + API_TOKEN
@@ -161,14 +162,12 @@ jobs:
 
                   headers["Content-Type"] = "application/json"
 
-
               request = urllib.request.Request(
                   url,
                   data=data,
                   method=method,
                   headers=headers
               )
-
 
               with urllib.request.urlopen(
                   request,
@@ -186,19 +185,17 @@ jobs:
 
           runs = []
 
-
           print("")
           print("==========================================")
-          print("STARTING APIFY SEARCHES")
+          print("STARTING APIFY RUNS")
           print("==========================================")
 
 
           for location, query in searches:
 
               print("")
-              print("Starting:")
-              print("Location:", location)
-              print("Query:", query[:100])
+              print("LOCATION:", location)
+              print("QUERY:", query)
 
 
               payload = {
@@ -222,7 +219,7 @@ jobs:
 
               url = (
                   BASE_URL
-                  + "/acts/"
+                  + "/actors/"
                   + ACTOR_ID
                   + "/runs"
               )
@@ -230,56 +227,54 @@ jobs:
 
               try:
 
-                  result = api_request(
+                  result = request_api(
                       url,
                       method="POST",
                       payload=payload
                   )
 
+                  data = result.get(
+                      "data",
+                      {}
+                  )
 
-                  run_data = result.get("data", {})
+                  run_id = data.get("id")
 
-                  run_id = run_data.get("id")
-
-                  dataset_id = run_data.get(
+                  dataset_id = data.get(
                       "defaultDatasetId"
                   )
 
 
                   if run_id:
 
-                      runs.append(
-                          {
-                              "run_id": run_id,
-                              "dataset_id": dataset_id,
-                              "location": location,
-                              "query": query
-                          }
-                      )
+                      runs.append({
+                          "run_id": run_id,
+                          "dataset_id": dataset_id,
+                          "location": location
+                      })
 
                       print(
-                          "RUN STARTED:",
+                          "STARTED:",
                           run_id
                       )
 
               except Exception as e:
 
                   print(
-                      "FAILED TO START:",
-                      location,
+                      "START ERROR:",
                       str(e)
                   )
 
 
           print("")
           print(
-              "TOTAL RUNS STARTED:",
+              "TOTAL RUNS:",
               len(runs)
           )
 
 
           # =====================================================
-          # WAIT FOR ALL RUNS
+          # WAIT FOR RUNS
           # =====================================================
 
           pending = {
@@ -287,22 +282,19 @@ jobs:
               for x in runs
           }
 
-
           finished = []
 
+          max_wait = 1200
 
-          max_wait = 900
-
-          started_wait = time.time()
+          started = time.time()
 
 
           while pending:
 
-              if time.time() - started_wait > max_wait:
+              if time.time() - started > max_wait:
 
-                  print("")
                   print(
-                      "MAXIMUM WAIT TIME REACHED."
+                      "MAX WAIT REACHED"
                   )
 
                   break
@@ -310,7 +302,7 @@ jobs:
 
               for run_id in list(pending.keys()):
 
-                  run_info = pending[run_id]
+                  item = pending[run_id]
 
 
                   try:
@@ -322,7 +314,7 @@ jobs:
                       )
 
 
-                      result = api_request(
+                      result = request_api(
                           status_url
                       )
 
@@ -339,7 +331,7 @@ jobs:
 
 
                       print(
-                          "RUN",
+                          "RUN:",
                           run_id,
                           "STATUS:",
                           status
@@ -348,16 +340,14 @@ jobs:
 
                       if status == "SUCCEEDED":
 
-                          run_info["dataset_id"] = (
+                          item["dataset_id"] = (
                               data.get(
                                   "defaultDatasetId"
                               )
-                              or run_info["dataset_id"]
+                              or item["dataset_id"]
                           )
 
-                          finished.append(
-                              run_info
-                          )
+                          finished.append(item)
 
                           del pending[run_id]
 
@@ -370,7 +360,7 @@ jobs:
                       ]:
 
                           print(
-                              "RUN FAILED:",
+                              "FAILED RUN:",
                               run_id
                           )
 
@@ -380,8 +370,7 @@ jobs:
                   except Exception as e:
 
                       print(
-                          "STATUS CHECK ERROR:",
-                          run_id,
+                          "STATUS ERROR:",
                           str(e)
                       )
 
@@ -392,7 +381,7 @@ jobs:
 
 
           # =====================================================
-          # DOWNLOAD DATASETS
+          # DOWNLOAD DATA
           # =====================================================
 
           all_jobs = []
@@ -400,13 +389,13 @@ jobs:
 
           print("")
           print("==========================================")
-          print("DOWNLOADING DATASETS")
+          print("DOWNLOADING DATA")
           print("==========================================")
 
 
-          for run_info in finished:
+          for item in finished:
 
-              dataset_id = run_info.get(
+              dataset_id = item.get(
                   "dataset_id"
               )
 
@@ -420,14 +409,13 @@ jobs:
                   BASE_URL
                   + "/datasets/"
                   + dataset_id
-                  + "/items"
-                  + "?format=json"
+                  + "/items?format=json"
               )
 
 
               try:
 
-                  result = api_request(
+                  result = request_api(
                       dataset_url
                   )
 
@@ -435,8 +423,8 @@ jobs:
                   if isinstance(result, list):
 
                       print(
-                          run_info["location"],
-                          "=>",
+                          item["location"],
+                          ":",
                           len(result),
                           "jobs"
                       )
@@ -448,13 +436,12 @@ jobs:
 
                   print(
                       "DATASET ERROR:",
-                      dataset_id,
                       str(e)
                   )
 
 
           # =====================================================
-          # REMOVE DUPLICATES
+          # DEDUPLICATION
           # =====================================================
 
           unique = {}
@@ -467,11 +454,11 @@ jobs:
                   continue
 
 
-              url = (
+              url = str(
                   job.get("url")
                   or job.get("jobUrl")
                   or ""
-              )
+              ).strip().lower()
 
 
               title = str(
@@ -490,7 +477,7 @@ jobs:
 
 
               key = (
-                  url.strip().lower()
+                  url
                   if url
                   else
                   title
@@ -511,10 +498,6 @@ jobs:
           )
 
 
-          # =====================================================
-          # SAVE JOBS
-          # =====================================================
-
           with open(
               "jobs.json",
               "w",
@@ -530,13 +513,10 @@ jobs:
 
 
           print("")
-          print("==========================================")
           print(
               "TOTAL UNIQUE JOBS:",
               len(jobs)
           )
-          print("==========================================")
-
 
           PY
 
@@ -554,7 +534,7 @@ jobs:
 
 
           # =====================================================
-          # LOAD DATA
+          # LOAD PROFILE
           # =====================================================
 
           with open(
@@ -576,7 +556,7 @@ jobs:
 
 
           roles = [
-              x.lower()
+              str(x).lower()
               for x in profile.get(
                   "target_roles",
                   []
@@ -585,7 +565,7 @@ jobs:
 
 
           skills = [
-              x.lower()
+              str(x).lower()
               for x in profile.get(
                   "skills",
                   []
@@ -594,7 +574,7 @@ jobs:
 
 
           education = [
-              x.lower()
+              str(x).lower()
               for x in profile.get(
                   "education",
                   []
@@ -603,7 +583,7 @@ jobs:
 
 
           countries = [
-              x.lower()
+              str(x).lower()
               for x in profile.get(
                   "target_countries",
                   []
@@ -612,200 +592,433 @@ jobs:
 
 
           # =====================================================
+          # NORMALIZE
+          # =====================================================
+
+          def normalize(text):
+
+              text = str(
+                  text or ""
+              ).lower()
+
+              text = text.replace(
+                  "–",
+                  "-"
+              )
+
+              text = text.replace(
+                  "—",
+                  "-"
+              )
+
+              return text
+
+
+          # =====================================================
+          # BUILD ALL JOB TEXT
+          # =====================================================
+
+          def get_all_text(job):
+
+              values = []
+
+              for key, value in job.items():
+
+                  if value is not None:
+
+                      values.append(
+                          str(value)
+                      )
+
+              return normalize(
+                  " ".join(values)
+              )
+
+
+          # =====================================================
           # EXPERIENCE DETECTION
           # =====================================================
 
           def detect_experience(job):
 
-              fields = [
+              # IMPORTANT:
+              # We inspect ALL fields including URL.
+              # This fixes cases such as:
+              # 10-to-12-years
+              # 5-to-10-years
+              # 2-to-4-years
 
-                  job.get("experience"),
-
-                  job.get("experienceRequired"),
-
-                  job.get("experienceLevel"),
-
-                  job.get("experienceText"),
-
-                  job.get("jobExperience"),
-
-                  job.get("description"),
-
-                  job.get("descriptionText"),
-
-                  job.get("url"),
-
-                  job.get("jobUrl")
-
-              ]
+              all_text = get_all_text(job)
 
 
-              text = " ".join(
-                  str(x)
-                  for x in fields
-                  if x
-              ).lower()
-
-
-              # Fresh graduate / fresher
-
-              if any(
-                  x in text
-                  for x in [
-                      "fresh graduate",
-                      "fresh graduates",
-                      "fresher",
-                      "freshers",
-                      "entry level",
-                      "entry-level",
-                      "graduate trainee",
-                      "graduate engineer",
-                      "new graduate"
-                  ]
-              ):
-
-                  return (
-                      "0 years",
-                      "EXCELLENT FIT",
-                      35
-                  )
-
-
-              # Explicit 0-1
+              # -------------------------------------------------
+              # FRESHER
+              # -------------------------------------------------
 
               if re.search(
-                  r"\b0\s*[-–]\s*1\s*(?:years?|yrs?)\b",
-                  text
+                  r"\bfresh\s+graduate\b",
+                  all_text
               ):
 
                   return (
-                      "0-1 years",
+                      "Fresh Graduate",
                       "EXCELLENT FIT",
-                      35
+                      45
                   )
 
-
-              # Explicit 0-2
 
               if re.search(
-                  r"\b0\s*[-–]\s*2\s*(?:years?|yrs?)\b",
-                  text
+                  r"\bfresher\b|\bfreshers\b",
+                  all_text
               ):
 
                   return (
-                      "0-2 years",
+                      "Fresher",
                       "EXCELLENT FIT",
-                      35
+                      45
                   )
 
 
-              # 1 year
+              if re.search(
+                  r"\bentry[- ]level\b",
+                  all_text
+              ):
+
+                  return (
+                      "Entry Level",
+                      "EXCELLENT FIT",
+                      45
+                  )
+
+
+              if re.search(
+                  r"\bgraduate\s+trainee\b",
+                  all_text
+              ):
+
+                  return (
+                      "Graduate Trainee",
+                      "EXCELLENT FIT",
+                      45
+                  )
+
+
+              # -------------------------------------------------
+              # X TO Y YEARS
+              # -------------------------------------------------
+
+              ranges = re.findall(
+                  r"\b(\d+)\s*(?:to|-)\s*(\d+)\s*(?:years?|yrs?)\b",
+                  all_text
+              )
+
+
+              if ranges:
+
+                  # Use the first explicit range.
+                  low = int(
+                      ranges[0][0]
+                  )
+
+                  high = int(
+                      ranges[0][1]
+                  )
+
+
+                  if low == 0 and high <= 1:
+
+                      return (
+                          f"{low}-{high} years",
+                          "EXCELLENT FIT",
+                          45
+                      )
+
+
+                  if low == 0 and high <= 2:
+
+                      return (
+                          f"{low}-{high} years",
+                          "EXCELLENT FIT",
+                          43
+                      )
+
+
+                  if low == 1 and high <= 2:
+
+                      return (
+                          f"{low}-{high} years",
+                          "EXCELLENT FIT",
+                          40
+                      )
+
+
+                  if low == 1 and high <= 3:
+
+                      return (
+                          f"{low}-{high} years",
+                          "GOOD FIT",
+                          30
+                      )
+
+
+                  if low == 2 and high <= 3:
+
+                      return (
+                          f"{low}-{high} years",
+                          "PARTIAL FIT",
+                          15
+                      )
+
+
+                  if low >= 2 and high <= 4:
+
+                      return (
+                          f"{low}-{high} years",
+                          "LOW FIT",
+                          5
+                      )
+
+
+                  if low >= 3:
+
+                      return (
+                          f"{low}-{high} years",
+                          "POOR FIT",
+                          0
+                      )
+
+
+              # -------------------------------------------------
+              # X+ YEARS
+              # -------------------------------------------------
+
+              plus_matches = re.findall(
+                  r"\b(\d+)\s*\+\s*(?:years?|yrs?)\b",
+                  all_text
+              )
+
+
+              if plus_matches:
+
+                  years = int(
+                      plus_matches[0]
+                  )
+
+
+                  if years <= 1:
+
+                      return (
+                          f"{years}+ years",
+                          "GOOD FIT",
+                          35
+                      )
+
+
+                  if years <= 2:
+
+                      return (
+                          f"{years}+ years",
+                          "GOOD FIT",
+                          25
+                      )
+
+
+                  if years <= 3:
+
+                      return (
+                          f"{years}+ years",
+                          "PARTIAL FIT",
+                          10
+                      )
+
+
+                  return (
+                      f"{years}+ years",
+                      "POOR FIT",
+                      0
+                  )
+
+
+              # -------------------------------------------------
+              # EXACT ONE YEAR
+              # -------------------------------------------------
 
               if re.search(
                   r"\b1\s*(?:year|years|yr|yrs)\b",
-                  text
+                  all_text
               ):
 
                   return (
                       "1 year",
                       "EXCELLENT FIT",
-                      32
+                      40
                   )
 
 
-              # 1-3
+              # -------------------------------------------------
+              # EXACT TWO YEARS
+              # -------------------------------------------------
 
               if re.search(
-                  r"\b1\s*[-–]\s*3\s*(?:years?|yrs?)\b",
-                  text
+                  r"\b2\s*(?:year|years|yr|yrs)\b",
+                  all_text
               ):
 
                   return (
-                      "1-3 years",
+                      "2 years",
                       "GOOD FIT",
-                      24
+                      28
                   )
 
 
-              # 2-3
+              # -------------------------------------------------
+              # NO EXPERIENCE REQUIRED
+              # -------------------------------------------------
 
               if re.search(
-                  r"\b2\s*[-–]\s*3\s*(?:years?|yrs?)\b",
-                  text
+                  r"no\s+experience|required\s+experience\s*[:\-]?\s*0|experience\s+not\s+required",
+                  all_text
               ):
 
                   return (
-                      "2-3 years",
-                      "PARTIAL FIT",
-                      12
+                      "No experience required",
+                      "EXCELLENT FIT",
+                      45
                   )
 
 
-              # 2-4
-
-              if re.search(
-                  r"\b2\s*[-–]\s*4\s*(?:years?|yrs?)\b",
-                  text
-              ):
-
-                  return (
-                      "2-4 years",
-                      "POOR FIT",
-                      5
-                  )
-
-
-              # 3+
-
-              if re.search(
-                  r"\b3\s*\+\s*(?:years?|yrs?)\b",
-                  text
-              ):
-
-                  return (
-                      "3+ years",
-                      "POOR FIT",
-                      0
-                  )
-
-
-              # 4+
-
-              if re.search(
-                  r"\b4\s*\+\s*(?:years?|yrs?)\b",
-                  text
-              ):
-
-                  return (
-                      "4+ years",
-                      "POOR FIT",
-                      0
-                  )
-
+              # -------------------------------------------------
+              # UNKNOWN
+              # -------------------------------------------------
 
               return (
                   "Not specified",
                   "UNKNOWN",
-                  15
+                  10
               )
 
 
           # =====================================================
-          # COUNTRY DETECTION
+          # ROLE MATCH
           # =====================================================
 
-          def country_match(location):
+          def role_matches(title):
 
-              text = str(
+              title_text = normalize(
+                  title
+              )
+
+
+              matches = []
+
+
+              for role in roles:
+
+                  if role in title_text:
+
+                      matches.append(
+                          role
+                      )
+
+
+              return matches
+
+
+          # =====================================================
+          # EDUCATION MATCH
+          # =====================================================
+
+          def education_matches(text):
+
+              matches = []
+
+
+              # Chemical Engineering
+              if (
+                  "chemical engineer" in text
+                  or "chemical engineering" in text
+              ):
+
+                  if any(
+                      x in education
+                      for x in [
+                          "chemical engineering",
+                          "petrochemical engineering"
+                      ]
+                  ):
+
+                      matches.append(
+                          "chemical engineering"
+                      )
+
+
+              # Petrochemical
+              if (
+                  "petrochemical" in text
+                  and "petrochemical engineering" in education
+              ):
+
+                  if "petrochemical engineering" not in matches:
+
+                      matches.append(
+                          "petrochemical engineering"
+                      )
+
+
+              # Process engineering
+              if (
+                  "process engineer" in text
+                  or "process engineering" in text
+              ):
+
+                  if any(
+                      x in education
+                      for x in [
+                          "chemical engineering",
+                          "petrochemical engineering"
+                      ]
+                  ):
+
+                      if "chemical engineering" not in matches:
+
+                          matches.append(
+                              "chemical engineering"
+                          )
+
+
+              # Production
+              if (
+                  "production engineer" in text
+                  or "production engineering" in text
+              ):
+
+                  if any(
+                      x in education
+                      for x in [
+                          "chemical engineering",
+                          "petrochemical engineering"
+                      ]
+                  ):
+
+                      if "chemical engineering" not in matches:
+
+                          matches.append(
+                              "chemical engineering"
+                          )
+
+
+              return matches
+
+
+          # =====================================================
+          # COUNTRY MATCH
+          # =====================================================
+
+          def target_country(location):
+
+              text = normalize(
                   location
-              ).lower()
-
-
-              for country in countries:
-
-                  if country in text:
-
-                      return True
+              )
 
 
               aliases = {
@@ -818,8 +1031,8 @@ jobs:
                   ],
 
                   "saudi arabia": [
-                      "ksa",
                       "saudi",
+                      "ksa",
                       "riyadh",
                       "jeddah",
                       "jubail",
@@ -827,33 +1040,42 @@ jobs:
                   ],
 
                   "qatar": [
+                      "qatar",
                       "doha"
                   ],
 
                   "oman": [
+                      "oman",
                       "muscat",
                       "salalah"
                   ],
 
                   "kuwait": [
+                      "kuwait",
                       "kuwait city"
                   ],
 
                   "bahrain": [
+                      "bahrain",
                       "manama"
                   ]
 
               }
 
 
-              for country, names in aliases.items():
+              for country in countries:
 
-                  if country in countries:
+                  if country in text:
 
-                      if any(
-                          x in text
-                          for x in names
-                      ):
+                      return True
+
+
+                  for alias in aliases.get(
+                      country,
+                      []
+                  ):
+
+                      if alias in text:
 
                           return True
 
@@ -862,65 +1084,85 @@ jobs:
 
 
           # =====================================================
-          # SCORE JOB
+          # SCORE
           # =====================================================
 
-          scored = []
+          results = []
 
 
           for job in jobs:
 
               title = str(
-                  job.get("title", "")
+                  job.get(
+                      "title",
+                      ""
+                  )
               )
 
 
               company = str(
-                  job.get("company", "")
+                  job.get(
+                      "company",
+                      ""
+                  )
               )
 
 
               location = str(
-                  job.get("location", "")
+                  job.get(
+                      "location",
+                      ""
+                  )
               )
 
 
               description = str(
-                  job.get("description")
-                  or job.get("descriptionText")
+                  job.get(
+                      "description"
+                  )
+                  or job.get(
+                      "descriptionText"
+                  )
                   or ""
               )
 
 
               url = str(
-                  job.get("url")
-                  or job.get("jobUrl")
+                  job.get(
+                      "url"
+                  )
+                  or job.get(
+                      "jobUrl"
+                  )
                   or ""
               )
 
 
-              text = (
+              text = normalize(
                   title
                   + " "
                   + description
                   + " "
                   + url
-              ).lower()
+              )
 
 
               # -------------------------------------------------
-              # ROLE MATCH
+              # EXPERIENCE
               # -------------------------------------------------
 
-              matched_roles = [
+              experience, experience_fit, experience_score = (
+                  detect_experience(job)
+              )
 
-                  role
 
-                  for role in roles
+              # -------------------------------------------------
+              # ROLE
+              # -------------------------------------------------
 
-                  if role in title.lower()
-
-              ]
+              matched_roles = role_matches(
+                  title
+              )
 
 
               role_score = (
@@ -931,34 +1173,18 @@ jobs:
 
 
               # -------------------------------------------------
-              # EDUCATION MATCH
+              # EDUCATION
               # -------------------------------------------------
 
-              matched_education = []
-
-
-              for item in education:
-
-                  words = item.split()
-
-
-                  if any(
-                      word in text
-                      for word in words
-                      if len(word) > 3
-                  ):
-
-                      matched_education.append(
-                          item
-                      )
+              matched_education = education_matches(
+                  text
+              )
 
 
               education_score = (
-
                   15
                   if matched_education
                   else 0
-
               )
 
 
@@ -966,15 +1192,16 @@ jobs:
               # SKILLS
               # -------------------------------------------------
 
-              matched_skills = [
+              matched_skills = []
 
-                  skill
 
-                  for skill in skills
+              for skill in skills:
 
-                  if skill in text
+                  if skill in text:
 
-              ]
+                      matched_skills.append(
+                          skill
+                      )
 
 
               skill_score = min(
@@ -984,55 +1211,110 @@ jobs:
 
 
               # -------------------------------------------------
-              # EXPERIENCE
-              # -------------------------------------------------
-
-              experience_text, experience_fit, experience_score = (
-                  detect_experience(job)
-              )
-
-
-              # -------------------------------------------------
               # COUNTRY
               # -------------------------------------------------
 
-              in_target_country = country_match(
+              country_ok = target_country(
                   location
               )
 
 
               country_score = (
                   5
-                  if in_target_country
+                  if country_ok
                   else 0
               )
 
 
               # -------------------------------------------------
-              # TOTAL
+              # FINAL SCORE
               # -------------------------------------------------
 
               score = min(
                   100,
-                  role_score
+                  experience_score
+                  + role_score
                   + education_score
                   + skill_score
-                  + experience_score
                   + country_score
               )
 
 
-              # -------------------------------------------------
-              # DECISION
-              # -------------------------------------------------
+              # =================================================
+              # HARD EXPERIENCE RULES
+              # =================================================
+
+              # If job explicitly requires 3+ years,
+              # it cannot be APPLY NOW.
+
+              if experience_fit == "POOR FIT":
+
+                  decision = "SKIP"
+
+              elif experience_fit == "LOW FIT":
+
+                  if score >= 60:
+
+                      decision = "LOW PRIORITY"
+
+                  else:
+
+                      decision = "SKIP"
+
+              elif (
+                  experience_fit == "EXCELLENT FIT"
+                  and matched_roles
+                  and matched_education
+                  and score >= 70
+              ):
+
+                  decision = "APPLY NOW"
+
+              elif (
+                  experience_fit in [
+                      "EXCELLENT FIT",
+                      "GOOD FIT"
+                  ]
+                  and matched_roles
+                  and score >= 60
+              ):
+
+                  decision = "APPLY"
+
+              elif score >= 50:
+
+                  decision = "REVIEW"
+
+              elif score >= 35:
+
+                  decision = "LOW PRIORITY"
+
+              else:
+
+                  decision = "SKIP"
+
+
+              # =================================================
+              # CONCERNS
+              # =================================================
 
               concerns = []
 
 
-              if experience_fit == "POOR FIT":
+              if experience_fit in [
+                  "LOW FIT",
+                  "POOR FIT"
+              ]:
 
                   concerns.append(
                       "Experience requirement is above target"
+                  )
+
+
+              if experience_fit == "UNKNOWN":
+
+                  concerns.append(
+                      "Experience requirement not confirmed"
                   )
 
 
@@ -1057,101 +1339,51 @@ jobs:
                   )
 
 
-              if not in_target_country:
-
-                  concerns.append(
-                      "Country not in target list"
-                  )
-
-
-              # Strong fresh graduate job
-
-              if (
-                  experience_fit == "EXCELLENT FIT"
-                  and matched_roles
-                  and score >= 75
-              ):
-
-                  decision = "APPLY NOW"
-
-
-              elif (
-                  experience_fit in [
-                      "EXCELLENT FIT",
-                      "GOOD FIT"
-                  ]
-                  and matched_roles
-                  and score >= 65
-              ):
-
-                  decision = "APPLY"
-
-
-              elif score >= 50:
-
-                  decision = "REVIEW"
-
-
-              elif score >= 35:
-
-                  decision = "LOW PRIORITY"
-
-
-              else:
-
-                  decision = "SKIP"
-
-
-              # -------------------------------------------------
-              # PRACTICAL RECOMMENDATION
-              # -------------------------------------------------
+              # =================================================
+              # PRACTICAL ACTION
+              # =================================================
 
               if decision == "APPLY NOW":
 
                   action = (
                       "Apply immediately. "
-                      "This job is strongly aligned with "
-                      "your graduate-level target."
+                      "Strong entry-level match."
                   )
 
               elif decision == "APPLY":
 
                   action = (
                       "Apply. "
-                      "The experience requirement and role "
-                      "are reasonably aligned."
+                      "Good fit for your current experience level."
                   )
 
               elif decision == "REVIEW":
 
                   action = (
-                      "Review the full description before applying. "
-                      "There is potential but one or more conditions "
-                      "need verification."
+                      "Review the full job description "
+                      "before deciding."
                   )
 
               elif decision == "LOW PRIORITY":
 
                   action = (
                       "Keep as backup. "
-                      "Apply only after stronger graduate opportunities."
+                      "Prioritize stronger graduate jobs first."
                   )
 
               else:
 
                   action = (
-                      "Skip for now. "
-                      "Focus effort on stronger entry-level matches."
+                      "Skip. "
+                      "Focus on better entry-level opportunities."
                   )
 
 
-              scored.append({
+              results.append({
 
                   "score": score,
 
                   "decision": decision,
-
-                  "job": job,
 
                   "title": title,
 
@@ -1159,7 +1391,7 @@ jobs:
 
                   "location": location,
 
-                  "experience": experience_text,
+                  "experience": experience,
 
                   "experience_fit": experience_fit,
 
@@ -1173,7 +1405,9 @@ jobs:
 
                   "action": action,
 
-                  "url": url
+                  "url": url,
+
+                  "job": job
 
               })
 
@@ -1197,7 +1431,7 @@ jobs:
           }
 
 
-          scored.sort(
+          results.sort(
               key=lambda x: (
                   priority.get(
                       x["decision"],
@@ -1210,7 +1444,7 @@ jobs:
 
 
           # =====================================================
-          # SAVE RANKED RESULTS
+          # SAVE
           # =====================================================
 
           with open(
@@ -1220,7 +1454,7 @@ jobs:
           ) as f:
 
               json.dump(
-                  scored,
+                  results,
                   f,
                   ensure_ascii=False,
                   indent=2
@@ -1228,29 +1462,29 @@ jobs:
 
 
           # =====================================================
-          # PRINT RANKED JOBS
+          # PRINT
           # =====================================================
 
           print("")
           print("==========================================")
-          print("          RANKED JOBS")
+          print("             RANKED JOBS")
           print("==========================================")
 
 
-          for index, item in enumerate(
-              scored[:20],
-              start=1
+          for number, item in enumerate(
+              results[:20],
+              1
           ):
 
               print("")
               print(
-                  "#" + str(index),
-                  str(item["score"]) + "/100",
-                  "-",
+                  "#"
+                  + str(number),
+                  item["score"],
+                  "/100 -",
                   item["decision"]
               )
 
-              print("")
               print(
                   "JOB:",
                   item["title"]
@@ -1332,37 +1566,31 @@ jobs:
           # =====================================================
 
           counts = {
-
               "APPLY NOW": 0,
-
               "APPLY": 0,
-
               "REVIEW": 0,
-
               "LOW PRIORITY": 0,
-
               "SKIP": 0
-
           }
 
 
-          for item in scored:
+          for item in results:
 
-              decision = item["decision"]
+              if item["decision"] in counts:
 
-              if decision in counts:
-
-                  counts[decision] += 1
+                  counts[
+                      item["decision"]
+                  ] += 1
 
 
           print("")
           print("==========================================")
-          print("             FINAL SUMMARY")
+          print("              FINAL SUMMARY")
           print("==========================================")
 
           print(
               "TOTAL JOBS:",
-              len(scored)
+              len(results)
           )
 
           print(
@@ -1414,7 +1642,7 @@ jobs:
 
 
       # ==========================================
-      # 4. SHOW OUTPUT FILES
+      # 4. OUTPUT FILES
       # ==========================================
       - name: Show generated files
         run: |
@@ -1423,10 +1651,11 @@ jobs:
           echo "GENERATED FILES"
           echo "================================"
 
-          ls -lh jobs.json ranked_jobs.json
+          ls -lh \
+            jobs.json \
+            ranked_jobs.json
 
           echo ""
-          echo "JOB COUNT:"
 
           python - <<'PY'
 
@@ -1440,8 +1669,8 @@ jobs:
 
               jobs = json.load(f)
 
-
           print(
+              "TOTAL JOBS:",
               len(jobs)
           )
 
