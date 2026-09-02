@@ -12,24 +12,32 @@ on:
       - "jobs.json"
       - "profile.json"
 
+
 jobs:
+
   analyze-jobs:
+
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+
+    timeout-minutes: 20
+
 
     steps:
 
-      # ============================================================
+      # ==========================================================
       # 1. DOWNLOAD PROJECT
-      # ============================================================
+      # ==========================================================
+
       - name: Download project
         uses: actions/checkout@v4
 
 
-      # ============================================================
-      # 2. FETCH JOBS FROM APIFY
-      # ============================================================
+      # ==========================================================
+      # 2. FETCH JOBS FROM APIFY - PARALLEL VERSION
+      # ==========================================================
+
       - name: Fetch Gulf jobs from Apify
+
         env:
           APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
 
@@ -42,11 +50,12 @@ jobs:
           import time
           import urllib.request
           import urllib.error
+          from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
-          # ========================================================
+          # ======================================================
           # CONFIGURATION
-          # ========================================================
+          # ======================================================
 
           TOKEN = os.environ["APIFY_API_TOKEN"]
 
@@ -54,19 +63,26 @@ jobs:
 
           ACTOR = "blackfalcondata~naukrigulf-scraper"
 
-          # Maximum time allowed for one Apify search
-          MAX_RUN_SECONDS = 240
 
-          # Maximum total scraping time
-          MAX_TOTAL_SECONDS = 1200
-
-          # Maximum results per search
-          MAX_RESULTS = 15
+          # Maximum Actor runtime
+          MAX_RUN_SECONDS = 180
 
 
-          # ========================================================
+          # Maximum total workflow scraping time
+          MAX_TOTAL_SECONDS = 720
+
+
+          # Results per search
+          MAX_RESULTS = 10
+
+
+          # Number of simultaneous Apify runs
+          MAX_PARALLEL_RUNS = 6
+
+
+          # ======================================================
           # SEARCHES
-          # ========================================================
+          # ======================================================
 
           searches = [
 
@@ -75,7 +91,7 @@ jobs:
               ("Saudi Arabia", "Process Engineer"),
               ("Saudi Arabia", "Production Engineer"),
 
-              # United Arab Emirates
+              # UAE
               ("United Arab Emirates", "Chemical Engineer"),
               ("United Arab Emirates", "Process Engineer"),
               ("United Arab Emirates", "Production Engineer"),
@@ -102,23 +118,35 @@ jobs:
           ]
 
 
-          # ========================================================
+          # ======================================================
           # API REQUEST
-          # ========================================================
+          # ======================================================
 
-          def api_request(url, method="GET", payload=None, timeout=30):
+          def api_request(
+              url,
+              method="GET",
+              payload=None,
+              timeout=30
+          ):
 
               headers = {
-                  "Authorization": "Bearer " + TOKEN
+                  "Authorization":
+                      "Bearer " + TOKEN
               }
 
               data = None
 
+
               if payload is not None:
 
-                  data = json.dumps(payload).encode("utf-8")
+                  data = json.dumps(
+                      payload
+                  ).encode("utf-8")
 
-                  headers["Content-Type"] = "application/json"
+                  headers[
+                      "Content-Type"
+                  ] = "application/json"
+
 
               request = urllib.request.Request(
                   url,
@@ -127,69 +155,29 @@ jobs:
                   headers=headers
               )
 
+
               with urllib.request.urlopen(
                   request,
                   timeout=timeout
               ) as response:
 
                   return json.loads(
-                      response.read().decode("utf-8")
+                      response
+                      .read()
+                      .decode("utf-8")
                   )
 
 
-          # ========================================================
-          # START
-          # ========================================================
+          # ======================================================
+          # START ONE ACTOR
+          # ======================================================
 
-          all_jobs = []
+          def start_actor(
+              search
+          ):
 
-          workflow_start = time.time()
+              location, query = search
 
-          successful_runs = 0
-
-          failed_runs = 0
-
-
-          # ========================================================
-          # RUN ALL SEARCHES
-          # ========================================================
-
-          for index, (location, query) in enumerate(searches, 1):
-
-              elapsed = time.time() - workflow_start
-
-              if elapsed >= MAX_TOTAL_SECONDS:
-
-                  print(
-                      "GLOBAL FETCH TIME LIMIT REACHED"
-                  )
-
-                  break
-
-
-              print("")
-              print("=" * 70)
-
-              print(
-                  f"[{index}/{len(searches)}]"
-              )
-
-              print(
-                  "SEARCH:",
-                  query
-              )
-
-              print(
-                  "LOCATION:",
-                  location
-              )
-
-              print("=" * 70)
-
-
-              # ----------------------------------------------------
-              # ACTOR INPUT
-              # ----------------------------------------------------
 
               payload = {
 
@@ -209,35 +197,36 @@ jobs:
               }
 
 
-              start_url = (
+              url = (
                   BASE
                   + "/actors/"
                   + ACTOR
                   + "/runs"
+                  + "?timeout="
+                  + str(MAX_RUN_SECONDS)
               )
 
-
-              # ----------------------------------------------------
-              # START ACTOR
-              # ----------------------------------------------------
 
               try:
 
                   result = api_request(
-                      start_url,
+                      url,
                       method="POST",
                       payload=payload,
                       timeout=30
                   )
+
 
                   data = result.get(
                       "data",
                       {}
                   )
 
+
                   run_id = data.get(
                       "id"
                   )
+
 
                   dataset_id = data.get(
                       "defaultDatasetId"
@@ -246,98 +235,157 @@ jobs:
 
                   if not run_id:
 
-                      print(
-                          "START FAILED: no run ID"
-                      )
-
-                      failed_runs += 1
-
-                      continue
+                      return {
+                          "success": False,
+                          "location": location,
+                          "query": query,
+                          "error":
+                              "No run ID"
+                      }
 
 
                   print(
-                      "RUN:",
+                      "STARTED:",
+                      location,
+                      "|",
+                      query,
+                      "|",
                       run_id
                   )
 
 
+                  return {
+
+                      "success": True,
+
+                      "location": location,
+
+                      "query": query,
+
+                      "run_id": run_id,
+
+                      "dataset_id": dataset_id
+                  }
+
+
               except Exception as e:
 
-                  print(
-                      "START ERROR:",
-                      str(e)
+                  return {
+
+                      "success": False,
+
+                      "location": location,
+
+                      "query": query,
+
+                      "error": str(e)
+                  }
+
+
+          # ======================================================
+          # START ALL RUNS IN PARALLEL
+          # ======================================================
+
+          print("")
+          print("=" * 80)
+          print("STARTING APIFY RUNS IN PARALLEL")
+          print("=" * 80)
+
+
+          run_infos = []
+
+
+          with ThreadPoolExecutor(
+              max_workers=MAX_PARALLEL_RUNS
+          ) as executor:
+
+              futures = [
+
+                  executor.submit(
+                      start_actor,
+                      search
                   )
 
-                  failed_runs += 1
-
-                  continue
-
-
-              # ----------------------------------------------------
-              # POLLING
-              # ----------------------------------------------------
-
-              run_start = time.time()
-
-              final_status = None
+                  for search in searches
+              ]
 
 
-              while True:
+              for future in as_completed(
+                  futures
+              ):
 
-                  elapsed_run = (
-                      time.time()
-                      - run_start
-                  )
+                  result = future.result()
 
 
-                  # -----------------------------------------------
-                  # TIMEOUT
-                  # -----------------------------------------------
+                  if result["success"]:
 
-                  if elapsed_run >= MAX_RUN_SECONDS:
+                      run_infos.append(
+                          result
+                      )
+
+                  else:
 
                       print(
-                          "RUN TIMEOUT:",
-                          run_id
+                          "START FAILED:",
+                          result
                       )
 
 
-                      try:
-
-                          abort_url = (
-                              BASE
-                              + "/actor-runs/"
-                              + run_id
-                              + "/abort"
-                          )
-
-                          api_request(
-                              abort_url,
-                              method="POST",
-                              timeout=20
-                          )
-
-                          print(
-                              "RUN ABORTED"
-                          )
+          print("")
+          print(
+              "STARTED RUNS:",
+              len(run_infos)
+          )
 
 
-                      except Exception as e:
+          # ======================================================
+          # WAIT FOR RUNS
+          # ======================================================
 
-                          print(
-                              "ABORT ERROR:",
-                              str(e)
-                          )
+          workflow_start = time.time()
+
+          finished_runs = []
+
+          pending_runs = list(
+              run_infos
+          )
 
 
-                      failed_runs += 1
+          print("")
+          print("=" * 80)
+          print("WAITING FOR APIFY RUNS")
+          print("=" * 80)
 
-                      break
+
+          while pending_runs:
+
+              elapsed_total = (
+                  time.time()
+                  - workflow_start
+              )
 
 
-                  # -----------------------------------------------
-                  # CHECK STATUS
-                  # -----------------------------------------------
+              if (
+                  elapsed_total
+                  >= MAX_TOTAL_SECONDS
+              ):
+
+                  print(
+                      "GLOBAL TIME LIMIT REACHED"
+                  )
+
+                  break
+
+
+              still_pending = []
+
+
+              for info in pending_runs:
+
+                  run_id = info[
+                      "run_id"
+                  ]
+
 
                   try:
 
@@ -345,13 +393,13 @@ jobs:
                           BASE
                           + "/actor-runs/"
                           + run_id
-                          + "?waitForFinish=15"
+                          + "?waitForFinish=10"
                       )
 
 
                       result = api_request(
                           status_url,
-                          timeout=25
+                          timeout=20
                       )
 
 
@@ -370,37 +418,42 @@ jobs:
                           "defaultDatasetId"
                       ):
 
-                          dataset_id = data.get(
+                          info[
+                              "dataset_id"
+                          ] = data.get(
                               "defaultDatasetId"
                           )
 
 
                       print(
-                          "STATUS:",
+                          info["location"],
+                          "|",
+                          info["query"],
+                          "|",
                           status
                       )
 
 
-                      # -------------------------------------------
+                      # ------------------------------------------
                       # SUCCESS
-                      # -------------------------------------------
+                      # ------------------------------------------
 
                       if status == "SUCCEEDED":
 
-                          final_status = status
+                          info[
+                              "status"
+                          ] = status
 
-                          successful_runs += 1
-
-                          print(
-                              "RUN SUCCEEDED"
+                          finished_runs.append(
+                              info
                           )
 
-                          break
+                          continue
 
 
-                      # -------------------------------------------
+                      # ------------------------------------------
                       # FAILURE
-                      # -------------------------------------------
+                      # ------------------------------------------
 
                       if status in [
                           "FAILED",
@@ -408,57 +461,74 @@ jobs:
                           "TIMED-OUT"
                       ]:
 
-                          final_status = status
-
-                          failed_runs += 1
-
                           print(
                               "RUN FAILED:",
+                              info["location"],
+                              info["query"],
                               status
                           )
 
-                          break
+                          continue
+
+
+                      # ------------------------------------------
+                      # STILL RUNNING
+                      # ------------------------------------------
+
+                      still_pending.append(
+                          info
+                      )
 
 
                   except Exception as e:
 
                       print(
                           "STATUS ERROR:",
+                          run_id,
                           str(e)
                       )
 
-
-                  time.sleep(5)
-
-
-              # ====================================================
-              # SKIP FAILED RUN
-              # ====================================================
-
-              if final_status != "SUCCEEDED":
-
-                  continue
+                      still_pending.append(
+                          info
+                      )
 
 
-              # ====================================================
-              # DATASET
-              # ====================================================
-
-              if not dataset_id:
-
-                  print(
-                      "NO DATASET"
-                  )
-
-                  continue
+              pending_runs = still_pending
 
 
-              print(
-                  "DOWNLOADING DATA..."
+              if pending_runs:
+
+                  time.sleep(3)
+
+
+          # ======================================================
+          # DOWNLOAD DATASETS
+          # ======================================================
+
+          print("")
+          print("=" * 80)
+          print("DOWNLOADING SUCCESSFUL DATASETS")
+          print("=" * 80)
+
+
+          all_jobs = []
+
+
+          def download_dataset(
+              info
+          ):
+
+              dataset_id = info.get(
+                  "dataset_id"
               )
 
 
-              dataset_url = (
+              if not dataset_id:
+
+                  return []
+
+
+              url = (
                   BASE
                   + "/datasets/"
                   + dataset_id
@@ -469,7 +539,7 @@ jobs:
               try:
 
                   result = api_request(
-                      dataset_url,
+                      url,
                       timeout=60
                   )
 
@@ -480,26 +550,69 @@ jobs:
                   ):
 
                       print(
-                          "JOBS:",
-                          len(result)
+                          "DOWNLOADED:",
+                          info["location"],
+                          "|",
+                          info["query"],
+                          "|",
+                          len(result),
+                          "jobs"
                       )
 
-                      all_jobs.extend(
-                          result
-                      )
+                      return result
 
 
               except Exception as e:
 
                   print(
                       "DATASET ERROR:",
+                      info["location"],
+                      info["query"],
                       str(e)
                   )
 
 
-          # ========================================================
+              return []
+
+
+          with ThreadPoolExecutor(
+              max_workers=MAX_PARALLEL_RUNS
+          ) as executor:
+
+              futures = [
+
+                  executor.submit(
+                      download_dataset,
+                      info
+                  )
+
+                  for info in finished_runs
+              ]
+
+
+              for future in as_completed(
+                  futures
+              ):
+
+                  try:
+
+                      jobs = future.result()
+
+                      all_jobs.extend(
+                          jobs
+                      )
+
+                  except Exception as e:
+
+                      print(
+                          "DOWNLOAD THREAD ERROR:",
+                          str(e)
+                      )
+
+
+          # ======================================================
           # DEDUPLICATION
-          # ========================================================
+          # ======================================================
 
           unique = {}
 
@@ -516,26 +629,37 @@ jobs:
 
               url = str(
                   job.get("url")
-                  or job.get("jobUrl")
-                  or ""
+                  or
+                  job.get("jobUrl")
+                  or
+                  ""
               ).strip().lower()
 
 
               title = str(
                   job.get("title")
-                  or ""
+                  or
+                  job.get("jobTitle")
+                  or
+                  ""
               ).strip().lower()
 
 
               company = str(
                   job.get("company")
-                  or ""
+                  or
+                  job.get("companyName")
+                  or
+                  ""
               ).strip().lower()
 
 
               location = str(
                   job.get("location")
-                  or ""
+                  or
+                  job.get("jobLocation")
+                  or
+                  ""
               ).strip().lower()
 
 
@@ -556,7 +680,9 @@ jobs:
 
               if key:
 
-                  unique[key] = job
+                  unique[
+                      key
+                  ] = job
 
 
           jobs = list(
@@ -564,9 +690,9 @@ jobs:
           )
 
 
-          # ========================================================
-          # SAVE JOBS
-          # ========================================================
+          # ======================================================
+          # SAVE
+          # ======================================================
 
           with open(
               "jobs.json",
@@ -582,25 +708,37 @@ jobs:
               )
 
 
-          # ========================================================
-          # SUMMARY
-          # ========================================================
+          # ======================================================
+          # FINAL FETCH SUMMARY
+          # ======================================================
 
           print("")
-          print("=" * 70)
+          print("=" * 80)
 
           print(
               "FETCH SUMMARY"
           )
 
+          print("=" * 80)
+
           print(
-              "SUCCESSFUL RUNS:",
-              successful_runs
+              "TOTAL SEARCHES:",
+              len(searches)
           )
 
           print(
-              "FAILED / TIMEOUT RUNS:",
-              failed_runs
+              "STARTED RUNS:",
+              len(run_infos)
+          )
+
+          print(
+              "SUCCESSFUL RUNS:",
+              len(finished_runs)
+          )
+
+          print(
+              "TOTAL RAW JOBS:",
+              len(all_jobs)
           )
 
           print(
@@ -608,15 +746,31 @@ jobs:
               len(jobs)
           )
 
-          print("=" * 70)
+          print("=" * 80)
+
+
+          # ======================================================
+          # SAFETY
+          # ======================================================
+
+          if len(jobs) == 0:
+
+              print(
+                  "WARNING: NO JOBS FOUND"
+              )
+
+              # Do not fail the whole workflow.
+              # Analysis will simply have no jobs.
 
           PY
 
 
-      # ============================================================
+      # ==========================================================
       # 3. ANALYZE JOBS
-      # ============================================================
+      # ==========================================================
+
       - name: Analyze jobs
+
         run: |
 
           python - <<'PY'
@@ -625,9 +779,9 @@ jobs:
           import re
 
 
-          # ========================================================
-          # LOAD FILES
-          # ========================================================
+          # ======================================================
+          # LOAD
+          # ======================================================
 
           with open(
               "jobs.json",
@@ -647,9 +801,9 @@ jobs:
               profile = json.load(f)
 
 
-          # ========================================================
+          # ======================================================
           # PROFILE
-          # ========================================================
+          # ======================================================
 
           roles = [
               str(x).lower()
@@ -678,25 +832,30 @@ jobs:
           ]
 
 
-          # ========================================================
+          # ======================================================
           # NORMALIZE
-          # ========================================================
+          # ======================================================
 
-          def normalize(text):
+          def normalize(
+              text
+          ):
 
               text = str(
                   text or ""
               ).lower()
+
 
               text = text.replace(
                   "–",
                   "-"
               )
 
+
               text = text.replace(
                   "—",
                   "-"
               )
+
 
               text = re.sub(
                   r"\s+",
@@ -704,26 +863,1260 @@ jobs:
                   text
               )
 
+
               return text.strip()
 
 
-          # ========================================================
+          # ======================================================
           # GET FIELD
-          # ========================================================
+          # ======================================================
 
           def first_value(
               job,
-              names
+              fields
           ):
 
-              for name in names:
+              for field in fields:
 
                   value = job.get(
-                      name
+                      field
                   )
+
 
                   if value not in [
                       None,
                       "",
                       [],
-                     
+                      {}
+                  ]:
+
+                      return str(
+                          value
+                      )
+
+
+              return ""
+
+
+          # ======================================================
+          # EXPERIENCE
+          # ======================================================
+
+          def analyze_experience(
+              job
+          ):
+
+              structured = first_value(
+                  job,
+                  [
+                      "experience",
+                      "experienceRequired",
+                      "experience_required",
+                      "yearsOfExperience",
+                      "years_of_experience",
+                      "requiredExperience",
+                      "required_experience",
+                      "experienceLevel"
+                  ]
+              )
+
+
+              description = first_value(
+                  job,
+                  [
+                      "description",
+                      "descriptionText",
+                      "jobDescription",
+                      "job_description"
+                  ]
+              )
+
+
+              title = first_value(
+                  job,
+                  [
+                      "title",
+                      "jobTitle"
+                  ]
+              )
+
+
+              # IMPORTANT:
+              # URL IS NEVER USED FOR EXPERIENCE.
+              # This fixes the previous 2-4 years URL problem.
+
+              def parse(
+                  text
+              ):
+
+                  text = normalize(
+                      text
+                  )
+
+
+                  # Fresh graduate
+
+                  if re.search(
+                      r"\bfresh\s+graduate\b",
+                      text
+                  ):
+
+                      return (
+                          "Fresh Graduate",
+                          "EXCELLENT FIT",
+                          45
+                      )
+
+
+                  # Fresher
+
+                  if re.search(
+                      r"\bfresher\b",
+                      text
+                  ):
+
+                      return (
+                          "Fresher",
+                          "EXCELLENT FIT",
+                          45
+                      )
+
+
+                  # Entry level
+
+                  if re.search(
+                      r"\bentry[- ]level\b",
+                      text
+                  ):
+
+                      return (
+                          "Entry Level",
+                          "EXCELLENT FIT",
+                          45
+                      )
+
+
+                  # No experience
+
+                  if re.search(
+                      r"no\s+experience\s+required",
+                      text
+                  ):
+
+                      return (
+                          "No experience required",
+                          "EXCELLENT FIT",
+                          45
+                      )
+
+
+                  # Range
+
+                  matches = re.findall(
+                      r"\b(\d+)\s*(?:to|-)\s*(\d+)\s*(?:years?|yrs?)\b",
+                      text
+                  )
+
+
+                  if matches:
+
+                      low = int(
+                          matches[0][0]
+                      )
+
+                      high = int(
+                          matches[0][1]
+                      )
+
+
+                      if (
+                          low == 0
+                          and
+                          high <= 2
+                      ):
+
+                          return (
+                              f"{low}-{high} years",
+                              "EXCELLENT FIT",
+                              45
+                          )
+
+
+                      if (
+                          low == 1
+                          and
+                          high <= 2
+                      ):
+
+                          return (
+                              f"{low}-{high} years",
+                              "EXCELLENT FIT",
+                              42
+                          )
+
+
+                      if (
+                          low == 1
+                          and
+                          high <= 3
+                      ):
+
+                          return (
+                              f"{low}-{high} years",
+                              "GOOD FIT",
+                              32
+                          )
+
+
+                      if (
+                          low >= 2
+                          and
+                          high <= 4
+                      ):
+
+                          return (
+                              f"{low}-{high} years",
+                              "LOW FIT",
+                              8
+                          )
+
+
+                      if low >= 3:
+
+                          return (
+                              f"{low}-{high} years",
+                              "POOR FIT",
+                              0
+                          )
+
+
+                  # Plus
+
+                  plus = re.findall(
+                      r"\b(\d+)\s*\+\s*(?:years?|yrs?)\b",
+                      text
+                  )
+
+
+                  if plus:
+
+                      years = int(
+                          plus[0]
+                      )
+
+
+                      if years <= 2:
+
+                          return (
+                              f"{years}+ years",
+                              "GOOD FIT",
+                              25
+                          )
+
+
+                      if years <= 3:
+
+                          return (
+                              f"{years}+ years",
+                              "PARTIAL FIT",
+                              10
+                          )
+
+
+                      return (
+                          f"{years}+ years",
+                          "POOR FIT",
+                          0
+                      )
+
+
+                  # Single year
+
+                  if re.search(
+                      r"\b1\s*(?:year|yr)\b",
+                      text
+                  ):
+
+                      return (
+                          "1 year",
+                          "EXCELLENT FIT",
+                          40
+                      )
+
+
+                  if re.search(
+                      r"\b2\s*(?:years?|yrs?)\b",
+                      text
+                  ):
+
+                      return (
+                          "2 years",
+                          "GOOD FIT",
+                          30
+                      )
+
+
+                  if re.search(
+                      r"\b3\s*(?:years?|yrs?)\b",
+                      text
+                  ):
+
+                      return (
+                          "3 years",
+                          "LOW FIT",
+                          8
+                      )
+
+
+                  return (
+                      "Not specified",
+                      "UNKNOWN",
+                      10
+                  )
+
+
+              # --------------------------------------------------
+              # STRUCTURED EXPERIENCE
+              # --------------------------------------------------
+
+              if structured:
+
+                  result = parse(
+                      structured
+                  )
+
+
+                  return {
+                      "experience":
+                          result[0],
+
+                      "fit":
+                          result[1],
+
+                      "score":
+                          result[2],
+
+                      "conflict":
+                          False
+                  }
+
+
+              # --------------------------------------------------
+              # DESCRIPTION
+              # --------------------------------------------------
+
+              result = parse(
+                  description
+              )
+
+
+              return {
+
+                  "experience":
+                      result[0],
+
+                  "fit":
+                      result[1],
+
+                  "score":
+                      result[2],
+
+                  "conflict":
+                      False
+              }
+
+
+          # ======================================================
+          # ROLE MATCH
+          # ======================================================
+
+          def get_roles(
+              title
+          ):
+
+              title = normalize(
+                  title
+              )
+
+
+              return [
+                  role
+                  for role in roles
+                  if role in title
+              ]
+
+
+          # ======================================================
+          # EDUCATION
+          # ======================================================
+
+          def get_education(
+              job
+          ):
+
+              title = first_value(
+                  job,
+                  [
+                      "title",
+                      "jobTitle"
+                  ]
+              )
+
+
+              description = first_value(
+                  job,
+                  [
+                      "description",
+                      "descriptionText",
+                      "jobDescription",
+                      "job_description"
+                  ]
+              )
+
+
+              structured = first_value(
+                  job,
+                  [
+                      "education",
+                      "educationRequired",
+                      "education_required",
+                      "qualification",
+                      "qualifications",
+                      "degree",
+                      "requiredEducation"
+                  ]
+              )
+
+
+              if structured:
+
+                  text = normalize(
+                      structured
+                  )
+
+              else:
+
+                  text = normalize(
+                      title
+                      + " "
+                      + description
+                  )
+
+
+              matches = []
+
+
+              if (
+                  "chemical engineering"
+                  in text
+              ):
+
+                  if (
+                      "chemical engineering"
+                      in education
+                  ):
+
+                      matches.append(
+                          "chemical engineering"
+                      )
+
+
+              if (
+                  "petrochemical"
+                  in text
+              ):
+
+                  if (
+                      "petrochemical engineering"
+                      in education
+                  ):
+
+                      matches.append(
+                          "petrochemical engineering"
+                      )
+
+                  elif (
+                      "chemical engineering"
+                      in education
+                  ):
+
+                      matches.append(
+                          "chemical engineering"
+                      )
+
+
+              # Process Engineer is a natural
+              # target for Chemical Engineering
+
+              if (
+                  "process engineer"
+                  in normalize(title)
+                  and
+                  "chemical engineering"
+                  in education
+              ):
+
+                  matches.append(
+                      "chemical engineering"
+                  )
+
+
+              # Production Engineer:
+              # don't automatically approve if posting
+              # explicitly requires Mechanical/Industrial.
+
+              if (
+                  "production engineer"
+                  in normalize(title)
+              ):
+
+                  if not (
+                      "mechanical engineering"
+                      in text
+                      or
+                      "industrial engineering"
+                      in text
+                  ):
+
+                      if (
+                          "chemical engineering"
+                          in education
+                      ):
+
+                          matches.append(
+                              "chemical engineering"
+                          )
+
+
+              return list(
+                  dict.fromkeys(
+                      matches
+                  )
+              )
+
+
+          # ======================================================
+          # SKILLS
+          # ======================================================
+
+          def get_skills(
+              job
+          ):
+
+              title = first_value(
+                  job,
+                  [
+                      "title",
+                      "jobTitle"
+                  ]
+              )
+
+
+              description = first_value(
+                  job,
+                  [
+                      "description",
+                      "descriptionText",
+                      "jobDescription",
+                      "job_description"
+                  ]
+              )
+
+
+              text = normalize(
+                  title
+                  + " "
+                  + description
+              )
+
+
+              return list(
+                  dict.fromkeys(
+                      [
+                          skill
+                          for skill in skills
+                          if skill in text
+                      ]
+                  )
+              )
+
+
+          # ======================================================
+          # ANALYZE
+          # ======================================================
+
+          results = []
+
+
+          for job in jobs:
+
+              title = first_value(
+                  job,
+                  [
+                      "title",
+                      "jobTitle"
+                  ]
+              )
+
+
+              company = first_value(
+                  job,
+                  [
+                      "company",
+                      "companyName"
+                  ]
+              )
+
+
+              location = first_value(
+                  job,
+                  [
+                      "location",
+                      "jobLocation"
+                  ]
+              )
+
+
+              url = first_value(
+                  job,
+                  [
+                      "url",
+                      "jobUrl"
+                  ]
+              )
+
+
+              experience_result = analyze_experience(
+                  job
+              )
+
+
+              experience = experience_result[
+                  "experience"
+              ]
+
+
+              exp_fit = experience_result[
+                  "fit"
+              ]
+
+
+              exp_score = experience_result[
+                  "score"
+              ]
+
+
+              conflict = experience_result[
+                  "conflict"
+              ]
+
+
+              matched_roles = get_roles(
+                  title
+              )
+
+
+              matched_education = get_education(
+                  job
+              )
+
+
+              matched_skills = get_skills(
+                  job
+              )
+
+
+              role_score = (
+                  25
+                  if matched_roles
+                  else 0
+              )
+
+
+              education_score = (
+                  15
+                  if matched_education
+                  else 0
+              )
+
+
+              skill_score = min(
+                  15,
+                  len(
+                      matched_skills
+                  ) * 5
+              )
+
+
+              score = min(
+                  100,
+                  exp_score
+                  + role_score
+                  + education_score
+                  + skill_score
+              )
+
+
+              # ==================================================
+              # DECISION
+              # ==================================================
+
+              if conflict:
+
+                  decision = "REVIEW"
+
+
+              elif exp_fit == "POOR FIT":
+
+                  decision = "SKIP"
+
+
+              elif exp_fit == "LOW FIT":
+
+                  decision = (
+                      "LOW PRIORITY"
+                      if score >= 55
+                      else
+                      "SKIP"
+                  )
+
+
+              elif (
+                  exp_fit == "EXCELLENT FIT"
+                  and
+                  matched_roles
+                  and
+                  matched_education
+                  and
+                  score >= 70
+              ):
+
+                  decision = "APPLY NOW"
+
+
+              elif (
+                  exp_fit in [
+                      "EXCELLENT FIT",
+                      "GOOD FIT"
+                  ]
+                  and
+                  matched_roles
+                  and
+                  score >= 60
+              ):
+
+                  decision = "APPLY"
+
+
+              elif score >= 50:
+
+                  decision = "REVIEW"
+
+
+              elif score >= 35:
+
+                  decision = "LOW PRIORITY"
+
+
+              else:
+
+                  decision = "SKIP"
+
+
+              # ==================================================
+              # CONCERNS
+              # ==================================================
+
+              concerns = []
+
+
+              if conflict:
+
+                  concerns.append(
+                      "Experience requirement needs manual verification"
+                  )
+
+
+              if exp_fit == "UNKNOWN":
+
+                  concerns.append(
+                      "Experience not confirmed"
+                  )
+
+
+              if exp_fit in [
+                  "LOW FIT",
+                  "POOR FIT"
+              ]:
+
+                  concerns.append(
+                      "Experience requirement above target"
+                  )
+
+
+              if not matched_roles:
+
+                  concerns.append(
+                      "Target role not confirmed"
+                  )
+
+
+              if not matched_education:
+
+                  concerns.append(
+                      "Education match not confirmed"
+                  )
+
+
+              if not matched_skills:
+
+                  concerns.append(
+                      "Relevant skills not found"
+                  )
+
+
+              # ==================================================
+              # ACTION
+              # ==================================================
+
+              if decision == "APPLY NOW":
+
+                  action = (
+                      "Apply immediately. "
+                      "Strong entry-level match."
+                  )
+
+
+              elif decision == "APPLY":
+
+                  action = (
+                      "Apply. "
+                      "Good match for your profile."
+                  )
+
+
+              elif decision == "REVIEW":
+
+                  action = (
+                      "Review full description "
+                      "before applying."
+                  )
+
+
+              elif decision == "LOW PRIORITY":
+
+                  action = (
+                      "Keep as backup."
+                  )
+
+
+              else:
+
+                  action = (
+                      "Skip and focus on stronger jobs."
+                  )
+
+
+              results.append({
+
+                  "score":
+                      score,
+
+                  "decision":
+                      decision,
+
+                  "title":
+                      title,
+
+                  "company":
+                      company,
+
+                  "location":
+                      location,
+
+                  "experience":
+                      experience,
+
+                  "experience_fit":
+                      exp_fit,
+
+                  "experience_conflict":
+                      conflict,
+
+                  "matched_roles":
+                      matched_roles,
+
+                  "matched_education":
+                      matched_education,
+
+                  "matched_skills":
+                      matched_skills,
+
+                  "action":
+                      action,
+
+                  "concerns":
+                      concerns,
+
+                  "url":
+                      url
+              })
+
+
+          # ======================================================
+          # SORT
+          # ======================================================
+
+          priority = {
+
+              "APPLY NOW": 5,
+
+              "APPLY": 4,
+
+              "REVIEW": 3,
+
+              "LOW PRIORITY": 2,
+
+              "SKIP": 1
+          }
+
+
+          results.sort(
+
+              key=lambda x: (
+                  priority[
+                      x["decision"]
+                  ],
+                  x["score"]
+              ),
+
+              reverse=True
+          )
+
+
+          # ======================================================
+          # SAVE
+          # ======================================================
+
+          with open(
+              "ranked_jobs.json",
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  results,
+                  f,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+
+          # ======================================================
+          # PRINT TOP 20
+          # ======================================================
+
+          print("")
+          print("=" * 80)
+          print("TOP 20 JOBS")
+          print("=" * 80)
+
+
+          for i, item in enumerate(
+              results[:20],
+              1
+          ):
+
+              print("")
+
+              print(
+                  f"#{i} "
+                  f"{item['score']}/100 "
+                  f"- "
+                  f"{item['decision']}"
+              )
+
+              print(
+                  "JOB:",
+                  item["title"]
+              )
+
+              print(
+                  "COMPANY:",
+                  item["company"]
+              )
+
+              print(
+                  "LOCATION:",
+                  item["location"]
+              )
+
+              print(
+                  "EXPERIENCE:",
+                  item["experience"]
+              )
+
+              print(
+                  "EXPERIENCE FIT:",
+                  item["experience_fit"]
+              )
+
+              print(
+                  "ROLE MATCH:",
+                  ", ".join(
+                      item["matched_roles"]
+                  )
+                  if item["matched_roles"]
+                  else
+                  "None"
+              )
+
+              print(
+                  "EDUCATION MATCH:",
+                  ", ".join(
+                      item["matched_education"]
+                  )
+                  if item["matched_education"]
+                  else
+                  "None"
+              )
+
+              print(
+                  "SKILLS MATCH:",
+                  ", ".join(
+                      item["matched_skills"]
+                  )
+                  if item["matched_skills"]
+                  else
+                  "None"
+              )
+
+              print(
+                  "ACTION:",
+                  item["action"]
+              )
+
+              print(
+                  "CONCERNS:",
+                  "; ".join(
+                      item["concerns"]
+                  )
+                  if item["concerns"]
+                  else
+                  "None"
+              )
+
+              print(
+                  "URL:",
+                  item["url"]
+              )
+
+              print("-" * 80)
+
+
+          # ======================================================
+          # SUMMARY
+          # ======================================================
+
+          counts = {
+
+              "APPLY NOW": 0,
+
+              "APPLY": 0,
+
+              "REVIEW": 0,
+
+              "LOW PRIORITY": 0,
+
+              "SKIP": 0
+          }
+
+
+          for item in results:
+
+              counts[
+                  item["decision"]
+              ] += 1
+
+
+          print("")
+          print("=" * 80)
+          print("FINAL SUMMARY")
+          print("=" * 80)
+
+
+          print(
+              "TOTAL JOBS:",
+              len(results)
+          )
+
+
+          print(
+              "APPLY NOW:",
+              counts["APPLY NOW"]
+          )
+
+
+          print(
+              "APPLY:",
+              counts["APPLY"]
+          )
+
+
+          print(
+              "REVIEW:",
+              counts["REVIEW"]
+          )
+
+
+          print(
+              "LOW PRIORITY:",
+              counts["LOW PRIORITY"]
+          )
+
+
+          print(
+              "SKIP:",
+              counts["SKIP"]
+          )
+
+
+          print("=" * 80)
+
+
+          PY
+
+
+      # ==========================================================
+      # 4. VERIFY OUTPUT
+      # ==========================================================
+
+      - name: Verify output
+
+        run: |
+
+          echo "=========================================="
+
+          echo "OUTPUT FILES"
+
+          echo "=========================================="
+
+
+          ls -lh \
+            jobs.json \
+            ranked_jobs.json
+
+
+          python - <<'PY'
+
+          import json
+
+
+          with open(
+              "jobs.json",
+              "r",
+              encoding="utf-8"
+          ) as f:
+
+              jobs = json.load(f)
+
+
+          with open(
+              "ranked_jobs.json",
+              "r",
+              encoding="utf-8"
+          ) as f:
+
+              ranked = json.load(f)
+
+
+          print(
+              "JOBS:",
+              len(jobs)
+          )
+
+
+          print(
+              "RANKED:",
+              len(ranked)
+          )
+
+
+          counts = {}
+
+
+          for job in ranked:
+
+              decision = job.get(
+                  "decision",
+                  "UNKNOWN"
+              )
+
+
+              counts[
+                  decision
+              ] = (
+                  counts.get(
+                      decision,
+                      0
+                  )
+                  + 1
+              )
+
+
+          print("")
+          print(
+              "DECISION COUNTS:"
+          )
+
+
+          for key in sorted(
+              counts
+          ):
+
+              print(
+                  key,
+                  ":",
+                  counts[key]
+              )
+
+
+          # ------------------------------------------------------
+          # SAFETY CHECK
+          # ------------------------------------------------------
+
+          invalid = [
+
+              job
+
+              for job in ranked
+
+              if (
+                  job.get(
+                      "experience_conflict"
+                  )
+                  and
+                  job.get(
+                      "decision"
+                  )
+                  == "APPLY NOW"
+              )
+          ]
+
+
+          if invalid:
+
+              print(
+                  "ERROR: EXPERIENCE CONFLICT "
+                  "JOB MARKED APPLY NOW"
+              )
+
+              raise SystemExit(1)
+
+
+          print("")
+          print(
+              "SAFETY CHECK: PASSED"
+          )
+
+          PY
