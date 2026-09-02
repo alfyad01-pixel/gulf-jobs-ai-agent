@@ -29,6 +29,7 @@ jobs:
       - name: Download project
         uses: actions/checkout@v4
 
+
       # ==========================================================
       # 2. FETCH JOBS FROM APIFY
       # ==========================================================
@@ -139,15 +140,9 @@ jobs:
                   "mode": "search",
                   "query": query,
                   "location": location,
-
-                  # Number per search
                   "maxResults": 10,
-
-                  # Keep search fast
                   "includeDetails": False,
-
                   "compact": True,
-
                   "excludeEmptyFields": True
               }
 
@@ -166,13 +161,10 @@ jobs:
 
               run_id = run.get("id")
 
-              dataset_id = run.get(
-                  "defaultDatasetId"
-              )
-
               if not run_id:
                   raise RuntimeError(
-                      f"No run ID returned for {query} - {location}"
+                      f"No run ID returned for "
+                      f"{query} - {location}"
                   )
 
               print(
@@ -184,8 +176,7 @@ jobs:
               return {
                   "query": query,
                   "location": location,
-                  "run_id": run_id,
-                  "dataset_id": dataset_id
+                  "run_id": run_id
               }
 
           # ------------------------------------------------------
@@ -241,7 +232,7 @@ jobs:
           )
 
           # ------------------------------------------------------
-          # WAIT FOR RUNS
+          # WAIT FOR RUN
           # ------------------------------------------------------
 
           def wait_for_run(run):
@@ -267,7 +258,8 @@ jobs:
                   if time.time() - started > max_wait:
 
                       print(
-                          f"TIMEOUT: {query} - {location}"
+                          f"TIMEOUT: "
+                          f"{query} - {location}"
                       )
 
                       return None
@@ -618,7 +610,6 @@ jobs:
 
               text = text.lower()
 
-              # Fresher / entry level
               fresher_patterns = [
                   r"\bfresher\b",
                   r"\bfresh graduate\b",
@@ -627,9 +618,9 @@ jobs:
                   r"\bentry-level\b",
                   r"\bno experience\b",
                   r"\bwithout experience\b",
-                  r"\b0\s*[-to]+\s*1\s*years?\b",
-                  r"\b0\s*[-to]+\s*2\s*years?\b",
-                  r"\b0\s*[-to]+\s*3\s*years?\b",
+                  r"\b0\s*(?:-|to)\s*1\s*years?\b",
+                  r"\b0\s*(?:-|to)\s*2\s*years?\b",
+                  r"\b0\s*(?:-|to)\s*3\s*years?\b",
                   r"\b0\s*years?\b"
               ]
 
@@ -646,9 +637,8 @@ jobs:
                           "years": 0
                       }
 
-              # 1-2 years
               patterns = [
-                  r"(\d+)\s*[-to]+\s*(\d+)\s*years?",
+                  r"(\d+)\s*(?:-|to)\s*(\d+)\s*years?",
                   r"(\d+)\s*years?"
               ]
 
@@ -724,17 +714,13 @@ jobs:
 
               matches = []
 
-              # Strong chemical / petrochemical matches
               strong_terms = [
-
                   "chemical engineering",
                   "chemical engineer",
                   "petrochemical engineering",
                   "petrochemical engineer",
-
                   "chemical technology",
                   "petrochemical",
-
                   "chemistry",
                   "process engineering"
               ]
@@ -743,18 +729,9 @@ jobs:
 
                   if term in text:
 
-                      if (
-                          "chemical"
-                          in term
-                          or "petrochemical"
-                          in term
-                          or "process engineering"
-                          in term
-                      ):
-
-                          matches.append(
-                              term
-                          )
+                      matches.append(
+                          term
+                      )
 
               return list(
                   dict.fromkeys(matches)
@@ -780,7 +757,6 @@ jobs:
                           role_clean
                       )
 
-              # Important related roles
               related = [
                   "chemical engineer",
                   "process engineer",
@@ -952,7 +928,9 @@ jobs:
               )
 
               score = 0
+
               reasons = []
+
               concerns = []
 
               # --------------------------------------------------
@@ -1162,16 +1140,23 @@ jobs:
               ranked.append({
 
                   "score": score,
+
                   "action": action,
 
                   "title": title,
+
                   "company": company,
+
                   "location": location,
 
                   "experience": exp["label"],
-                  "experience_fit": exp["fit"],
 
-                  "role_match": roles,
+                  "experience_fit":
+                      exp["fit"],
+
+                  "role_match":
+                      roles,
+
                   "education_match":
                       education_matches,
 
@@ -1187,7 +1172,8 @@ jobs:
                   "concerns":
                       concerns,
 
-                  "url": url,
+                  "url":
+                      url,
 
                   "original_job":
                       job
@@ -1247,6 +1233,7 @@ jobs:
           ):
 
               print("")
+
               print(
                   f"#{index} "
                   f"{job['score']}/100 - "
@@ -1349,6 +1336,7 @@ jobs:
                   counts[action] += 1
 
           print("")
+
           print("=" * 70)
           print("FINAL SUMMARY")
           print("=" * 70)
@@ -1408,17 +1396,1024 @@ jobs:
 
 
       # ==========================================================
-      # 4. SAVE RESULTS TO GITHUB
+      # 4. CREATE JOBS DASHBOARD
+      # ==========================================================
+      - name: Create Jobs Dashboard
+        run: |
+
+          python - <<'PY'
+
+          import json
+          from html import escape
+          from datetime import datetime, timezone
+
+          # ======================================================
+          # LOAD RANKED JOBS
+          # ======================================================
+
+          with open(
+              "ranked_jobs.json",
+              "r",
+              encoding="utf-8"
+          ) as f:
+
+              jobs = json.load(f)
+
+          if isinstance(jobs, dict):
+
+              jobs = jobs.get(
+                  "jobs",
+                  []
+              )
+
+          # ======================================================
+          # HELPERS
+          # ======================================================
+
+          def get_action(job):
+
+              return str(
+                  job.get(
+                      "action",
+                      ""
+                  )
+              ).upper().strip()
+
+
+          def get_score(job):
+
+              try:
+
+                  return int(
+                      job.get(
+                          "score",
+                          0
+                      )
+                  )
+
+              except:
+
+                  return 0
+
+
+          def get_list(value):
+
+              if isinstance(
+                  value,
+                  list
+              ):
+
+                  return ", ".join(
+                      str(x)
+                      for x in value
+                  )
+
+              return str(
+                  value or ""
+              )
+
+
+          # ======================================================
+          # COUNTS
+          # ======================================================
+
+          total = len(jobs)
+
+          counts = {
+              "APPLY NOW": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "APPLY NOW"
+              ),
+
+              "APPLY": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "APPLY"
+              ),
+
+              "REVIEW": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "REVIEW"
+              ),
+
+              "LOW PRIORITY": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "LOW PRIORITY"
+              ),
+
+              "SKIP": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "SKIP"
+              )
+          }
+
+          # ======================================================
+          # SORT
+          # ======================================================
+
+          jobs = sorted(
+              jobs,
+              key=get_score,
+              reverse=True
+          )
+
+          # ======================================================
+          # BADGE
+          # ======================================================
+
+          def badge(action):
+
+              classes = {
+                  "APPLY NOW": "apply-now",
+                  "APPLY": "apply",
+                  "REVIEW": "review",
+                  "LOW PRIORITY": "low",
+                  "SKIP": "skip"
+              }
+
+              cls = classes.get(
+                  action,
+                  "review"
+              )
+
+              return (
+                  f'<span class="badge {cls}">'
+                  f'{escape(action)}'
+                  f'</span>'
+              )
+
+          # ======================================================
+          # TABLE ROWS
+          # ======================================================
+
+          rows = []
+
+          for index, job in enumerate(
+              jobs,
+              1
+          ):
+
+              title = escape(
+                  str(
+                      job.get(
+                          "title",
+                          "Unknown Job"
+                      )
+                  )
+              )
+
+              company = escape(
+                  str(
+                      job.get(
+                          "company",
+                          "Unknown"
+                      )
+                  )
+              )
+
+              location = escape(
+                  str(
+                      job.get(
+                          "location",
+                          "Unknown"
+                      )
+                  )
+              )
+
+              score = get_score(
+                  job
+              )
+
+              action = get_action(
+                  job
+              )
+
+              experience = escape(
+                  str(
+                      job.get(
+                          "experience",
+                          "Not specified"
+                      )
+                  )
+              )
+
+              experience_fit = escape(
+                  str(
+                      job.get(
+                          "experience_fit",
+                          "Unknown"
+                      )
+                  )
+              )
+
+              role_match = escape(
+                  get_list(
+                      job.get(
+                          "role_match",
+                          []
+                      )
+                  )
+              )
+
+              education_match = escape(
+                  get_list(
+                      job.get(
+                          "education_match",
+                          []
+                      )
+                  )
+              )
+
+              skills_match = escape(
+                  get_list(
+                      job.get(
+                          "skills_match",
+                          []
+                      )
+                  )
+              )
+
+              concerns = escape(
+                  get_list(
+                      job.get(
+                          "concerns",
+                          []
+                      )
+                  )
+              )
+
+              reason = escape(
+                  str(
+                      job.get(
+                          "action_reason",
+                          ""
+                      )
+                  )
+              )
+
+              url = (
+                  job.get("url")
+                  or job.get("jobUrl")
+                  or job.get("job_url")
+                  or ""
+              )
+
+              if url:
+
+                  link = (
+                      '<a class="job-link" '
+                      f'href="{escape(str(url), quote=True)}" '
+                      'target="_blank" '
+                      'rel="noopener noreferrer">'
+                      'Open Job ↗'
+                      '</a>'
+                  )
+
+              else:
+
+                  link = (
+                      '<span class="no-link">'
+                      'No URL'
+                      '</span>'
+                  )
+
+              rows.append(
+                  f"""
+                  <tr data-action="{escape(action)}">
+
+                    <td class="rank">
+                      {index}
+                    </td>
+
+                    <td class="score">
+                      <strong>
+                        {score}
+                      </strong>
+                        /100
+                    </td>
+
+                    <td>
+                      {badge(action)}
+                    </td>
+
+                    <td>
+                      <div class="job-title">
+                        {title}
+                      </div>
+
+                      <div class="company">
+                        {company}
+                      </div>
+
+                      <div class="location">
+                        📍 {location}
+                      </div>
+                    </td>
+
+                    <td>
+                      <strong>
+                        {experience}
+                      </strong>
+
+                      <div class="small">
+                        {experience_fit}
+                      </div>
+                    </td>
+
+                    <td>
+                      {role_match or "—"}
+                    </td>
+
+                    <td>
+                      {education_match or "—"}
+                    </td>
+
+                    <td>
+                      {skills_match or "—"}
+                    </td>
+
+                    <td class="reason">
+                      {reason}
+                    </td>
+
+                    <td class="concerns">
+                      {concerns or "None"}
+                    </td>
+
+                    <td>
+                      {link}
+                    </td>
+
+                  </tr>
+                  """
+              )
+
+          table_rows = "\n".join(
+              rows
+          )
+
+          # ======================================================
+          # GENERATION TIME
+          # ======================================================
+
+          generated = datetime.now(
+              timezone.utc
+          ).strftime(
+              "%Y-%m-%d %H:%M UTC"
+          )
+
+          # ======================================================
+          # HTML
+          # ======================================================
+
+          html = f"""
+          <!DOCTYPE html>
+
+          <html lang="en">
+
+          <head>
+
+            <meta charset="UTF-8">
+
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1.0"
+            >
+
+            <title>
+              Gulf Jobs AI Agent Dashboard
+            </title>
+
+            <style>
+
+              * {{
+                box-sizing: border-box;
+              }}
+
+              body {{
+                margin: 0;
+                padding: 0;
+                font-family:
+                  Arial,
+                  Helvetica,
+                  sans-serif;
+                background: #f4f6f8;
+                color: #1f2937;
+              }}
+
+              .header {{
+                background: #111827;
+                color: white;
+                padding: 28px 32px;
+              }}
+
+              .header h1 {{
+                margin: 0 0 8px 0;
+                font-size: 28px;
+              }}
+
+              .header p {{
+                margin: 0;
+                color: #d1d5db;
+              }}
+
+              .container {{
+                max-width: 1800px;
+                margin: 0 auto;
+                padding: 25px;
+              }}
+
+              .cards {{
+                display: grid;
+                grid-template-columns:
+                  repeat(
+                    5,
+                    minmax(
+                      150px,
+                      1fr
+                    )
+                  );
+                gap: 15px;
+                margin-bottom: 25px;
+              }}
+
+              .card {{
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                box-shadow:
+                  0 2px 8px
+                  rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                  );
+              }}
+
+              .card-title {{
+                font-size: 13px;
+                color: #6b7280;
+                text-transform: uppercase;
+                font-weight: bold;
+              }}
+
+              .card-number {{
+                font-size: 32px;
+                font-weight: bold;
+                margin-top: 8px;
+              }}
+
+              .apply-now-card {{
+                border-top: 5px solid #16a34a;
+              }}
+
+              .apply-card {{
+                border-top: 5px solid #2563eb;
+              }}
+
+              .review-card {{
+                border-top: 5px solid #f59e0b;
+              }}
+
+              .low-card {{
+                border-top: 5px solid #9333ea;
+              }}
+
+              .skip-card {{
+                border-top: 5px solid #6b7280;
+              }}
+
+              .controls {{
+                background: white;
+                padding: 18px;
+                border-radius: 12px;
+                margin-bottom: 20px;
+                box-shadow:
+                  0 2px 8px
+                  rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                  );
+              }}
+
+              .controls input,
+              .controls select {{
+                padding: 11px 14px;
+                border: 1px solid #d1d5db;
+                border-radius: 8px;
+                font-size: 14px;
+                margin-right: 10px;
+                margin-bottom: 8px;
+              }}
+
+              .table-wrapper {{
+                background: white;
+                border-radius: 12px;
+                overflow: auto;
+                box-shadow:
+                  0 2px 8px
+                  rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                  );
+              }}
+
+              table {{
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 1500px;
+              }}
+
+              th {{
+                background: #1f2937;
+                color: white;
+                padding: 14px 10px;
+                text-align: left;
+                font-size: 12px;
+                position: sticky;
+                top: 0;
+                z-index: 2;
+              }}
+
+              td {{
+                padding: 13px 10px;
+                border-bottom:
+                  1px solid #e5e7eb;
+                vertical-align: top;
+                font-size: 13px;
+              }}
+
+              tr:hover {{
+                background: #f9fafb;
+              }}
+
+              .rank {{
+                font-weight: bold;
+                color: #6b7280;
+              }}
+
+              .score {{
+                white-space: nowrap;
+                font-size: 15px;
+              }}
+
+              .job-title {{
+                font-weight: bold;
+                font-size: 14px;
+                margin-bottom: 5px;
+              }}
+
+              .company {{
+                color: #374151;
+                margin-bottom: 4px;
+              }}
+
+              .location {{
+                color: #6b7280;
+                font-size: 12px;
+              }}
+
+              .small {{
+                color: #6b7280;
+                font-size: 11px;
+                margin-top: 5px;
+              }}
+
+              .badge {{
+                display: inline-block;
+                padding: 6px 9px;
+                border-radius: 999px;
+                font-size: 11px;
+                font-weight: bold;
+                white-space: nowrap;
+              }}
+
+              .apply-now {{
+                background: #dcfce7;
+                color: #166534;
+              }}
+
+              .apply {{
+                background: #dbeafe;
+                color: #1d4ed8;
+              }}
+
+              .review {{
+                background: #fef3c7;
+                color: #92400e;
+              }}
+
+              .low {{
+                background: #f3e8ff;
+                color: #7e22ce;
+              }}
+
+              .skip {{
+                background: #e5e7eb;
+                color: #374151;
+              }}
+
+              .reason {{
+                min-width: 220px;
+              }}
+
+              .concerns {{
+                min-width: 200px;
+                color: #b45309;
+              }}
+
+              .job-link {{
+                display: inline-block;
+                background: #111827;
+                color: white;
+                text-decoration: none;
+                padding: 8px 11px;
+                border-radius: 7px;
+                font-size: 12px;
+                white-space: nowrap;
+              }}
+
+              .job-link:hover {{
+                background: #374151;
+              }}
+
+              .no-link {{
+                color: #9ca3af;
+              }}
+
+              .footer {{
+                text-align: center;
+                color: #6b7280;
+                font-size: 12px;
+                padding: 25px;
+              }}
+
+              @media (
+                max-width: 900px
+              ) {{
+
+                .cards {{
+                  grid-template-columns:
+                    repeat(
+                      2,
+                      minmax(
+                        140px,
+                        1fr
+                      )
+                    );
+                }}
+
+                .container {{
+                  padding: 12px;
+                }}
+
+                .header {{
+                  padding: 22px 18px;
+                }}
+
+              }}
+
+            </style>
+
+          </head>
+
+          <body>
+
+            <div class="header">
+
+              <h1>
+                Gulf Jobs AI Agent
+              </h1>
+
+              <p>
+                Chemical / Process /
+                Production / Petrochemical
+                Jobs Dashboard
+              </p>
+
+              <p style="margin-top:8px;">
+                Generated:
+                {generated}
+              </p>
+
+            </div>
+
+
+            <div class="container">
+
+              <div class="cards">
+
+                <div class="card">
+                  <div class="card-title">
+                    Total Jobs
+                  </div>
+
+                  <div class="card-number">
+                    {total}
+                  </div>
+                </div>
+
+
+                <div class="card apply-now-card">
+                  <div class="card-title">
+                    Apply Now
+                  </div>
+
+                  <div class="card-number">
+                    {counts["APPLY NOW"]}
+                  </div>
+                </div>
+
+
+                <div class="card apply-card">
+                  <div class="card-title">
+                    Apply
+                  </div>
+
+                  <div class="card-number">
+                    {counts["APPLY"]}
+                  </div>
+                </div>
+
+
+                <div class="card review-card">
+                  <div class="card-title">
+                    Review
+                  </div>
+
+                  <div class="card-number">
+                    {counts["REVIEW"]}
+                  </div>
+                </div>
+
+
+                <div class="card skip-card">
+                  <div class="card-title">
+                    Skip
+                  </div>
+
+                  <div class="card-number">
+                    {counts["SKIP"]}
+                  </div>
+                </div>
+
+              </div>
+
+
+              <div class="controls">
+
+                <input
+                  type="text"
+                  id="search"
+                  placeholder="Search jobs, companies, locations..."
+                  onkeyup="filterJobs()"
+                >
+
+                <select
+                  id="actionFilter"
+                  onchange="filterJobs()"
+                >
+
+                  <option value="">
+                    All Actions
+                  </option>
+
+                  <option value="APPLY NOW">
+                    APPLY NOW
+                  </option>
+
+                  <option value="APPLY">
+                    APPLY
+                  </option>
+
+                  <option value="REVIEW">
+                    REVIEW
+                  </option>
+
+                  <option value="LOW PRIORITY">
+                    LOW PRIORITY
+                  </option>
+
+                  <option value="SKIP">
+                    SKIP
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <div class="table-wrapper">
+
+                <table id="jobsTable">
+
+                  <thead>
+
+                    <tr>
+
+                      <th>
+                        #
+                      </th>
+
+                      <th>
+                        Score
+                      </th>
+
+                      <th>
+                        Action
+                      </th>
+
+                      <th>
+                        Job
+                      </th>
+
+                      <th>
+                        Experience
+                      </th>
+
+                      <th>
+                        Role Match
+                      </th>
+
+                      <th>
+                        Education
+                      </th>
+
+                      <th>
+                        Skills
+                      </th>
+
+                      <th>
+                        Reason
+                      </th>
+
+                      <th>
+                        Concerns
+                      </th>
+
+                      <th>
+                        Link
+                      </th>
+
+                    </tr>
+
+                  </thead>
+
+                  <tbody>
+
+                    {table_rows}
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+            </div>
+
+
+            <div class="footer">
+
+              Gulf Jobs AI Agent
+              —
+              Automated Job Analysis Dashboard
+
+            </div>
+
+
+            <script>
+
+              function filterJobs() {{
+
+                const search =
+                  document
+                    .getElementById(
+                      "search"
+                    )
+                    .value
+                    .toLowerCase();
+
+                const action =
+                  document
+                    .getElementById(
+                      "actionFilter"
+                    )
+                    .value
+                    .toUpperCase();
+
+                const rows =
+                  document.querySelectorAll(
+                    "#jobsTable tbody tr"
+                  );
+
+                rows.forEach(
+                  function(row) {{
+
+                    const text =
+                      row.textContent
+                        .toLowerCase();
+
+                    const rowAction =
+                      row
+                        .getAttribute(
+                          "data-action"
+                        )
+                        .toUpperCase();
+
+                    const searchMatch =
+                      !search ||
+                      text.includes(
+                        search
+                      );
+
+                    const actionMatch =
+                      !action ||
+                      rowAction === action;
+
+                    row.style.display =
+                      (
+                        searchMatch &&
+                        actionMatch
+                      )
+                      ? ""
+                      : "none";
+
+                  }}
+                );
+
+              }}
+
+            </script>
+
+          </body>
+
+          </html>
+          """
+
+          # ======================================================
+          # SAVE DASHBOARD
+          # ======================================================
+
+          with open(
+              "jobs-dashboard.html",
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              f.write(
+                  html
+              )
+
+          print(
+              "Dashboard created successfully."
+          )
+
+          print(
+              "File: jobs-dashboard.html"
+          )
+
+          print(
+              f"Jobs displayed: {total}"
+          )
+
+          PY
+
+
+      # ==========================================================
+      # 5. UPLOAD DASHBOARD
+      # ==========================================================
+      - name: Upload Jobs Dashboard
+        uses: actions/upload-artifact@v4
+        with:
+          name: gulf-jobs-dashboard
+          path: jobs-dashboard.html
+          retention-days: 30
+
+
+      # ==========================================================
+      # 6. SAVE RESULTS TO GITHUB
       # ==========================================================
       - name: Save analysis results
         run: |
 
-          git config user.name "Gulf Jobs AI Agent"
+          git config user.name \
+            "Gulf Jobs AI Agent"
 
           git config user.email \
             "actions@github.com"
 
-          git add jobs.json ranked_jobs.json
+          git add \
+            jobs.json \
+            ranked_jobs.json
 
           git diff --cached --quiet || \
             git commit \
