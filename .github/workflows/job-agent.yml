@@ -1419,4 +1419,1402 @@ jobs:
                       ).strip().lower(),
 
                   "location":
-                     
+                      str(
+                          job.get("location")
+                          or ""
+                      ).strip().lower(),
+
+                  "url":
+                      str(
+                          job.get("url")
+                          or ""
+                      ).strip().lower(),
+
+                  "description":
+                      str(
+                          original.get(
+                              "description"
+                          )
+                          or original.get(
+                              "descriptionText"
+                          )
+                          or original.get(
+                              "jobDescription"
+                          )
+                          or ""
+                      ).strip().lower()
+              }
+
+              raw = json.dumps(
+                  important,
+                  sort_keys=True,
+                  ensure_ascii=False
+              )
+
+              return hashlib.sha256(
+                  raw.encode("utf-8")
+              ).hexdigest()
+
+          # ------------------------------------------------------
+          # PROCESS CURRENT JOBS
+          # ------------------------------------------------------
+
+          new_count = 0
+          updated_count = 0
+          seen_count = 0
+
+          for job in ranked:
+
+              key = job_key(
+                  job
+              )
+
+              fp = fingerprint(
+                  job
+              )
+
+              if key not in history:
+
+                  status = "NEW"
+
+                  new_count += 1
+
+                  first_seen = now
+
+              else:
+
+                  old = history[key]
+
+                  first_seen = old.get(
+                      "first_seen",
+                      now
+                  )
+
+                  old_fp = old.get(
+                      "fingerprint",
+                      ""
+                  )
+
+                  if old_fp != fp:
+
+                      status = "UPDATED"
+
+                      updated_count += 1
+
+                  else:
+
+                      status = "SEEN"
+
+                      seen_count += 1
+
+              job["history_status"] = status
+
+              history[key] = {
+
+                  "title":
+                      job.get(
+                          "title",
+                          ""
+                      ),
+
+                  "company":
+                      job.get(
+                          "company",
+                          ""
+                      ),
+
+                  "location":
+                      job.get(
+                          "location",
+                          ""
+                      ),
+
+                  "url":
+                      job.get(
+                          "url",
+                          ""
+                      ),
+
+                  "first_seen":
+                      first_seen,
+
+                  "last_seen":
+                      now,
+
+                  "fingerprint":
+                      fp,
+
+                  "last_score":
+                      job.get(
+                          "score",
+                          0
+                      ),
+
+                  "last_action":
+                      job.get(
+                          "action",
+                          ""
+                      )
+              }
+
+          # ------------------------------------------------------
+          # SAVE HISTORY
+          # ------------------------------------------------------
+
+          with open(
+              HISTORY_FILE,
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  history,
+                  f,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+          # ------------------------------------------------------
+          # SAVE UPDATED RANKED JOBS
+          # ------------------------------------------------------
+
+          with open(
+              "ranked_jobs.json",
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  ranked,
+                  f,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+          # ------------------------------------------------------
+          # HISTORY SUMMARY
+          # ------------------------------------------------------
+
+          print("")
+          print("=" * 70)
+          print("JOB HISTORY")
+          print("=" * 70)
+
+          print(
+              "NEW:",
+              new_count
+          )
+
+          print(
+              "UPDATED:",
+              updated_count
+          )
+
+          print(
+              "SEEN:",
+              seen_count
+          )
+
+          print(
+              "TOTAL HISTORY:",
+              len(history)
+          )
+
+          print("=" * 70)
+
+          PY
+
+      # ==========================================================
+      # 5. CREATE JOBS DASHBOARD
+      # ==========================================================
+
+      - name: Create Jobs Dashboard
+        run: |
+
+          python - <<'PY'
+
+          import json
+          from html import escape
+          from datetime import datetime, timezone
+
+          with open(
+              "ranked_jobs.json",
+              "r",
+              encoding="utf-8"
+          ) as f:
+
+              jobs = json.load(f)
+
+          if isinstance(
+              jobs,
+              dict
+          ):
+
+              jobs = jobs.get(
+                  "jobs",
+                  []
+              )
+
+          def get_action(job):
+
+              return str(
+                  job.get(
+                      "action",
+                      ""
+                  )
+              ).upper().strip()
+
+          def get_score(job):
+
+              try:
+
+                  return int(
+                      job.get(
+                          "score",
+                          0
+                      )
+                  )
+
+              except:
+
+                  return 0
+
+          def get_status(job):
+
+              return str(
+                  job.get(
+                      "history_status",
+                      "SEEN"
+                  )
+              ).upper()
+
+          def get_list(value):
+
+              if isinstance(
+                  value,
+                  list
+              ):
+
+                  return ", ".join(
+                      str(x)
+                      for x in value
+                  )
+
+              return str(
+                  value or ""
+              )
+
+          # ======================================================
+          # COUNTS
+          # ======================================================
+
+          total = len(
+              jobs
+          )
+
+          counts = {
+
+              "APPLY NOW": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "APPLY NOW"
+              ),
+
+              "APPLY": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "APPLY"
+              ),
+
+              "REVIEW": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "REVIEW"
+              ),
+
+              "LOW PRIORITY": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "LOW PRIORITY"
+              ),
+
+              "SKIP": sum(
+                  1
+                  for j in jobs
+                  if get_action(j) == "SKIP"
+              ),
+
+              "NEW": sum(
+                  1
+                  for j in jobs
+                  if get_status(j) == "NEW"
+              ),
+
+              "UPDATED": sum(
+                  1
+                  for j in jobs
+                  if get_status(j) == "UPDATED"
+              )
+          }
+
+          # ======================================================
+          # SORT
+          # ======================================================
+
+          action_order = {
+
+              "APPLY NOW": 0,
+              "APPLY": 1,
+              "REVIEW": 2,
+              "LOW PRIORITY": 3,
+              "SKIP": 4
+          }
+
+          jobs = sorted(
+
+              jobs,
+
+              key=lambda j: (
+
+                  action_order.get(
+                      get_action(j),
+                      9
+                  ),
+
+                  -get_score(j)
+              )
+          )
+
+          # ======================================================
+          # BADGES
+          # ======================================================
+
+          def action_badge(action):
+
+              classes = {
+
+                  "APPLY NOW": "apply-now",
+                  "APPLY": "apply",
+                  "REVIEW": "review",
+                  "LOW PRIORITY": "low",
+                  "SKIP": "skip"
+              }
+
+              cls = classes.get(
+                  action,
+                  "review"
+              )
+
+              return (
+                  f'<span class="badge {cls}">'
+                  f'{escape(action)}'
+                  f'</span>'
+              )
+
+          def history_badge(status):
+
+              classes = {
+
+                  "NEW": "new",
+                  "UPDATED": "updated",
+                  "SEEN": "seen"
+              }
+
+              cls = classes.get(
+                  status,
+                  "seen"
+              )
+
+              return (
+                  f'<span class="history {cls}">'
+                  f'{escape(status)}'
+                  f'</span>'
+              )
+
+          # ======================================================
+          # TABLE
+          # ======================================================
+
+          rows = []
+
+          for index, job in enumerate(
+              jobs,
+              1
+          ):
+
+              title = escape(
+                  str(
+                      job.get(
+                          "title",
+                          "Unknown Job"
+                      )
+                  )
+              )
+
+              company = escape(
+                  str(
+                      job.get(
+                          "company",
+                          "Unknown"
+                      )
+                  )
+              )
+
+              location = escape(
+                  str(
+                      job.get(
+                          "location",
+                          "Unknown"
+                      )
+                  )
+              )
+
+              score = get_score(
+                  job
+              )
+
+              action = get_action(
+                  job
+              )
+
+              status = get_status(
+                  job
+              )
+
+              experience = escape(
+                  str(
+                      job.get(
+                          "experience",
+                          "Not specified"
+                      )
+                  )
+              )
+
+              experience_fit = escape(
+                  str(
+                      job.get(
+                          "experience_fit",
+                          "Unknown"
+                      )
+                  )
+              )
+
+              role_match = escape(
+                  get_list(
+                      job.get(
+                          "role_match",
+                          []
+                      )
+                  )
+              )
+
+              education_match = escape(
+                  get_list(
+                      job.get(
+                          "education_match",
+                          []
+                      )
+                  )
+              )
+
+              skills_match = escape(
+                  get_list(
+                      job.get(
+                          "skills_match",
+                          []
+                      )
+                  )
+              )
+
+              concerns = escape(
+                  get_list(
+                      job.get(
+                          "concerns",
+                          []
+                      )
+                  )
+              )
+
+              reason = escape(
+                  str(
+                      job.get(
+                          "action_reason",
+                          ""
+                      )
+                  )
+              )
+
+              url = (
+                  job.get("url")
+                  or job.get("jobUrl")
+                  or job.get("job_url")
+                  or ""
+              )
+
+              if url:
+
+                  link = (
+                      '<a class="job-link" '
+                      f'href="{escape(str(url), quote=True)}" '
+                      'target="_blank" '
+                      'rel="noopener noreferrer">'
+                      'Open Job ↗'
+                      '</a>'
+                  )
+
+              else:
+
+                  link = (
+                      '<span class="no-link">'
+                      'No URL'
+                      '</span>'
+                  )
+
+              rows.append(
+
+                  f"""
+                  <tr
+                    data-action="{escape(action)}"
+                    data-status="{escape(status)}"
+                  >
+
+                    <td class="rank">
+                      {index}
+                    </td>
+
+                    <td class="score">
+                      <strong>
+                        {score}
+                      </strong>
+                      /100
+                    </td>
+
+                    <td>
+                      {action_badge(action)}
+                    </td>
+
+                    <td>
+                      {history_badge(status)}
+                    </td>
+
+                    <td>
+
+                      <div class="job-title">
+                        {title}
+                      </div>
+
+                      <div class="company">
+                        {company}
+                      </div>
+
+                      <div class="location">
+                        📍 {location}
+                      </div>
+
+                    </td>
+
+                    <td>
+
+                      <strong>
+                        {experience}
+                      </strong>
+
+                      <div class="small">
+                        {experience_fit}
+                      </div>
+
+                    </td>
+
+                    <td>
+                      {role_match or "—"}
+                    </td>
+
+                    <td>
+                      {education_match or "—"}
+                    </td>
+
+                    <td>
+                      {skills_match or "—"}
+                    </td>
+
+                    <td class="reason">
+                      {reason}
+                    </td>
+
+                    <td class="concerns">
+                      {concerns or "None"}
+                    </td>
+
+                    <td>
+                      {link}
+                    </td>
+
+                  </tr>
+                  """
+              )
+
+          table_rows = "\n".join(
+              rows
+          )
+
+          generated = datetime.now(
+              timezone.utc
+          ).strftime(
+              "%Y-%m-%d %H:%M UTC"
+          )
+
+          # ======================================================
+          # HTML
+          # ======================================================
+
+          html = f"""
+
+          <!DOCTYPE html>
+
+          <html lang="en">
+
+          <head>
+
+            <meta charset="UTF-8">
+
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1.0"
+            >
+
+            <title>
+              Gulf Jobs AI Agent Dashboard
+            </title>
+
+            <style>
+
+              * {{
+                box-sizing: border-box;
+              }}
+
+              body {{
+                margin: 0;
+                padding: 0;
+                font-family:
+                  Arial,
+                  Helvetica,
+                  sans-serif;
+                background: #f4f6f8;
+                color: #1f2937;
+              }}
+
+              .header {{
+                background: #111827;
+                color: white;
+                padding: 28px 32px;
+              }}
+
+              .header h1 {{
+                margin: 0 0 8px 0;
+                font-size: 28px;
+              }}
+
+              .header p {{
+                margin: 0;
+                color: #d1d5db;
+              }}
+
+              .container {{
+                max-width: 1900px;
+                margin: 0 auto;
+                padding: 25px;
+              }}
+
+              .cards {{
+                display: grid;
+                grid-template-columns:
+                  repeat(
+                    7,
+                    minmax(
+                      130px,
+                      1fr
+                    )
+                  );
+                gap: 12px;
+                margin-bottom: 25px;
+              }}
+
+              .card {{
+                background: white;
+                border-radius: 12px;
+                padding: 18px;
+                box-shadow:
+                  0 2px 8px
+                  rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                  );
+              }}
+
+              .card-title {{
+                font-size: 12px;
+                color: #6b7280;
+                text-transform: uppercase;
+                font-weight: bold;
+              }}
+
+              .card-number {{
+                font-size: 30px;
+                font-weight: bold;
+                margin-top: 8px;
+              }}
+
+              .new-card {{
+                border-top: 5px solid #16a34a;
+              }}
+
+              .updated-card {{
+                border-top: 5px solid #f59e0b;
+              }}
+
+              .apply-now-card {{
+                border-top: 5px solid #16a34a;
+              }}
+
+              .apply-card {{
+                border-top: 5px solid #2563eb;
+              }}
+
+              .review-card {{
+                border-top: 5px solid #f59e0b;
+              }}
+
+              .skip-card {{
+                border-top: 5px solid #6b7280;
+              }}
+
+              .controls {{
+                background: white;
+                padding: 18px;
+                border-radius: 12px;
+                margin-bottom: 20px;
+                box-shadow:
+                  0 2px 8px
+                  rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                  );
+              }}
+
+              .controls input,
+              .controls select {{
+                padding: 11px 14px;
+                border: 1px solid #d1d5db;
+                border-radius: 8px;
+                font-size: 14px;
+                margin-right: 10px;
+                margin-bottom: 8px;
+              }}
+
+              .table-wrapper {{
+                background: white;
+                border-radius: 12px;
+                overflow: auto;
+                box-shadow:
+                  0 2px 8px
+                  rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                  );
+              }}
+
+              table {{
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 1700px;
+              }}
+
+              th {{
+                background: #1f2937;
+                color: white;
+                padding: 14px 10px;
+                text-align: left;
+                font-size: 12px;
+                position: sticky;
+                top: 0;
+                z-index: 2;
+              }}
+
+              td {{
+                padding: 13px 10px;
+                border-bottom:
+                  1px solid #e5e7eb;
+                vertical-align: top;
+                font-size: 13px;
+              }}
+
+              tr:hover {{
+                background: #f9fafb;
+              }}
+
+              .rank {{
+                font-weight: bold;
+                color: #6b7280;
+              }}
+
+              .score {{
+                white-space: nowrap;
+                font-size: 15px;
+              }}
+
+              .job-title {{
+                font-weight: bold;
+                font-size: 14px;
+                margin-bottom: 5px;
+              }}
+
+              .company {{
+                color: #374151;
+                margin-bottom: 4px;
+              }}
+
+              .location {{
+                color: #6b7280;
+                font-size: 12px;
+              }}
+
+              .small {{
+                color: #6b7280;
+                font-size: 11px;
+                margin-top: 5px;
+              }}
+
+              .badge {{
+                display: inline-block;
+                padding: 6px 9px;
+                border-radius: 999px;
+                font-size: 11px;
+                font-weight: bold;
+                white-space: nowrap;
+              }}
+
+              .apply-now {{
+                background: #dcfce7;
+                color: #166534;
+              }}
+
+              .apply {{
+                background: #dbeafe;
+                color: #1d4ed8;
+              }}
+
+              .review {{
+                background: #fef3c7;
+                color: #92400e;
+              }}
+
+              .low {{
+                background: #f3e8ff;
+                color: #7e22ce;
+              }}
+
+              .skip {{
+                background: #e5e7eb;
+                color: #374151;
+              }}
+
+              .history {{
+                display: inline-block;
+                padding: 5px 8px;
+                border-radius: 999px;
+                font-size: 10px;
+                font-weight: bold;
+                white-space: nowrap;
+              }}
+
+              .new {{
+                background: #dcfce7;
+                color: #166534;
+              }}
+
+              .updated {{
+                background: #fef3c7;
+                color: #92400e;
+              }}
+
+              .seen {{
+                background: #e5e7eb;
+                color: #4b5563;
+              }}
+
+              .reason {{
+                min-width: 220px;
+              }}
+
+              .concerns {{
+                min-width: 200px;
+                color: #b45309;
+              }}
+
+              .job-link {{
+                display: inline-block;
+                background: #111827;
+                color: white;
+                text-decoration: none;
+                padding: 8px 11px;
+                border-radius: 7px;
+                font-size: 12px;
+                white-space: nowrap;
+              }}
+
+              .job-link:hover {{
+                background: #374151;
+              }}
+
+              .no-link {{
+                color: #9ca3af;
+              }}
+
+              .footer {{
+                text-align: center;
+                color: #6b7280;
+                font-size: 12px;
+                padding: 25px;
+              }}
+
+              @media (
+                max-width: 1200px
+              ) {{
+
+                .cards {{
+                  grid-template-columns:
+                    repeat(
+                      3,
+                      minmax(
+                        130px,
+                        1fr
+                      )
+                    );
+                }}
+              }}
+
+              @media (
+                max-width: 700px
+              ) {{
+
+                .cards {{
+                  grid-template-columns:
+                    repeat(
+                      2,
+                      minmax(
+                        130px,
+                        1fr
+                      )
+                    );
+                }}
+
+                .container {{
+                  padding: 12px;
+                }}
+
+                .header {{
+                  padding: 22px 18px;
+                }}
+              }}
+
+            </style>
+
+          </head>
+
+          <body>
+
+            <div class="header">
+
+              <h1>
+                Gulf Jobs AI Agent
+              </h1>
+
+              <p>
+                Chemical / Process /
+                Production / Petrochemical
+                Jobs Dashboard
+              </p>
+
+              <p style="margin-top:8px;">
+                Generated:
+                {generated}
+              </p>
+
+            </div>
+
+            <div class="container">
+
+              <div class="cards">
+
+                <div class="card">
+                  <div class="card-title">
+                    Total Jobs
+                  </div>
+                  <div class="card-number">
+                    {total}
+                  </div>
+                </div>
+
+                <div class="card new-card">
+                  <div class="card-title">
+                    New
+                  </div>
+                  <div class="card-number">
+                    {counts["NEW"]}
+                  </div>
+                </div>
+
+                <div class="card updated-card">
+                  <div class="card-title">
+                    Updated
+                  </div>
+                  <div class="card-number">
+                    {counts["UPDATED"]}
+                  </div>
+                </div>
+
+                <div class="card apply-now-card">
+                  <div class="card-title">
+                    Apply Now
+                  </div>
+                  <div class="card-number">
+                    {counts["APPLY NOW"]}
+                  </div>
+                </div>
+
+                <div class="card apply-card">
+                  <div class="card-title">
+                    Apply
+                  </div>
+                  <div class="card-number">
+                    {counts["APPLY"]}
+                  </div>
+                </div>
+
+                <div class="card review-card">
+                  <div class="card-title">
+                    Review
+                  </div>
+                  <div class="card-number">
+                    {counts["REVIEW"]}
+                  </div>
+                </div>
+
+                <div class="card skip-card">
+                  <div class="card-title">
+                    Skip
+                  </div>
+                  <div class="card-number">
+                    {counts["SKIP"]}
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="controls">
+
+                <input
+                  type="text"
+                  id="search"
+                  placeholder="Search jobs, companies, locations..."
+                  onkeyup="filterJobs()"
+                >
+
+                <select
+                  id="actionFilter"
+                  onchange="filterJobs()"
+                >
+
+                  <option value="">
+                    All Actions
+                  </option>
+
+                  <option value="APPLY NOW">
+                    APPLY NOW
+                  </option>
+
+                  <option value="APPLY">
+                    APPLY
+                  </option>
+
+                  <option value="REVIEW">
+                    REVIEW
+                  </option>
+
+                  <option value="LOW PRIORITY">
+                    LOW PRIORITY
+                  </option>
+
+                  <option value="SKIP">
+                    SKIP
+                  </option>
+
+                </select>
+
+                <select
+                  id="historyFilter"
+                  onchange="filterJobs()"
+                >
+
+                  <option value="">
+                    All History
+                  </option>
+
+                  <option value="NEW">
+                    NEW
+                  </option>
+
+                  <option value="UPDATED">
+                    UPDATED
+                  </option>
+
+                  <option value="SEEN">
+                    SEEN
+                  </option>
+
+                </select>
+
+              </div>
+
+              <div class="table-wrapper">
+
+                <table id="jobsTable">
+
+                  <thead>
+
+                    <tr>
+
+                      <th>
+                        #
+                      </th>
+
+                      <th>
+                        Score
+                      </th>
+
+                      <th>
+                        Action
+                      </th>
+
+                      <th>
+                        History
+                      </th>
+
+                      <th>
+                        Job
+                      </th>
+
+                      <th>
+                        Experience
+                      </th>
+
+                      <th>
+                        Role Match
+                      </th>
+
+                      <th>
+                        Education
+                      </th>
+
+                      <th>
+                        Skills
+                      </th>
+
+                      <th>
+                        Reason
+                      </th>
+
+                      <th>
+                        Concerns
+                      </th>
+
+                      <th>
+                        Link
+                      </th>
+
+                    </tr>
+
+                  </thead>
+
+                  <tbody>
+
+                    {table_rows}
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+            </div>
+
+            <div class="footer">
+
+              Gulf Jobs AI Agent
+              —
+              Automated Job Analysis Dashboard
+
+            </div>
+
+            <script>
+
+              function filterJobs() {{
+
+                const search =
+                  document
+                    .getElementById(
+                      "search"
+                    )
+                    .value
+                    .toLowerCase();
+
+                const action =
+                  document
+                    .getElementById(
+                      "actionFilter"
+                    )
+                    .value
+                    .toUpperCase();
+
+                const history =
+                  document
+                    .getElementById(
+                      "historyFilter"
+                    )
+                    .value
+                    .toUpperCase();
+
+                const rows =
+                  document.querySelectorAll(
+                    "#jobsTable tbody tr"
+                  );
+
+                rows.forEach(
+                  function(row) {{
+
+                    const text =
+                      row.textContent
+                        .toLowerCase();
+
+                    const rowAction =
+                      row
+                        .getAttribute(
+                          "data-action"
+                        )
+                        .toUpperCase();
+
+                    const rowHistory =
+                      row
+                        .getAttribute(
+                          "data-status"
+                        )
+                        .toUpperCase();
+
+                    const searchMatch =
+                      !search ||
+                      text.includes(
+                        search
+                      );
+
+                    const actionMatch =
+                      !action ||
+                      rowAction === action;
+
+                    const historyMatch =
+                      !history ||
+                      rowHistory === history;
+
+                    row.style.display =
+                      (
+                        searchMatch &&
+                        actionMatch &&
+                        historyMatch
+                      )
+                      ? ""
+                      : "none";
+
+                  }}
+                );
+
+              }}
+
+            </script>
+
+          </body>
+
+          </html>
+
+          """
+
+          with open(
+              "jobs-dashboard.html",
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              f.write(
+                  html
+              )
+
+          print(
+              "Dashboard created successfully."
+          )
+
+          print(
+              "File: jobs-dashboard.html"
+          )
+
+          print(
+              f"Jobs displayed: {total}"
+          )
+
+          print(
+              f"NEW: {counts['NEW']}"
+          )
+
+          print(
+              f"UPDATED: {counts['UPDATED']}"
+          )
+
+          PY
+
+      # ==========================================================
+      # 6. UPLOAD DASHBOARD
+      # ==========================================================
+
+      - name: Upload Jobs Dashboard
+        uses: actions/upload-artifact@v4
+        with:
+          name: gulf-jobs-dashboard
+          path: jobs-dashboard.html
+          retention-days: 30
+
+      # ==========================================================
+      # 7. SAVE RESULTS TO GITHUB
+      # ==========================================================
+
+      - name: Save analysis results
+        run: |
+
+          git config user.name \
+            "Gulf Jobs AI Agent"
+
+          git config user.email \
+            "actions@github.com"
+
+          git add \
+            jobs.json \
+            ranked_jobs.json \
+            job_history.json
+
+          git diff --cached --quiet || \
+            git commit \
+              -m "Update Gulf jobs, history and analysis"
+
+          git push
