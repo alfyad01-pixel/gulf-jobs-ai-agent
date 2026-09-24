@@ -1,87 +1,41 @@
 [
   {
-    "score": 90,
-    "action": "APPLY NOW",
-    "title": "Fresh Qatari Graduate Opportunities - Chemical Engineering",
-    "company": "Qatarenergy",
-    "location": "Doha - Qatar",
-    "experience": "FRESHER",
-    "experience_fit": "EXCELLENT FIT",
-    "role_match": [
-      "chemical engineer"
-    ],
-    "education_match": [
-      "chemical engineering",
-      "chemical engineer"
-    ],
-    "skills_match": [
-      "chemical engineering"
-    ],
-    "action_reason": "Apply immediately. Strong entry-level match.",
-    "reasons": [
-      "Fresh graduate / entry-level experience",
-      "Target role matches",
-      "Chemical / petrochemical education matches",
-      "1 matching skills"
-    ],
-    "concerns": [],
-    "url": "https://www.naukrigulf.com/fresh-qatari-graduate-opportunities-chemical-engineering-jobs-in-doha-qatar-in-qatarenergy-0-to-5-years-n-cd-40001046-jid-270326500689",
-    "original_job": {
-      "jobId": "0effea4ea11925bd90ebdd6dc3da0de66eb81d087b8912cf59ce5f6fb5733bcd",
-      "jobKey": "270326500689",
-      "title": "Fresh Qatari Graduate Opportunities - Chemical Engineering",
-      "company": "Qatarenergy",
-      "companyId": "40001046",
-      "location": "Doha - Qatar",
-      "experienceMin": 0,
-      "experienceMax": 5,
-      "url": "https://www.naukrigulf.com/fresh-qatari-graduate-opportunities-chemical-engineering-jobs-in-doha-qatar-in-qatarenergy-0-to-5-years-n-cd-40001046-jid-270326500689",
-      "portalUrl": "https://www.naukrigulf.com/fresh-qatari-graduate-opportunities-chemical-engineering-jobs-in-doha-qatar-in-qatarenergy-0-to-5-years-n-cd-40001046-jid-270326500689",
-      "postedAt": "2026-03-27T10:39:13.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 65,
+    "score": 60,
     "action": "REVIEW",
-    "title": "Chemical Engineering",
-    "company": "M H AL GADDAH AUTO SPARE PARTS AND COMPONENTS TRAD ING LLC",
-    "location": "Dubai - United Arab Emirates (UAE)",
+    "title": "Chemical Engineer",
+    "company": "NESMA FOR ENTERGRATED PROJECTS",
+    "location": "Sohar - Oman",
     "experience": "Not specified",
     "experience_fit": "UNKNOWN",
     "role_match": [
       "chemical engineer"
     ],
     "education_match": [
-      "chemical engineering",
       "chemical engineer"
     ],
-    "skills_match": [
-      "chemical engineering"
-    ],
+    "skills_match": [],
     "action_reason": "Review full description before applying.",
     "reasons": [
       "Target role matches",
-      "Chemical / petrochemical education matches",
-      "1 matching skills"
+      "Chemical / petrochemical education matches"
     ],
     "concerns": [
-      "Experience not confirmed"
+      "Experience not confirmed",
+      "Relevant skills not found"
     ],
-    "url": "https://www.naukrigulf.com/chemical-engineering-jobs-in-dubai-uae-in-m-h-al-gaddah-auto-spare-parts-and-components-trad-ing-llc-2-to-4-years-n-cd-364481-jid-290826000976",
+    "url": "https://www.naukrigulf.com/chemical-engineer-jobs-in-sohar-oman-in-nesma-for-entergrated-projects-2-to-8-years-n-cd-184843-jid-140826000939",
     "original_job": {
-      "jobId": "baec6d18ba85e9fe6fb8bf04151a76a142ab425ff728d15508a1c77d510e7193",
-      "jobKey": "290826000976",
-      "title": "Chemical Engineering",
-      "company": "M H AL GADDAH AUTO SPARE PARTS AND COMPONENTS TRAD ING LLC",
-      "companyId": "364481",
-      "location": "Dubai - United Arab Emirates (UAE)",
+      "jobId": "459e6a62773677f1c67cc97f626ef13abe2f80a133d0656641dd757a9c1bfa04",
+      "jobKey": "140826000939",
+      "title": "Chemical Engineer",
+      "company": "NESMA FOR ENTERGRATED PROJECTS",
+      "companyId": "184843",
+      "location": "Sohar - Oman",
       "experienceMin": 2,
-      "experienceMax": 4,
-      "url": "https://www.naukrigulf.com/chemical-engineering-jobs-in-dubai-uae-in-m-h-al-gaddah-auto-spare-parts-and-components-trad-ing-llc-2-to-4-years-n-cd-364481-jid-290826000976",
-      "portalUrl": "https://www.naukrigulf.com/chemical-engineering-jobs-in-dubai-uae-in-m-h-al-gaddah-auto-spare-parts-and-components-trad-ing-llc-2-to-4-years-n-cd-364481-jid-290826000976",
-      "postedAt": "2026-08-29T04:00:00.000Z",
+      "experienceMax": 8,
+      "url": "https://www.naukrigulf.com/chemical-engineer-jobs-in-sohar-oman-in-nesma-for-entergrated-projects-2-to-8-years-n-cd-184843-jid-140826000939",
+      "portalUrl": "https://www.naukrigulf.com/chemical-engineer-jobs-in-sohar-oman-in-nesma-for-entergrated-projects-2-to-8-years-n-cd-184843-jid-140826000939",
+      "postedAt": "2026-08-15T04:10:39.000Z",
       "source": "naukrigulf.com"
     },
     "history_status": "SEEN"
@@ -128,88 +82,6 @@
     "history_status": "SEEN"
   },
   {
-    "score": 60,
-    "action": "REVIEW",
-    "title": "Process Engineering Specialist - I&SRU",
-    "company": "Qatarenergy",
-    "location": "Doha - Qatar",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [
-      "process engineer"
-    ],
-    "education_match": [
-      "process engineering"
-    ],
-    "skills_match": [],
-    "action_reason": "Review full description before applying.",
-    "reasons": [
-      "Target role matches",
-      "Chemical / petrochemical education matches"
-    ],
-    "concerns": [
-      "Experience not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/process-engineering-specialist-i-sru-jobs-in-doha-qatar-in-qatarenergy-8-to-13-years-n-cd-40001046-jid-180926500438",
-    "original_job": {
-      "jobId": "d2f607a7eef166de8a7c870d88dd2809e066b7648a42d320997c81214a36d70c",
-      "jobKey": "180926500438",
-      "title": "Process Engineering Specialist - I&SRU",
-      "company": "Qatarenergy",
-      "companyId": "40001046",
-      "location": "Doha - Qatar",
-      "experienceMin": 8,
-      "experienceMax": 13,
-      "url": "https://www.naukrigulf.com/process-engineering-specialist-i-sru-jobs-in-doha-qatar-in-qatarenergy-8-to-13-years-n-cd-40001046-jid-180926500438",
-      "portalUrl": "https://www.naukrigulf.com/process-engineering-specialist-i-sru-jobs-in-doha-qatar-in-qatarenergy-8-to-13-years-n-cd-40001046-jid-180926500438",
-      "postedAt": "2026-09-18T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 60,
-    "action": "REVIEW",
-    "title": "Process Engineering Specialist",
-    "company": "Client of Brunel",
-    "location": "Qatar - Qatar",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [
-      "process engineer"
-    ],
-    "education_match": [
-      "process engineering"
-    ],
-    "skills_match": [],
-    "action_reason": "Review full description before applying.",
-    "reasons": [
-      "Target role matches",
-      "Chemical / petrochemical education matches"
-    ],
-    "concerns": [
-      "Experience not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/process-engineering-specialist-jobs-in-qatar-in-client-of-brunel-8-to-13-years-n-cd-10050613-jid-310826501885",
-    "original_job": {
-      "jobId": "bc72bdfd66b031470c4fdd6a316e7dffc69aa11994ccc8ef7516f4bc31ec08cd",
-      "jobKey": "310826501885",
-      "title": "Process Engineering Specialist",
-      "company": "Client of Brunel",
-      "companyId": "10050613",
-      "location": "Qatar - Qatar",
-      "experienceMin": 8,
-      "experienceMax": 13,
-      "url": "https://www.naukrigulf.com/process-engineering-specialist-jobs-in-qatar-in-client-of-brunel-8-to-13-years-n-cd-10050613-jid-310826501885",
-      "portalUrl": "https://www.naukrigulf.com/process-engineering-specialist-jobs-in-qatar-in-client-of-brunel-8-to-13-years-n-cd-10050613-jid-310826501885",
-      "postedAt": "2026-08-31T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
     "score": 40,
     "action": "LOW PRIORITY",
     "title": "Process Engineer",
@@ -251,38 +123,36 @@
   {
     "score": 40,
     "action": "LOW PRIORITY",
-    "title": "SME Process Engineer",
-    "company": "ADIB ALI AL ZAMIL ENGINEERING CONSULTANCY CO.",
-    "location": "Yanbu - Saudi Arabia",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [
-      "process engineer"
-    ],
+    "title": "Graduate Teaching Assistant (GTA) in Engineering",
+    "company": "Muscat University",
+    "location": "Muscat - Oman",
+    "experience": "FRESHER",
+    "experience_fit": "EXCELLENT FIT",
+    "role_match": [],
     "education_match": [],
     "skills_match": [],
     "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
     "reasons": [
-      "Target role matches"
+      "Fresh graduate / entry-level experience"
     ],
     "concerns": [
-      "Experience not confirmed",
+      "Target role not clearly matched",
       "Education match not confirmed",
       "Relevant skills not found"
     ],
-    "url": "https://www.naukrigulf.com/sme-process-engineer-jobs-in-yanbu-saudi-arabia-in-dar-consulting-engineers-10-to-15-years-n-cd-25023-jid-090926001379",
+    "url": "https://www.naukrigulf.com/graduate-teaching-assistant-in-engineering-jobs-in-muscat-oman-in-muscat-university-0-to-5-years-n-cd-10005092-jid-110926500963",
     "original_job": {
-      "jobId": "62d195ef5edb605c5f44c7732c3f289b5fea90844c4d2160be75ececf30eb7d6",
-      "jobKey": "090926001379",
-      "title": "SME Process Engineer",
-      "company": "ADIB ALI AL ZAMIL ENGINEERING CONSULTANCY CO.",
-      "companyId": "25023",
-      "location": "Yanbu - Saudi Arabia",
-      "experienceMin": 10,
-      "experienceMax": 15,
-      "url": "https://www.naukrigulf.com/sme-process-engineer-jobs-in-yanbu-saudi-arabia-in-dar-consulting-engineers-10-to-15-years-n-cd-25023-jid-090926001379",
-      "portalUrl": "https://www.naukrigulf.com/sme-process-engineer-jobs-in-yanbu-saudi-arabia-in-dar-consulting-engineers-10-to-15-years-n-cd-25023-jid-090926001379",
-      "postedAt": "2026-09-09T13:52:35.000Z",
+      "jobId": "deb11dd00c9727ff806ac60662a9b4942f61bfc23b32e0ae11a3cfc689050b99",
+      "jobKey": "110926500963",
+      "title": "Graduate Teaching Assistant (GTA) in Engineering",
+      "company": "Muscat University",
+      "companyId": "10005092",
+      "location": "Muscat - Oman",
+      "experienceMin": 0,
+      "experienceMax": 5,
+      "url": "https://www.naukrigulf.com/graduate-teaching-assistant-in-engineering-jobs-in-muscat-oman-in-muscat-university-0-to-5-years-n-cd-10005092-jid-110926500963",
+      "portalUrl": "https://www.naukrigulf.com/graduate-teaching-assistant-in-engineering-jobs-in-muscat-oman-in-muscat-university-0-to-5-years-n-cd-10005092-jid-110926500963",
+      "postedAt": "2026-09-11T04:00:00.000Z",
       "source": "naukrigulf.com"
     },
     "history_status": "SEEN"
@@ -290,9 +160,9 @@
   {
     "score": 40,
     "action": "LOW PRIORITY",
-    "title": "Project Cum QA/QC Welding Process Engineer",
-    "company": "Api Energy FZC",
-    "location": "Jeddah , Riyadh , Dammam/Khobar/Eastern Province - Saudi Arabia",
+    "title": "Process Engineer, PP",
+    "company": "Advanced Petrochemical Company",
+    "location": "Eastern Province - Saudi Arabia",
     "experience": "Not specified",
     "experience_fit": "UNKNOWN",
     "role_match": [
@@ -309,29 +179,107 @@
       "Education match not confirmed",
       "Relevant skills not found"
     ],
-    "url": "https://www.naukrigulf.com/project-cum-qa-qc-welding-process-engineer-jobs-in-jeddah-saudi-arabia-in-api-energy-fzc-5-to-10-years-n-cd-361879-jid-070826002854",
+    "url": "https://www.naukrigulf.com/process-engineer-pp-jobs-in-dammam-khobar-eastern-province-saudi-arabia-in-advanced-petrochemical-company-10-to-15-years-n-cd-40001737-jid-230926500298",
     "original_job": {
-      "jobId": "543d282c780990db7d7b6ea897eddd9cf453599b8816097f48b8e7d0f79cbeea",
-      "jobKey": "070826002854",
-      "title": "Project Cum QA/QC Welding Process Engineer",
-      "company": "Api Energy FZC",
-      "companyId": "361879",
-      "location": "Jeddah , Riyadh , Dammam/Khobar/Eastern Province - Saudi Arabia",
+      "jobId": "fc974c2b12949e253f1d5af5afa2106784ff3ce98eb39e86ae67c0a8e038c39c",
+      "jobKey": "230926500298",
+      "title": "Process Engineer, PP",
+      "company": "Advanced Petrochemical Company",
+      "companyId": "40001737",
+      "location": "Eastern Province - Saudi Arabia",
+      "experienceMin": 10,
+      "experienceMax": 15,
+      "url": "https://www.naukrigulf.com/process-engineer-pp-jobs-in-dammam-khobar-eastern-province-saudi-arabia-in-advanced-petrochemical-company-10-to-15-years-n-cd-40001737-jid-230926500298",
+      "portalUrl": "https://www.naukrigulf.com/process-engineer-pp-jobs-in-dammam-khobar-eastern-province-saudi-arabia-in-advanced-petrochemical-company-10-to-15-years-n-cd-40001737-jid-230926500298",
+      "postedAt": "2026-09-23T04:00:00.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "NEW"
+  },
+  {
+    "score": 40,
+    "action": "LOW PRIORITY",
+    "title": "Process Engineer – Oil & Gas / Energy",
+    "company": "Acesoft Labs (India) Pvt Ltd",
+    "location": "Dubai - United Arab Emirates (UAE)",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [
+      "process engineer"
+    ],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
+    "reasons": [
+      "Target role matches"
+    ],
+    "concerns": [
+      "Experience not confirmed",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/process-engineer-oil-gas-energy-jobs-in-dubai-uae-in-acesoft-labs-pvt-ltd-4-to-8-years-p-cd-295691-jid-170926001371",
+    "original_job": {
+      "jobId": "a72a1442a611f65991daf0de640d3a4ec8c65f10d4d2ca6c8c30a0bcc0f15272",
+      "jobKey": "170926001371",
+      "title": "Process Engineer – Oil & Gas / Energy",
+      "company": "Acesoft Labs (India) Pvt Ltd",
+      "companyId": "295691",
+      "location": "Dubai - United Arab Emirates (UAE)",
+      "experienceMin": 4,
+      "experienceMax": 8,
+      "url": "https://www.naukrigulf.com/process-engineer-oil-gas-energy-jobs-in-dubai-uae-in-acesoft-labs-pvt-ltd-4-to-8-years-p-cd-295691-jid-170926001371",
+      "portalUrl": "https://www.naukrigulf.com/process-engineer-oil-gas-energy-jobs-in-dubai-uae-in-acesoft-labs-pvt-ltd-4-to-8-years-p-cd-295691-jid-170926001371",
+      "postedAt": "2026-09-17T12:50:23.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "SEEN"
+  },
+  {
+    "score": 40,
+    "action": "LOW PRIORITY",
+    "title": "Process Engineer - Soldering",
+    "company": "Eaton",
+    "location": "Dubai - United Arab Emirates",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [
+      "process engineer"
+    ],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
+    "reasons": [
+      "Target role matches"
+    ],
+    "concerns": [
+      "Experience not confirmed",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/process-engineer-soldering-jobs-in-dubai-uae-in-eaton-5-to-10-years-n-cd-10000265-jid-230926500220",
+    "original_job": {
+      "jobId": "e7fdf63c7db245897c06e0328b8a1a01a841e98ab8a94f00bd3fa5dc60e5971e",
+      "jobKey": "230926500220",
+      "title": "Process Engineer - Soldering",
+      "company": "Eaton",
+      "companyId": "10000265",
+      "location": "Dubai - United Arab Emirates",
       "experienceMin": 5,
       "experienceMax": 10,
-      "url": "https://www.naukrigulf.com/project-cum-qa-qc-welding-process-engineer-jobs-in-jeddah-saudi-arabia-in-api-energy-fzc-5-to-10-years-n-cd-361879-jid-070826002854",
-      "portalUrl": "https://www.naukrigulf.com/project-cum-qa-qc-welding-process-engineer-jobs-in-jeddah-saudi-arabia-in-api-energy-fzc-5-to-10-years-n-cd-361879-jid-070826002854",
-      "postedAt": "2026-08-21T20:27:09.000Z",
+      "url": "https://www.naukrigulf.com/process-engineer-soldering-jobs-in-dubai-uae-in-eaton-5-to-10-years-n-cd-10000265-jid-230926500220",
+      "portalUrl": "https://www.naukrigulf.com/process-engineer-soldering-jobs-in-dubai-uae-in-eaton-5-to-10-years-n-cd-10000265-jid-230926500220",
+      "postedAt": "2026-09-23T04:00:00.000Z",
       "source": "naukrigulf.com"
     },
-    "history_status": "SEEN"
+    "history_status": "NEW"
   },
   {
     "score": 40,
     "action": "LOW PRIORITY",
-    "title": "Process Engineer - Sulfur Recovery",
-    "company": "Saudi Aramco (ASC)",
-    "location": "Saudi Arabia - Saudi Arabia",
+    "title": "Process Engineer",
+    "company": "WINTER REFRIGERATION Industrial Equipment Manufacturing LLC",
+    "location": "Dubai - United Arab Emirates",
     "experience": "Not specified",
     "experience_fit": "UNKNOWN",
     "role_match": [
@@ -348,19 +296,175 @@
       "Education match not confirmed",
       "Relevant skills not found"
     ],
-    "url": "https://www.naukrigulf.com/process-engineer-sulfur-recovery-jobs-in-saudi-arabia-in-saudi-aramco-15-to-20-years-n-cd-10050428-jid-180626500943",
+    "url": "https://www.naukrigulf.com/process-engineer-jobs-in-dubai-uae-in-winter-refrigeration-industrial-equipment-manufacturing-llc-2-to-7-years-n-cd-40002428-jid-230926500521",
     "original_job": {
-      "jobId": "c5ebf2ee90c90536c7839f0feed65210a2e9d86f9fd89d618443400fbf5c1945",
-      "jobKey": "180626500943",
-      "title": "Process Engineer - Sulfur Recovery",
-      "company": "Saudi Aramco (ASC)",
-      "companyId": "10050428",
-      "location": "Saudi Arabia - Saudi Arabia",
+      "jobId": "53769b248b05ab56f107be5341e33a7a432c884a6252f87e5f3b298d8427fb38",
+      "jobKey": "230926500521",
+      "title": "Process Engineer",
+      "company": "WINTER REFRIGERATION Industrial Equipment Manufacturing LLC",
+      "companyId": "40002428",
+      "location": "Dubai - United Arab Emirates",
+      "experienceMin": 2,
+      "experienceMax": 7,
+      "url": "https://www.naukrigulf.com/process-engineer-jobs-in-dubai-uae-in-winter-refrigeration-industrial-equipment-manufacturing-llc-2-to-7-years-n-cd-40002428-jid-230926500521",
+      "portalUrl": "https://www.naukrigulf.com/process-engineer-jobs-in-dubai-uae-in-winter-refrigeration-industrial-equipment-manufacturing-llc-2-to-7-years-n-cd-40002428-jid-230926500521",
+      "postedAt": "2026-09-23T04:00:00.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "NEW"
+  },
+  {
+    "score": 40,
+    "action": "LOW PRIORITY",
+    "title": "BOP Process Engineer",
+    "company": "SEPCOIII ELECTRIC POWER CONSTRUCTION CO. LTD. DMCC BRANCH",
+    "location": "Dubai - United Arab Emirates (UAE)",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [
+      "process engineer"
+    ],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
+    "reasons": [
+      "Target role matches"
+    ],
+    "concerns": [
+      "Experience not confirmed",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/bop-process-engineer-jobs-in-dubai-uae-in-sepcoiii-electric-power-construction-co-ltd-dmcc-branch-5-to-8-years-n-cd-118181-jid-070826000128",
+    "original_job": {
+      "jobId": "248da1884368db5328e229ded4e6581281dd8a9f4a1c9079143fb0234bd6791c",
+      "jobKey": "070826000128",
+      "title": "BOP Process Engineer",
+      "company": "SEPCOIII ELECTRIC POWER CONSTRUCTION CO. LTD. DMCC BRANCH",
+      "companyId": "118181",
+      "location": "Dubai - United Arab Emirates (UAE)",
+      "experienceMin": 5,
+      "experienceMax": 8,
+      "url": "https://www.naukrigulf.com/bop-process-engineer-jobs-in-dubai-uae-in-sepcoiii-electric-power-construction-co-ltd-dmcc-branch-5-to-8-years-n-cd-118181-jid-070826000128",
+      "portalUrl": "https://www.naukrigulf.com/bop-process-engineer-jobs-in-dubai-uae-in-sepcoiii-electric-power-construction-co-ltd-dmcc-branch-5-to-8-years-n-cd-118181-jid-070826000128",
+      "postedAt": "2026-08-07T06:21:42.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "SEEN"
+  },
+  {
+    "score": 40,
+    "action": "LOW PRIORITY",
+    "title": "Process Engineer",
+    "company": "ENERFLEX LTD",
+    "location": "Abu Dhabi - United Arab Emirates",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [
+      "process engineer"
+    ],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
+    "reasons": [
+      "Target role matches"
+    ],
+    "concerns": [
+      "Experience not confirmed",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/process-engineer-jobs-in-abu-dhabi-uae-in-enerflex-ltd-8-to-13-years-n-cd-10003319-jid-210926501060",
+    "original_job": {
+      "jobId": "44254a5c179f385d93e3fe118de60e273beb9bcff2e8efce27fea06fdcf671b5",
+      "jobKey": "210926501060",
+      "title": "Process Engineer",
+      "company": "ENERFLEX LTD",
+      "companyId": "10003319",
+      "location": "Abu Dhabi - United Arab Emirates",
+      "experienceMin": 8,
+      "experienceMax": 13,
+      "url": "https://www.naukrigulf.com/process-engineer-jobs-in-abu-dhabi-uae-in-enerflex-ltd-8-to-13-years-n-cd-10003319-jid-210926501060",
+      "portalUrl": "https://www.naukrigulf.com/process-engineer-jobs-in-abu-dhabi-uae-in-enerflex-ltd-8-to-13-years-n-cd-10003319-jid-210926501060",
+      "postedAt": "2026-09-21T10:10:29.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "NEW"
+  },
+  {
+    "score": 40,
+    "action": "LOW PRIORITY",
+    "title": "Manufacturing Process Engineer",
+    "company": "Electrolux",
+    "location": "Sharjah - United Arab Emirates",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [
+      "process engineer"
+    ],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
+    "reasons": [
+      "Target role matches"
+    ],
+    "concerns": [
+      "Experience not confirmed",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/manufacturing-process-engineer-jobs-in-sharjah-uae-in-electrolux-2-to-6-years-n-cd-10002846-jid-180926500436",
+    "original_job": {
+      "jobId": "244ebf4a542fe5e69df7424016162dab93cf7b135d7dd0a6925afa296c04675c",
+      "jobKey": "180926500436",
+      "title": "Manufacturing Process Engineer",
+      "company": "Electrolux",
+      "companyId": "10002846",
+      "location": "Sharjah - United Arab Emirates",
+      "experienceMin": 2,
+      "experienceMax": 6,
+      "url": "https://www.naukrigulf.com/manufacturing-process-engineer-jobs-in-sharjah-uae-in-electrolux-2-to-6-years-n-cd-10002846-jid-180926500436",
+      "portalUrl": "https://www.naukrigulf.com/manufacturing-process-engineer-jobs-in-sharjah-uae-in-electrolux-2-to-6-years-n-cd-10002846-jid-180926500436",
+      "postedAt": "2026-09-18T04:00:00.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "SEEN"
+  },
+  {
+    "score": 40,
+    "action": "LOW PRIORITY",
+    "title": "Senior Process Engineer",
+    "company": "Wood",
+    "location": "Abu Dhabi - United Arab Emirates",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [
+      "process engineer"
+    ],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
+    "reasons": [
+      "Target role matches"
+    ],
+    "concerns": [
+      "Experience not confirmed",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/senior-process-engineer-jobs-in-abu-dhabi-uae-in-wood-15-to-20-years-n-cd-10000245-jid-030926500724",
+    "original_job": {
+      "jobId": "c0daa23b5bab249a50207f9698d71e5a62a4c3b69ba39715eae0d8da9e30fa06",
+      "jobKey": "030926500724",
+      "title": "Senior Process Engineer",
+      "company": "Wood",
+      "companyId": "10000245",
+      "location": "Abu Dhabi - United Arab Emirates",
       "experienceMin": 15,
       "experienceMax": 20,
-      "url": "https://www.naukrigulf.com/process-engineer-sulfur-recovery-jobs-in-saudi-arabia-in-saudi-aramco-15-to-20-years-n-cd-10050428-jid-180626500943",
-      "portalUrl": "https://www.naukrigulf.com/process-engineer-sulfur-recovery-jobs-in-saudi-arabia-in-saudi-aramco-15-to-20-years-n-cd-10050428-jid-180626500943",
-      "postedAt": "2026-06-18T04:00:00.000Z",
+      "url": "https://www.naukrigulf.com/senior-process-engineer-jobs-in-abu-dhabi-uae-in-wood-15-to-20-years-n-cd-10000245-jid-030926500724",
+      "portalUrl": "https://www.naukrigulf.com/senior-process-engineer-jobs-in-abu-dhabi-uae-in-wood-15-to-20-years-n-cd-10000245-jid-030926500724",
+      "postedAt": "2026-09-03T04:00:00.000Z",
       "source": "naukrigulf.com"
     },
     "history_status": "SEEN"
@@ -368,9 +472,9 @@
   {
     "score": 40,
     "action": "LOW PRIORITY",
-    "title": "Process Engineer - Fluid Catalytic Cracking",
-    "company": "Saudi Aramco (ASC)",
-    "location": "Saudi Arabia - Saudi Arabia",
+    "title": "Senior Process Engineer (Greenfield)",
+    "company": "Wood",
+    "location": "Abu Dhabi - United Arab Emirates",
     "experience": "Not specified",
     "experience_fit": "UNKNOWN",
     "role_match": [
@@ -387,19 +491,58 @@
       "Education match not confirmed",
       "Relevant skills not found"
     ],
-    "url": "https://www.naukrigulf.com/process-engineer-fluid-catalytic-cracking-jobs-in-saudi-arabia-in-saudi-aramco-15-to-20-years-n-cd-10050428-jid-180626501075",
+    "url": "https://www.naukrigulf.com/senior-process-engineer-jobs-in-abu-dhabi-uae-in-wood-15-to-17-years-n-cd-10000245-jid-070926500165",
     "original_job": {
-      "jobId": "2aa81b4f6eb8601c9a68f1ce18f7144dcd3b2cf99ccdd33b3978757b0c0c34b7",
-      "jobKey": "180626501075",
-      "title": "Process Engineer - Fluid Catalytic Cracking",
-      "company": "Saudi Aramco (ASC)",
-      "companyId": "10050428",
-      "location": "Saudi Arabia - Saudi Arabia",
+      "jobId": "4ea45562f4ff9e9f252d4cd592c84c0623fa51051c73f5bd9d971b19a65f3863",
+      "jobKey": "070926500165",
+      "title": "Senior Process Engineer (Greenfield)",
+      "company": "Wood",
+      "companyId": "10000245",
+      "location": "Abu Dhabi - United Arab Emirates",
+      "experienceMin": 15,
+      "experienceMax": 17,
+      "url": "https://www.naukrigulf.com/senior-process-engineer-jobs-in-abu-dhabi-uae-in-wood-15-to-17-years-n-cd-10000245-jid-070926500165",
+      "portalUrl": "https://www.naukrigulf.com/senior-process-engineer-jobs-in-abu-dhabi-uae-in-wood-15-to-17-years-n-cd-10000245-jid-070926500165",
+      "postedAt": "2026-09-07T07:01:36.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "SEEN"
+  },
+  {
+    "score": 40,
+    "action": "LOW PRIORITY",
+    "title": "Lead Process Engineer",
+    "company": "Wood",
+    "location": "Abu Dhabi - United Arab Emirates",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [
+      "process engineer"
+    ],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
+    "reasons": [
+      "Target role matches"
+    ],
+    "concerns": [
+      "Experience not confirmed",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/lead-process-engineer-jobs-in-abu-dhabi-uae-in-wood-15-to-20-years-n-cd-10000245-jid-030926500722",
+    "original_job": {
+      "jobId": "2a9a08abffa448211c4f2f2729ea52564fcf756f3feddcce4b0ef3763446e369",
+      "jobKey": "030926500722",
+      "title": "Lead Process Engineer",
+      "company": "Wood",
+      "companyId": "10000245",
+      "location": "Abu Dhabi - United Arab Emirates",
       "experienceMin": 15,
       "experienceMax": 20,
-      "url": "https://www.naukrigulf.com/process-engineer-fluid-catalytic-cracking-jobs-in-saudi-arabia-in-saudi-aramco-15-to-20-years-n-cd-10050428-jid-180626501075",
-      "portalUrl": "https://www.naukrigulf.com/process-engineer-fluid-catalytic-cracking-jobs-in-saudi-arabia-in-saudi-aramco-15-to-20-years-n-cd-10050428-jid-180626501075",
-      "postedAt": "2026-06-18T10:44:15.000Z",
+      "url": "https://www.naukrigulf.com/lead-process-engineer-jobs-in-abu-dhabi-uae-in-wood-15-to-20-years-n-cd-10000245-jid-030926500722",
+      "portalUrl": "https://www.naukrigulf.com/lead-process-engineer-jobs-in-abu-dhabi-uae-in-wood-15-to-20-years-n-cd-10000245-jid-030926500722",
+      "postedAt": "2026-09-03T04:00:00.000Z",
       "source": "naukrigulf.com"
     },
     "history_status": "SEEN"
@@ -407,9 +550,9 @@
   {
     "score": 40,
     "action": "LOW PRIORITY",
-    "title": "Process Engineer - Utilities & Tank Farm",
-    "company": "Saudi Aramco (ASC)",
-    "location": "Saudi Arabia - Saudi Arabia",
+    "title": "Process Engineer - SMT",
+    "company": "Eaton",
+    "location": "Dubai - United Arab Emirates",
     "experience": "Not specified",
     "experience_fit": "UNKNOWN",
     "role_match": [
@@ -426,97 +569,19 @@
       "Education match not confirmed",
       "Relevant skills not found"
     ],
-    "url": "https://www.naukrigulf.com/process-engineer-utilities-tank-farm-jobs-in-saudi-arabia-in-saudi-aramco-15-to-20-years-n-cd-10050428-jid-180626501072",
+    "url": "https://www.naukrigulf.com/process-engineer-smt-jobs-in-dubai-uae-in-eaton-5-to-10-years-n-cd-10000265-jid-010926500687",
     "original_job": {
-      "jobId": "5689051db7713a46df604a97e555869b4e9997a58f163a2c40926726317fc7f2",
-      "jobKey": "180626501072",
-      "title": "Process Engineer - Utilities & Tank Farm",
-      "company": "Saudi Aramco (ASC)",
-      "companyId": "10050428",
-      "location": "Saudi Arabia - Saudi Arabia",
-      "experienceMin": 15,
-      "experienceMax": 20,
-      "url": "https://www.naukrigulf.com/process-engineer-utilities-tank-farm-jobs-in-saudi-arabia-in-saudi-aramco-15-to-20-years-n-cd-10050428-jid-180626501072",
-      "portalUrl": "https://www.naukrigulf.com/process-engineer-utilities-tank-farm-jobs-in-saudi-arabia-in-saudi-aramco-15-to-20-years-n-cd-10050428-jid-180626501072",
-      "postedAt": "2026-06-18T10:44:06.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 40,
-    "action": "LOW PRIORITY",
-    "title": "Process Engineer (Refinery)",
-    "company": "Client of Eram Talent",
-    "location": "Al Madina Al Munawarah - Saudi Arabia",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [
-      "process engineer"
-    ],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
-    "reasons": [
-      "Target role matches"
-    ],
-    "concerns": [
-      "Experience not confirmed",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/process-engineer-jobs-in-al-madina-al-munawarah-saudi-arabia-in-client-of-eram-talent-10-to-15-years-n-cd-50000294-jid-060826500255",
-    "original_job": {
-      "jobId": "661d1ffe291f9cc5a9f84be91100231530a2f15e7f26c40e3a2100f2ae6a6854",
-      "jobKey": "060826500255",
-      "title": "Process Engineer (Refinery)",
-      "company": "Client of Eram Talent",
-      "companyId": "50000294",
-      "location": "Al Madina Al Munawarah - Saudi Arabia",
-      "experienceMin": 10,
-      "experienceMax": 15,
-      "url": "https://www.naukrigulf.com/process-engineer-jobs-in-al-madina-al-munawarah-saudi-arabia-in-client-of-eram-talent-10-to-15-years-n-cd-50000294-jid-060826500255",
-      "portalUrl": "https://www.naukrigulf.com/process-engineer-jobs-in-al-madina-al-munawarah-saudi-arabia-in-client-of-eram-talent-10-to-15-years-n-cd-50000294-jid-060826500255",
-      "postedAt": "2026-08-06T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 40,
-    "action": "LOW PRIORITY",
-    "title": "Gas Process Engineer",
-    "company": "Saudi Aramco (ASC)",
-    "location": "Saudi Arabia - Saudi Arabia",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [
-      "process engineer"
-    ],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Low priority. Apply only if stronger jobs are unavailable.",
-    "reasons": [
-      "Target role matches"
-    ],
-    "concerns": [
-      "Experience not confirmed",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/gas-process-engineer-jobs-in-saudi-arabia-in-saudi-aramco-10-to-12-years-n-cd-10050428-jid-240426500372",
-    "original_job": {
-      "jobId": "e0ac92fe6ef8a0f3515e93230f64c72f85324dbe5c9b9490a2b4500f947bbd0a",
-      "jobKey": "240426500372",
-      "title": "Gas Process Engineer",
-      "company": "Saudi Aramco (ASC)",
-      "companyId": "10050428",
-      "location": "Saudi Arabia - Saudi Arabia",
-      "experienceMin": 10,
-      "experienceMax": 12,
-      "url": "https://www.naukrigulf.com/gas-process-engineer-jobs-in-saudi-arabia-in-saudi-aramco-10-to-12-years-n-cd-10050428-jid-240426500372",
-      "portalUrl": "https://www.naukrigulf.com/gas-process-engineer-jobs-in-saudi-arabia-in-saudi-aramco-10-to-12-years-n-cd-10050428-jid-240426500372",
-      "postedAt": "2026-04-24T09:21:46.000Z",
+      "jobId": "14c91654dd6d5f1dd144f6c5c0a8718a4acd1da8b4760a2870598bd4310b62e7",
+      "jobKey": "010926500687",
+      "title": "Process Engineer - SMT",
+      "company": "Eaton",
+      "companyId": "10000265",
+      "location": "Dubai - United Arab Emirates",
+      "experienceMin": 5,
+      "experienceMax": 10,
+      "url": "https://www.naukrigulf.com/process-engineer-smt-jobs-in-dubai-uae-in-eaton-5-to-10-years-n-cd-10000265-jid-010926500687",
+      "portalUrl": "https://www.naukrigulf.com/process-engineer-smt-jobs-in-dubai-uae-in-eaton-5-to-10-years-n-cd-10000265-jid-010926500687",
+      "postedAt": "2026-09-01T04:00:00.000Z",
       "source": "naukrigulf.com"
     },
     "history_status": "SEEN"
@@ -710,6 +775,222 @@
   {
     "score": 15,
     "action": "SKIP",
+    "title": "Senior Reservoir Engineer",
+    "company": "Confidential Company",
+    "location": "Muscat - Oman",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Skip. Weak match for your profile.",
+    "reasons": [],
+    "concerns": [
+      "Experience not confirmed",
+      "Target role not clearly matched",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/senior-reservoir-engineer-jobs-in-muscat-oman-in-confidential-8-to-15-years-n-jid-200926000512",
+    "original_job": {
+      "jobId": "51c133dcc4f8552bec4e75bd6101eb8792bd346733f463a7d4aa60a00e5562a0",
+      "jobKey": "200926000512",
+      "title": "Senior Reservoir Engineer",
+      "company": "Confidential Company",
+      "companyId": "33828",
+      "location": "Muscat - Oman",
+      "experienceMin": 8,
+      "experienceMax": 15,
+      "url": "https://www.naukrigulf.com/senior-reservoir-engineer-jobs-in-muscat-oman-in-confidential-8-to-15-years-n-jid-200926000512",
+      "portalUrl": "https://www.naukrigulf.com/senior-reservoir-engineer-jobs-in-muscat-oman-in-confidential-8-to-15-years-n-jid-200926000512",
+      "postedAt": "2026-09-20T08:12:51.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "SEEN"
+  },
+  {
+    "score": 15,
+    "action": "SKIP",
+    "title": "Expert LP & APS Modelling - OQ8",
+    "company": "Oman Refinery",
+    "location": "Muscat - Oman",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Skip. Weak match for your profile.",
+    "reasons": [],
+    "concerns": [
+      "Experience not confirmed",
+      "Target role not clearly matched",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/expert-lp-aps-modelling-oq8-jobs-in-muscat-oman-in-oman-refinery-10-to-15-years-n-cd-10004389-jid-230926500326",
+    "original_job": {
+      "jobId": "a34c568955143af1256cef466b90ee386d10afb492acc9041a134a95608dff2d",
+      "jobKey": "230926500326",
+      "title": "Expert LP & APS Modelling - OQ8",
+      "company": "Oman Refinery",
+      "companyId": "10004389",
+      "location": "Muscat - Oman",
+      "experienceMin": 10,
+      "experienceMax": 15,
+      "url": "https://www.naukrigulf.com/expert-lp-aps-modelling-oq8-jobs-in-muscat-oman-in-oman-refinery-10-to-15-years-n-cd-10004389-jid-230926500326",
+      "portalUrl": "https://www.naukrigulf.com/expert-lp-aps-modelling-oq8-jobs-in-muscat-oman-in-oman-refinery-10-to-15-years-n-cd-10004389-jid-230926500326",
+      "postedAt": "2026-09-23T04:00:00.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "NEW"
+  },
+  {
+    "score": 15,
+    "action": "SKIP",
+    "title": "Chemical Warehouse Supervisor",
+    "company": "Client of Shiyali Hr Services",
+    "location": "Muscat - Oman",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Skip. Weak match for your profile.",
+    "reasons": [],
+    "concerns": [
+      "Experience not confirmed",
+      "Target role not clearly matched",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/chemical-warehouse-supervisor-jobs-in-muscat-oman-in-client-of-shiyali-hr-services-1-to-6-years-n-cd-50000038-jid-160926500497",
+    "original_job": {
+      "jobId": "2db9e2291eecda14ed1e6abb0b533ffc937dc82c0b6204a321af69aa648cbc5f",
+      "jobKey": "160926500497",
+      "title": "Chemical Warehouse Supervisor",
+      "company": "Client of Shiyali Hr Services",
+      "companyId": "50000038",
+      "location": "Muscat - Oman",
+      "experienceMin": 1,
+      "experienceMax": 6,
+      "url": "https://www.naukrigulf.com/chemical-warehouse-supervisor-jobs-in-muscat-oman-in-client-of-shiyali-hr-services-1-to-6-years-n-cd-50000038-jid-160926500497",
+      "portalUrl": "https://www.naukrigulf.com/chemical-warehouse-supervisor-jobs-in-muscat-oman-in-client-of-shiyali-hr-services-1-to-6-years-n-cd-50000038-jid-160926500497",
+      "postedAt": "2026-09-16T04:00:00.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "SEEN"
+  },
+  {
+    "score": 15,
+    "action": "SKIP",
+    "title": "Senior Process Safety Engineer",
+    "company": "Wood",
+    "location": "Oman - Oman",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Skip. Weak match for your profile.",
+    "reasons": [],
+    "concerns": [
+      "Experience not confirmed",
+      "Target role not clearly matched",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/senior-process-safety-engineer-jobs-in-oman-in-wood-15-to-20-years-n-cd-10000245-jid-010726501469",
+    "original_job": {
+      "jobId": "0125cfce53ccb90ed5d2f83dab907d5621d918307a1828dbfcc89e8e0fb0d771",
+      "jobKey": "010726501469",
+      "title": "Senior Process Safety Engineer",
+      "company": "Wood",
+      "companyId": "10000245",
+      "location": "Oman - Oman",
+      "experienceMin": 15,
+      "experienceMax": 20,
+      "url": "https://www.naukrigulf.com/senior-process-safety-engineer-jobs-in-oman-in-wood-15-to-20-years-n-cd-10000245-jid-010726501469",
+      "portalUrl": "https://www.naukrigulf.com/senior-process-safety-engineer-jobs-in-oman-in-wood-15-to-20-years-n-cd-10000245-jid-010726501469",
+      "postedAt": "2026-07-01T11:29:04.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "SEEN"
+  },
+  {
+    "score": 15,
+    "action": "SKIP",
+    "title": "Liquid Hydrogen Expert",
+    "company": "Wood",
+    "location": "Oman - Oman",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Skip. Weak match for your profile.",
+    "reasons": [],
+    "concerns": [
+      "Experience not confirmed",
+      "Target role not clearly matched",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/liquid-hydrogen-expert-jobs-in-oman-in-wood-5-to-10-years-n-cd-10000245-jid-141125501225",
+    "original_job": {
+      "jobId": "2ea1ed90f2df52d110f4cec9ede06072edbe9bac75084cc607608ed2de74194f",
+      "jobKey": "141125501225",
+      "title": "Liquid Hydrogen Expert",
+      "company": "Wood",
+      "companyId": "10000245",
+      "location": "Oman - Oman",
+      "experienceMin": 5,
+      "experienceMax": 10,
+      "url": "https://www.naukrigulf.com/liquid-hydrogen-expert-jobs-in-oman-in-wood-5-to-10-years-n-cd-10000245-jid-141125501225",
+      "portalUrl": "https://www.naukrigulf.com/liquid-hydrogen-expert-jobs-in-oman-in-wood-5-to-10-years-n-cd-10000245-jid-141125501225",
+      "postedAt": "2025-11-14T09:17:52.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "SEEN"
+  },
+  {
+    "score": 15,
+    "action": "SKIP",
+    "title": "Plant Manager",
+    "company": "Aerosea Travels Tours",
+    "location": "Oman - Oman",
+    "experience": "Not specified",
+    "experience_fit": "UNKNOWN",
+    "role_match": [],
+    "education_match": [],
+    "skills_match": [],
+    "action_reason": "Skip. Weak match for your profile.",
+    "reasons": [],
+    "concerns": [
+      "Experience not confirmed",
+      "Target role not clearly matched",
+      "Education match not confirmed",
+      "Relevant skills not found"
+    ],
+    "url": "https://www.naukrigulf.com/plant-manager-jobs-in-oman-in-aerosea-travels-tours-5-to-10-years-n-cd-20010126-jid-050526500038",
+    "original_job": {
+      "jobId": "04d8d7a61b8b3c5bb04d8c0a8662bb238450c2251fce23fe757ae8534f0b8502",
+      "jobKey": "050526500038",
+      "title": "Plant Manager",
+      "company": "Aerosea Travels Tours",
+      "companyId": "20010126",
+      "location": "Oman - Oman",
+      "experienceMin": 5,
+      "experienceMax": 10,
+      "url": "https://www.naukrigulf.com/plant-manager-jobs-in-oman-in-aerosea-travels-tours-5-to-10-years-n-cd-20010126-jid-050526500038",
+      "portalUrl": "https://www.naukrigulf.com/plant-manager-jobs-in-oman-in-aerosea-travels-tours-5-to-10-years-n-cd-20010126-jid-050526500038",
+      "postedAt": "2026-05-05T04:00:00.000Z",
+      "source": "naukrigulf.com"
+    },
+    "history_status": "SEEN"
+  },
+  {
+    "score": 15,
+    "action": "SKIP",
     "title": "Coating Engineer",
     "company": "Seven stars arabia paints",
     "location": "Riyadh - Saudi Arabia",
@@ -738,43 +1019,7 @@
       "experienceMax": 8,
       "url": "https://www.naukrigulf.com/coating-engineer-jobs-in-riyadh-saudi-arabia-in-seven-stars-arabia-paints-3-to-8-years-n-cd-372263-jid-160926000623",
       "portalUrl": "https://www.naukrigulf.com/coating-engineer-jobs-in-riyadh-saudi-arabia-in-seven-stars-arabia-paints-3-to-8-years-n-cd-372263-jid-160926000623",
-      "postedAt": "2026-09-16T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Processing Engineer",
-    "company": "SAUDI ARABIAN RESOURCES COMPANY",
-    "location": "Riyadh - Saudi Arabia",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/processing-engineer-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-5-to-6-years-n-cd-40005902-jid-210926500172",
-    "original_job": {
-      "jobId": "35966682046046f351caf3f42cac4950075ff5582ed63e20c69f5d53457e658e",
-      "jobKey": "210926500172",
-      "title": "Processing Engineer",
-      "company": "SAUDI ARABIAN RESOURCES COMPANY",
-      "companyId": "40005902",
-      "location": "Riyadh - Saudi Arabia",
-      "experienceMin": 5,
-      "experienceMax": 6,
-      "url": "https://www.naukrigulf.com/processing-engineer-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-5-to-6-years-n-cd-40005902-jid-210926500172",
-      "portalUrl": "https://www.naukrigulf.com/processing-engineer-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-5-to-6-years-n-cd-40005902-jid-210926500172",
-      "postedAt": "2026-09-21T04:00:00.000Z",
+      "postedAt": "2026-09-16T08:08:24.000Z",
       "source": "naukrigulf.com"
     },
     "history_status": "SEEN"
@@ -813,14 +1058,14 @@
       "postedAt": "2026-09-22T04:00:00.000Z",
       "source": "naukrigulf.com"
     },
-    "history_status": "NEW"
+    "history_status": "SEEN"
   },
   {
     "score": 15,
     "action": "SKIP",
-    "title": "Plant Chemist",
-    "company": "SAUDI ARABIAN RESOURCES COMPANY",
-    "location": "Riyadh - Saudi Arabia",
+    "title": "Hot End Manager",
+    "company": "Koch Industries, Inc",
+    "location": "Eastern Province - Saudi Arabia",
     "experience": "Not specified",
     "experience_fit": "UNKNOWN",
     "role_match": [],
@@ -834,58 +1079,22 @@
       "Education match not confirmed",
       "Relevant skills not found"
     ],
-    "url": "https://www.naukrigulf.com/plant-chemist-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-3-to-8-years-n-cd-40005902-jid-210926500901",
+    "url": "https://www.naukrigulf.com/hot-end-manager-jobs-in-dammam-khobar-eastern-province-saudi-arabia-in-koch-industries-inc-3-to-8-years-n-cd-10008034-jid-230926500423",
     "original_job": {
-      "jobId": "2d1d6e38ead21dfe1a85929ff8d296c9910bc2030a0cbb4eb1fedb6e1d1908bd",
-      "jobKey": "210926500901",
-      "title": "Plant Chemist",
-      "company": "SAUDI ARABIAN RESOURCES COMPANY",
-      "companyId": "40005902",
-      "location": "Riyadh - Saudi Arabia",
+      "jobId": "b12948b1118c82dbe3f4d3241431e463d070f14a4d240a5c89a4bbb51411d0c5",
+      "jobKey": "230926500423",
+      "title": "Hot End Manager",
+      "company": "Koch Industries, Inc",
+      "companyId": "10008034",
+      "location": "Eastern Province - Saudi Arabia",
       "experienceMin": 3,
       "experienceMax": 8,
-      "url": "https://www.naukrigulf.com/plant-chemist-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-3-to-8-years-n-cd-40005902-jid-210926500901",
-      "portalUrl": "https://www.naukrigulf.com/plant-chemist-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-3-to-8-years-n-cd-40005902-jid-210926500901",
-      "postedAt": "2026-09-21T04:00:00.000Z",
+      "url": "https://www.naukrigulf.com/hot-end-manager-jobs-in-dammam-khobar-eastern-province-saudi-arabia-in-koch-industries-inc-3-to-8-years-n-cd-10008034-jid-230926500423",
+      "portalUrl": "https://www.naukrigulf.com/hot-end-manager-jobs-in-dammam-khobar-eastern-province-saudi-arabia-in-koch-industries-inc-3-to-8-years-n-cd-10008034-jid-230926500423",
+      "postedAt": "2026-09-23T09:30:14.000Z",
       "source": "naukrigulf.com"
     },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Plant & Heap Leach Superintendent",
-    "company": "SAUDI ARABIAN RESOURCES COMPANY",
-    "location": "Riyadh - Saudi Arabia",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/plant-heap-leach-superintendent-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-5-to-7-years-n-cd-40005902-jid-210926500217",
-    "original_job": {
-      "jobId": "1aa6c47ead3b90c813a704aa3c34e7f983a4b8255b7ae409b8b9b788cabce88a",
-      "jobKey": "210926500217",
-      "title": "Plant & Heap Leach Superintendent",
-      "company": "SAUDI ARABIAN RESOURCES COMPANY",
-      "companyId": "40005902",
-      "location": "Riyadh - Saudi Arabia",
-      "experienceMin": 5,
-      "experienceMax": 7,
-      "url": "https://www.naukrigulf.com/plant-heap-leach-superintendent-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-5-to-7-years-n-cd-40005902-jid-210926500217",
-      "portalUrl": "https://www.naukrigulf.com/plant-heap-leach-superintendent-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-5-to-7-years-n-cd-40005902-jid-210926500217",
-      "postedAt": "2026-09-21T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
+    "history_status": "NEW"
   },
   {
     "score": 15,
@@ -921,7 +1130,7 @@
       "postedAt": "2026-09-22T04:00:00.000Z",
       "source": "naukrigulf.com"
     },
-    "history_status": "NEW"
+    "history_status": "SEEN"
   },
   {
     "score": 15,
@@ -998,9 +1207,9 @@
   {
     "score": 15,
     "action": "SKIP",
-    "title": "Project Head (Slab Caster / Gas Based DRI / LDP)",
-    "company": "Manpower Resources India",
-    "location": "Al Madina Al Munawarah - Saudi Arabia",
+    "title": "Processing Engineer",
+    "company": "SAUDI ARABIAN RESOURCES COMPANY",
+    "location": "Riyadh - Saudi Arabia",
     "experience": "Not specified",
     "experience_fit": "UNKNOWN",
     "role_match": [],
@@ -1014,101 +1223,29 @@
       "Education match not confirmed",
       "Relevant skills not found"
     ],
-    "url": "https://www.naukrigulf.com/project-head-jobs-in-al-madina-al-munawarah-saudi-arabia-in-manpower-resources-india-18-to-23-years-n-cd-20010126-jid-180926500138",
+    "url": "https://www.naukrigulf.com/processing-engineer-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-5-to-6-years-n-cd-40005902-jid-210926500172",
     "original_job": {
-      "jobId": "cc3829f60d65aae68912f1765c99730dfd4d928568e40f063e71e9e3d64eca9b",
-      "jobKey": "180926500138",
-      "title": "Project Head (Slab Caster / Gas Based DRI / LDP)",
-      "company": "Manpower Resources India",
-      "companyId": "20010126",
-      "location": "Al Madina Al Munawarah - Saudi Arabia",
-      "experienceMin": 18,
-      "experienceMax": 23,
-      "url": "https://www.naukrigulf.com/project-head-jobs-in-al-madina-al-munawarah-saudi-arabia-in-manpower-resources-india-18-to-23-years-n-cd-20010126-jid-180926500138",
-      "portalUrl": "https://www.naukrigulf.com/project-head-jobs-in-al-madina-al-munawarah-saudi-arabia-in-manpower-resources-india-18-to-23-years-n-cd-20010126-jid-180926500138",
-      "postedAt": "2026-09-18T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Paints Technical support Officer",
-    "company": "Confidential Company",
-    "location": "Doha - Qatar",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/paints-technical-support-officer-jobs-in-doha-qatar-in-confidential-3-to-7-years-n-jid-210926000431",
-    "original_job": {
-      "jobId": "4d0b284de022b30150a4776446d533ad43812637933cebfc71409e768932c0b5",
-      "jobKey": "210926000431",
-      "title": "Paints Technical support Officer",
-      "company": "Confidential Company",
-      "companyId": "351019",
-      "location": "Doha - Qatar",
-      "experienceMin": 3,
-      "experienceMax": 7,
-      "url": "https://www.naukrigulf.com/paints-technical-support-officer-jobs-in-doha-qatar-in-confidential-3-to-7-years-n-jid-210926000431",
-      "portalUrl": "https://www.naukrigulf.com/paints-technical-support-officer-jobs-in-doha-qatar-in-confidential-3-to-7-years-n-jid-210926000431",
+      "jobId": "35966682046046f351caf3f42cac4950075ff5582ed63e20c69f5d53457e658e",
+      "jobKey": "210926500172",
+      "title": "Processing Engineer",
+      "company": "SAUDI ARABIAN RESOURCES COMPANY",
+      "companyId": "40005902",
+      "location": "Riyadh - Saudi Arabia",
+      "experienceMin": 5,
+      "experienceMax": 6,
+      "url": "https://www.naukrigulf.com/processing-engineer-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-5-to-6-years-n-cd-40005902-jid-210926500172",
+      "portalUrl": "https://www.naukrigulf.com/processing-engineer-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-5-to-6-years-n-cd-40005902-jid-210926500172",
       "postedAt": "2026-09-21T04:00:00.000Z",
       "source": "naukrigulf.com"
     },
-    "history_status": "NEW"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Head of Construction",
-    "company": "Qatar Fertiliser Company",
-    "location": "Mesaieed , Wakra - Qatar",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/head-of-construction-jobs-in-qatar-in-qatar-fertilizer-company-15-to-25-years-n-cd-38465-jid-090926000530",
-    "original_job": {
-      "jobId": "97c3ec3349110e870cd08f6d8b37e20f518dce634c2d241952b1af6412da3ca6",
-      "jobKey": "090926000530",
-      "title": "Head of Construction",
-      "company": "Qatar Fertiliser Company",
-      "companyId": "38465",
-      "location": "Mesaieed , Wakra - Qatar",
-      "experienceMin": 15,
-      "experienceMax": 25,
-      "url": "https://www.naukrigulf.com/head-of-construction-jobs-in-qatar-in-qatar-fertilizer-company-15-to-25-years-n-cd-38465-jid-090926000530",
-      "portalUrl": "https://www.naukrigulf.com/head-of-construction-jobs-in-qatar-in-qatar-fertilizer-company-15-to-25-years-n-cd-38465-jid-090926000530",
-      "postedAt": "2026-09-09T07:49:22.000Z",
-      "source": "naukrigulf.com"
-    },
     "history_status": "SEEN"
   },
   {
     "score": 15,
     "action": "SKIP",
-    "title": "Assistant Manager – Industrial Cleaning Services ",
-    "company": "Confidential Company",
-    "location": "Al Khor - Qatar",
+    "title": "Plant Chemist",
+    "company": "SAUDI ARABIAN RESOURCES COMPANY",
+    "location": "Riyadh - Saudi Arabia",
     "experience": "Not specified",
     "experience_fit": "UNKNOWN",
     "role_match": [],
@@ -1122,522 +1259,18 @@
       "Education match not confirmed",
       "Relevant skills not found"
     ],
-    "url": "https://www.naukrigulf.com/assistant-manager-industrial-cleaning-services-jobs-in-al-khor-qatar-in-confidential-6-to-8-years-n-jid-190826000849",
+    "url": "https://www.naukrigulf.com/plant-chemist-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-3-to-8-years-n-cd-40005902-jid-210926500901",
     "original_job": {
-      "jobId": "5c6c681ed79cb37b5598440bafe0318359268faf790e0bd0232125e75737f23d",
-      "jobKey": "190826000849",
-      "title": "Assistant Manager – Industrial Cleaning Services ",
-      "company": "Confidential Company",
-      "companyId": "240631",
-      "location": "Al Khor - Qatar",
-      "experienceMin": 6,
-      "experienceMax": 8,
-      "url": "https://www.naukrigulf.com/assistant-manager-industrial-cleaning-services-jobs-in-al-khor-qatar-in-confidential-6-to-8-years-n-jid-190826000849",
-      "portalUrl": "https://www.naukrigulf.com/assistant-manager-industrial-cleaning-services-jobs-in-al-khor-qatar-in-confidential-6-to-8-years-n-jid-190826000849",
-      "postedAt": "2026-08-19T11:48:18.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Lead Corrosion Engineer",
-    "company": "Confidential Company",
-    "location": "Doha - Qatar",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/lead-corrosion-engineer-jobs-in-doha-qatar-in-confidential-15-to-20-years-n-jid-180826000712",
-    "original_job": {
-      "jobId": "1177d3db6f38b38049331feb3382c10f70e6bcbcdfddca9718481101dcaf613a",
-      "jobKey": "180826000712",
-      "title": "Lead Corrosion Engineer",
-      "company": "Confidential Company",
-      "companyId": "222461",
-      "location": "Doha - Qatar",
-      "experienceMin": 15,
-      "experienceMax": 20,
-      "url": "https://www.naukrigulf.com/lead-corrosion-engineer-jobs-in-doha-qatar-in-confidential-15-to-20-years-n-jid-180826000712",
-      "portalUrl": "https://www.naukrigulf.com/lead-corrosion-engineer-jobs-in-doha-qatar-in-confidential-15-to-20-years-n-jid-180826000712",
-      "postedAt": "2026-08-18T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Senior LNG Digital Solutions Consultant",
-    "company": "Client of Brunel",
-    "location": "Doha - Qatar",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/senior-lng-digital-solutions-consultant-jobs-in-doha-qatar-in-client-of-brunel-10-to-30-years-n-cd-10050613-jid-170926500839",
-    "original_job": {
-      "jobId": "9da35aada771e8ccc3ea37a73173fb75b0d862276ce769e6a4af3ce342a91830",
-      "jobKey": "170926500839",
-      "title": "Senior LNG Digital Solutions Consultant",
-      "company": "Client of Brunel",
-      "companyId": "10050613",
-      "location": "Doha - Qatar",
-      "experienceMin": 10,
-      "experienceMax": 30,
-      "url": "https://www.naukrigulf.com/senior-lng-digital-solutions-consultant-jobs-in-doha-qatar-in-client-of-brunel-10-to-30-years-n-cd-10050613-jid-170926500839",
-      "portalUrl": "https://www.naukrigulf.com/senior-lng-digital-solutions-consultant-jobs-in-doha-qatar-in-client-of-brunel-10-to-30-years-n-cd-10050613-jid-170926500839",
-      "postedAt": "2026-09-17T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Process Optimization Engineer",
-    "company": "MUQAWLAT KUWAIT",
-    "location": "Qatar - Qatar",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/process-optimization-engineer-jobs-in-qatar-in-muqawlat-kuwait-5-to-7-years-n-cd-40001574-jid-040626500024",
-    "original_job": {
-      "jobId": "a44bbfbe5b6424efd78de0d492fdf537c0a3b3cd3c111ba14e94671d9d76ac16",
-      "jobKey": "040626500024",
-      "title": "Process Optimization Engineer",
-      "company": "MUQAWLAT KUWAIT",
-      "companyId": "40001574",
-      "location": "Qatar - Qatar",
-      "experienceMin": 5,
-      "experienceMax": 7,
-      "url": "https://www.naukrigulf.com/process-optimization-engineer-jobs-in-qatar-in-muqawlat-kuwait-5-to-7-years-n-cd-40001574-jid-040626500024",
-      "portalUrl": "https://www.naukrigulf.com/process-optimization-engineer-jobs-in-qatar-in-muqawlat-kuwait-5-to-7-years-n-cd-40001574-jid-040626500024",
-      "postedAt": "2026-06-04T06:06:36.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Operations Supervisor",
-    "company": "QatarEnergy",
-    "location": "Qatar - Qatar",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/operations-supervisor-jobs-in-qatar-in-qatarenergy-8-to-13-years-n-cd-10050428-jid-300726500255",
-    "original_job": {
-      "jobId": "d2dfea43835f2843258808c5ae2a947e638ddbc1dc472a50579c9034274bbb46",
-      "jobKey": "300726500255",
-      "title": "Operations Supervisor",
-      "company": "QatarEnergy",
-      "companyId": "10050428",
-      "location": "Qatar - Qatar",
-      "experienceMin": 8,
-      "experienceMax": 13,
-      "url": "https://www.naukrigulf.com/operations-supervisor-jobs-in-qatar-in-qatarenergy-8-to-13-years-n-cd-10050428-jid-300726500255",
-      "portalUrl": "https://www.naukrigulf.com/operations-supervisor-jobs-in-qatar-in-qatarenergy-8-to-13-years-n-cd-10050428-jid-300726500255",
-      "postedAt": "2026-07-30T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Automation & Robotics",
-    "company": "Welspun Pipes Company",
-    "location": "Dammam - Saudi Arabia",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/automation-robotics-jobs-in-dammam-saudi-arabia-in-welspun-middle-east-5-to-10-years-n-cd-77182-jid-220926001092",
-    "original_job": {
-      "jobId": "c2e5fc33bdba0541beb02b476ed641560fe80420ac3912aaa77f4df081dab9b6",
-      "jobKey": "220926001092",
-      "title": "Automation & Robotics",
-      "company": "Welspun Pipes Company",
-      "companyId": "77182",
-      "location": "Dammam - Saudi Arabia",
-      "experienceMin": 5,
-      "experienceMax": 10,
-      "url": "https://www.naukrigulf.com/automation-robotics-jobs-in-dammam-saudi-arabia-in-welspun-middle-east-5-to-10-years-n-cd-77182-jid-220926001092",
-      "portalUrl": "https://www.naukrigulf.com/automation-robotics-jobs-in-dammam-saudi-arabia-in-welspun-middle-east-5-to-10-years-n-cd-77182-jid-220926001092",
-      "postedAt": "2026-09-22T12:20:35.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "NEW"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "중동 . 아프리카 자동밸브 영업",
-    "company": "DAEJU TRADING LLC SOC",
-    "location": "Dubai - United Arab Emirates (UAE)",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/jobs-in-dubai-uae-in-daeju-trading-llc-soc-2-to-5-years-n-cd-366387-jid-220926001025",
-    "original_job": {
-      "jobId": "ba069a2c75f82046026040c2fdb195f8340f83210d10531943e7fa637961b5ce",
-      "jobKey": "220926001025",
-      "title": "중동 . 아프리카 자동밸브 영업",
-      "company": "DAEJU TRADING LLC SOC",
-      "companyId": "366387",
-      "location": "Dubai - United Arab Emirates (UAE)",
-      "experienceMin": 2,
-      "experienceMax": 5,
-      "url": "https://www.naukrigulf.com/jobs-in-dubai-uae-in-daeju-trading-llc-soc-2-to-5-years-n-cd-366387-jid-220926001025",
-      "portalUrl": "https://www.naukrigulf.com/jobs-in-dubai-uae-in-daeju-trading-llc-soc-2-to-5-years-n-cd-366387-jid-220926001025",
-      "postedAt": "2026-09-22T10:35:20.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "NEW"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Engineer (Operation / Mechanical / Electrical)",
-    "company": "Ali And Sons Holding L.L.C",
-    "location": "Abu Dhabi - United Arab Emirates (UAE)",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/engineer-jobs-in-abu-dhabi-uae-in-ali-and-sons-llc-5-to-10-years-n-cd-40159-jid-140926000596",
-    "original_job": {
-      "jobId": "d7fb827698b70db2a89766de64e31d72c063680ae6ad00cb9c672124b720c35f",
-      "jobKey": "140926000596",
-      "title": "Engineer (Operation / Mechanical / Electrical)",
-      "company": "Ali And Sons Holding L.L.C",
-      "companyId": "40159",
-      "location": "Abu Dhabi - United Arab Emirates (UAE)",
-      "experienceMin": 5,
-      "experienceMax": 10,
-      "url": "https://www.naukrigulf.com/engineer-jobs-in-abu-dhabi-uae-in-ali-and-sons-llc-5-to-10-years-n-cd-40159-jid-140926000596",
-      "portalUrl": "https://www.naukrigulf.com/engineer-jobs-in-abu-dhabi-uae-in-ali-and-sons-llc-5-to-10-years-n-cd-40159-jid-140926000596",
-      "postedAt": "2026-09-14T08:28:27.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Lead coating Engineer",
-    "company": "Ali & Sons Marine Engineering Factory",
-    "location": "Abu Dhabi - United Arab Emirates (UAE)",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/lead-coating-engineer-jobs-in-abu-dhabi-uae-in-ali-and-sons-llc-8-to-12-years-n-cd-40159-jid-090926000968",
-    "original_job": {
-      "jobId": "b8d489bea3e6f998a3c78d77c1d860589e57d4cbcbf2cddd06aef3d81716db91",
-      "jobKey": "090926000968",
-      "title": "Lead coating Engineer",
-      "company": "Ali & Sons Marine Engineering Factory",
-      "companyId": "40159",
-      "location": "Abu Dhabi - United Arab Emirates (UAE)",
-      "experienceMin": 8,
-      "experienceMax": 12,
-      "url": "https://www.naukrigulf.com/lead-coating-engineer-jobs-in-abu-dhabi-uae-in-ali-and-sons-llc-8-to-12-years-n-cd-40159-jid-090926000968",
-      "portalUrl": "https://www.naukrigulf.com/lead-coating-engineer-jobs-in-abu-dhabi-uae-in-ali-and-sons-llc-8-to-12-years-n-cd-40159-jid-090926000968",
-      "postedAt": "2026-09-09T11:13:28.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Lab Chemist",
-    "company": "Energy World",
-    "location": "Sharjah - United Arab Emirates (UAE)",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/lab-chemist-jobs-in-sharjah-uae-in-energy-world-1-to-6-years-n-cd-369265-jid-050926001226",
-    "original_job": {
-      "jobId": "12aac7099b0508c476072a48d442135b65861fdf5b7f212638d2d955a0cf4390",
-      "jobKey": "050926001226",
-      "title": "Lab Chemist",
-      "company": "Energy World",
-      "companyId": "369265",
-      "location": "Sharjah - United Arab Emirates (UAE)",
-      "experienceMin": 1,
-      "experienceMax": 6,
-      "url": "https://www.naukrigulf.com/lab-chemist-jobs-in-sharjah-uae-in-energy-world-1-to-6-years-n-cd-369265-jid-050926001226",
-      "portalUrl": "https://www.naukrigulf.com/lab-chemist-jobs-in-sharjah-uae-in-energy-world-1-to-6-years-n-cd-369265-jid-050926001226",
-      "postedAt": "2026-09-05T13:57:19.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Sales Manager",
-    "company": "APS Auto Parts LLC",
-    "location": "Abu Dhabi , Al Ain - United Arab Emirates (UAE)",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/sales-manager-jobs-in-abu-dhabi-uae-in-aps-auto-parts-llc-5-to-10-years-n-cd-368449-jid-040926001380",
-    "original_job": {
-      "jobId": "37a854b9d05b2ecfa4498fd253eb171fc60cd77852a681b2fb068d97755eeca5",
-      "jobKey": "040926001380",
-      "title": "Sales Manager",
-      "company": "APS Auto Parts LLC",
-      "companyId": "368449",
-      "location": "Abu Dhabi , Al Ain - United Arab Emirates (UAE)",
-      "experienceMin": 5,
-      "experienceMax": 10,
-      "url": "https://www.naukrigulf.com/sales-manager-jobs-in-abu-dhabi-uae-in-aps-auto-parts-llc-5-to-10-years-n-cd-368449-jid-040926001380",
-      "portalUrl": "https://www.naukrigulf.com/sales-manager-jobs-in-abu-dhabi-uae-in-aps-auto-parts-llc-5-to-10-years-n-cd-368449-jid-040926001380",
-      "postedAt": "2026-09-04T13:51:02.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Laboratory Chemist",
-    "company": "Petrochem Performance Chemicals LLC",
-    "location": "Abu Dhabi - United Arab Emirates (UAE)",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/laboratory-chemist-jobs-in-abu-dhabi-uae-in-petrochem-performance-chemicals-llc-2-to-5-years-n-cd-128785-jid-310826000622",
-    "original_job": {
-      "jobId": "c2f344f489b8fec37f2998ff9d5ae0af170fe9f8e1ca31983383024be5aa8000",
-      "jobKey": "310826000622",
-      "title": "Laboratory Chemist",
-      "company": "Petrochem Performance Chemicals LLC",
-      "companyId": "128785",
-      "location": "Abu Dhabi - United Arab Emirates (UAE)",
-      "experienceMin": 2,
-      "experienceMax": 5,
-      "url": "https://www.naukrigulf.com/laboratory-chemist-jobs-in-abu-dhabi-uae-in-petrochem-performance-chemicals-llc-2-to-5-years-n-cd-128785-jid-310826000622",
-      "portalUrl": "https://www.naukrigulf.com/laboratory-chemist-jobs-in-abu-dhabi-uae-in-petrochem-performance-chemicals-llc-2-to-5-years-n-cd-128785-jid-310826000622",
-      "postedAt": "2026-08-31T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "CCR Operator",
-    "company": "Confidential Company",
-    "location": "Sharjah - United Arab Emirates (UAE)",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/ccr-operator-jobs-in-sharjah-uae-in-confidential-7-to-14-years-n-jid-310826002954",
-    "original_job": {
-      "jobId": "160f8b9742c8bf6a78754ce56169ab721d9a3f21f54fff2e2907b7a9c34d2592",
-      "jobKey": "310826002954",
-      "title": "CCR Operator",
-      "company": "Confidential Company",
-      "companyId": "119911",
-      "location": "Sharjah - United Arab Emirates (UAE)",
-      "experienceMin": 7,
-      "experienceMax": 14,
-      "url": "https://www.naukrigulf.com/ccr-operator-jobs-in-sharjah-uae-in-confidential-7-to-14-years-n-jid-310826002954",
-      "portalUrl": "https://www.naukrigulf.com/ccr-operator-jobs-in-sharjah-uae-in-confidential-7-to-14-years-n-jid-310826002954",
-      "postedAt": "2026-08-31T04:00:00.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Powder Coating Plant in Charge",
-    "company": "Antal International L.L.C-FZ",
-    "location": "Ajman - United Arab Emirates (UAE)",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/powder-coating-plant-in-charge-jobs-in-ajman-uae-in-antal-international-l-l-c-fz-3-to-7-years-n-cd-102812-jid-040926000695",
-    "original_job": {
-      "jobId": "65cd1b456ce8a9c73d21addad42e200d94100b44455150fdcf9c58e9f3d6fba6",
-      "jobKey": "040926000695",
-      "title": "Powder Coating Plant in Charge",
-      "company": "Antal International L.L.C-FZ",
-      "companyId": "102812",
-      "location": "Ajman - United Arab Emirates (UAE)",
+      "jobId": "2d1d6e38ead21dfe1a85929ff8d296c9910bc2030a0cbb4eb1fedb6e1d1908bd",
+      "jobKey": "210926500901",
+      "title": "Plant Chemist",
+      "company": "SAUDI ARABIAN RESOURCES COMPANY",
+      "companyId": "40005902",
+      "location": "Riyadh - Saudi Arabia",
       "experienceMin": 3,
-      "experienceMax": 7,
-      "url": "https://www.naukrigulf.com/powder-coating-plant-in-charge-jobs-in-ajman-uae-in-antal-international-l-l-c-fz-3-to-7-years-n-cd-102812-jid-040926000695",
-      "portalUrl": "https://www.naukrigulf.com/powder-coating-plant-in-charge-jobs-in-ajman-uae-in-antal-international-l-l-c-fz-3-to-7-years-n-cd-102812-jid-040926000695",
-      "postedAt": "2026-09-04T08:58:36.000Z",
-      "source": "naukrigulf.com"
-    },
-    "history_status": "SEEN"
-  },
-  {
-    "score": 15,
-    "action": "SKIP",
-    "title": "Regulatory Specialist I",
-    "company": "Schlumberger",
-    "location": "United Arab Emirates - United Arab Emirates",
-    "experience": "Not specified",
-    "experience_fit": "UNKNOWN",
-    "role_match": [],
-    "education_match": [],
-    "skills_match": [],
-    "action_reason": "Skip. Weak match for your profile.",
-    "reasons": [],
-    "concerns": [
-      "Experience not confirmed",
-      "Target role not clearly matched",
-      "Education match not confirmed",
-      "Relevant skills not found"
-    ],
-    "url": "https://www.naukrigulf.com/regulatory-specialist-i-jobs-in-uae-in-schlumberger-5-to-7-years-n-cd-10000810-jid-210926500298",
-    "original_job": {
-      "jobId": "3db3532a7d406823d39ee3efdd13a9abf37adca54392a3e53317d305dc59baa0",
-      "jobKey": "210926500298",
-      "title": "Regulatory Specialist I",
-      "company": "Schlumberger",
-      "companyId": "10000810",
-      "location": "United Arab Emirates - United Arab Emirates",
-      "experienceMin": 5,
-      "experienceMax": 7,
-      "url": "https://www.naukrigulf.com/regulatory-specialist-i-jobs-in-uae-in-schlumberger-5-to-7-years-n-cd-10000810-jid-210926500298",
-      "portalUrl": "https://www.naukrigulf.com/regulatory-specialist-i-jobs-in-uae-in-schlumberger-5-to-7-years-n-cd-10000810-jid-210926500298",
+      "experienceMax": 8,
+      "url": "https://www.naukrigulf.com/plant-chemist-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-3-to-8-years-n-cd-40005902-jid-210926500901",
+      "portalUrl": "https://www.naukrigulf.com/plant-chemist-jobs-in-riyadh-saudi-arabia-in-saudi-arabian-resources-company-3-to-8-years-n-cd-40005902-jid-210926500901",
       "postedAt": "2026-09-21T04:00:00.000Z",
       "source": "naukrigulf.com"
     },
